@@ -4,8 +4,8 @@ public class Team {
 
     String teamName;
     int size;
-    Node<Player1>head;
-    Node<Player1>tail;
+    Node<Player>head;
+    Node<Player>tail;
 
     int sumSalary;
 
@@ -15,8 +15,8 @@ public class Team {
 
     }
 
-    public void addPlayer(Player1 a){
-        Node<Player1>newNode=new Node(a);
+    public void addPlayer(Player a){
+        Node<Player>newNode=new Node(a);
         if(size>=15){
             System.out.println("Team size much not exceed 15 players");
             return;
@@ -37,9 +37,9 @@ public class Team {
         size++;
     }
 
-    public void removePlayer(Player1 a){
+    public void removePlayer(Player a){
 
-        Node<Player1>temp=new Node<>(a);
+        Node<Player>temp=new Node<>(a);
         boolean found=false;
         for(int i=0;i<size;i++){
             if(temp.element.equals(a)){
@@ -79,7 +79,7 @@ public class Team {
 
     public int count(String position){
         int cnt=0;
-        Node <Player1>temp=this.head;
+        Node <Player>temp=this.head;
         for(int i=0;i<size;i++){
             if(temp.element.getPosition().equals(position)){
                 cnt++;
