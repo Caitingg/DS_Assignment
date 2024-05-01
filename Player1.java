@@ -1,6 +1,6 @@
 import java.util.Random;
 
-class Player1 {
+class Player {
     public int salary;
     private String name;
     private int weight;
