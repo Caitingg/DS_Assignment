@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class PlayerStatsList {
-    private static final String API_KEY = "18b3bb72-3fba-4739-bcd5-602bc9278cf3"; // Replace with your API key
+    private static final String API_KEY = "18cc7487-a230-4bb9-b945-7d0ca7327145";
     private static final int CURRENT_SEASON = getCurrentSeason();
     private static final String BASE_URL = "https://api.balldontlie.io/v1/stats";
 
@@ -81,7 +81,6 @@ public class PlayerStatsList {
         }
     }
 
-
     private static int getCurrentSeason() {
         // Get the current year
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -100,9 +99,20 @@ public class PlayerStatsList {
         Gson gson = new Gson();
         this.response = gson.fromJson(s, ApiResponse.class);
         if (response != null && response.data != null) {
-            this.playerStatsList.addAll(response.data);
+            for (PlayerStats stats : response.data) {
+                PlayerStats simplifiedStats = new PlayerStats();
+                simplifiedStats.player_id = stats.player.id; // Assign player_id here
+                simplifiedStats.player = stats.player;
+                simplifiedStats.pts = stats.pts;
+                simplifiedStats.reb = stats.reb;
+                simplifiedStats.ast = stats.ast;
+                simplifiedStats.stl = stats.stl;
+                simplifiedStats.blk = stats.blk;
+                this.playerStatsList.add(simplifiedStats);
+            }
         }
     }
+
 
     public ArrayList<PlayerStats> getPlayerStatsList() {
         return this.playerStatsList;
@@ -133,56 +143,13 @@ public class PlayerStatsList {
 
 class PlayerStats {
     int id;
-    String min;
+    int player_id;
+    int pts;
     int reb;
     int ast;
     int stl;
     int blk;
-    int pts;
     Player player;
-    Team team;
-    Game game;
-
-    public String[] toArray() {
-        String[] array = {
-                String.valueOf(id),
-                min,
-                String.valueOf(reb),
-                String.valueOf(ast),
-                String.valueOf(stl),
-                String.valueOf(blk),
-                String.valueOf(pts),
-                String.valueOf(player.id),
-                player.first_name,
-                player.last_name,
-                player.position,
-                player.height,
-                player.weight,
-                String.valueOf(player.draft_year),
-                String.valueOf(player.draft_round),
-                String.valueOf(player.draft_number),
-                String.valueOf(player.team_id),
-                String.valueOf(team.id),
-                team.conference,
-                team.division,
-                team.city,
-                team.name,
-                team.full_name,
-                team.abbreviation,
-                String.valueOf(game.id),
-                game.date,
-                String.valueOf(game.season),
-                game.status,
-                String.valueOf(game.period),
-                game.time,
-                String.valueOf(game.postseason),
-                String.valueOf(game.home_team_score),
-                String.valueOf(game.visitor_team_score),
-                String.valueOf(game.home_team_id),
-                String.valueOf(game.visitor_team_id)
-        };
-        return array;
-    }
 }
 
 class Player {
@@ -192,35 +159,11 @@ class Player {
     String position;
     String height;
     String weight;
-
-    int draft_year;
-    int draft_round;
-    int draft_number;
-    int team_id;
 }
 
-class Team {
-    int id;
-    String conference;
-    String division;
-    String city;
-    String name;
-    String full_name;
-    String abbreviation;
-}
-
-class Game {
-    int id;
-    String date;
-    int season;
-    String status;
-    int period;
-    String time;
-    boolean postseason;
-    int home_team_score;
-    int visitor_team_score;
-    int home_team_id;
-    int visitor_team_id;
+class ApiResponse {
+    ArrayList<PlayerStats> data;
+    Meta meta;
 }
 
 class Meta {
@@ -228,7 +171,4 @@ class Meta {
     int per_page;
 }
 
-class ApiResponse {
-    ArrayList<PlayerStats> data;
-    Meta meta;
-}
+
