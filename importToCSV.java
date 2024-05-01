@@ -64,7 +64,7 @@ public class importToCSV {
                 if (stats.pts > 20) {
                     salary = r.nextInt(4500 - 3000 + 1) + 3000;
                 } else {
-                    salary = r.nextInt(2500) + 1000;
+                    salary = r.nextInt(2500-1000+1) + 1000;
                 }
 
                 String[] data = {
