@@ -10,36 +10,117 @@ package assignment;
  */
 public class Player {
     
-   private String name;
-    int age ;
-    double height,weight;
-    String position;
-    int salary;
-    double points,rebounds,assists,steals,blocks;
+   private int Player_id;
+   private String Player_Name;
+   private Double Weight,Height;
+   private String Position;
+   private int Salary,Points,Rebounds,assists,steals,Blocks;
 
-    public Player(String name, int age, double height, double weight, String position, int salary, double points, double rebounds, double assists, double steals, double blocks) {
-        this.name = name;
-        this.age = age;
-        this.height = height;
-        this.weight = weight;
-        this.position = position;
-        this.salary = salary;
-        this.points = points;
-        this.rebounds = rebounds;
+    public Player(int Player_id, String Player_Name, Double Weight, Double Height, String Position, int Salary, int Points, int Rebounds, int assists, int steals, int Blocks) {
+        this.Player_id = Player_id;
+        this.Player_Name = Player_Name;
+        this.Weight = Weight;
+        this.Height = Height;
+        this.Position = Position;
+        this.Salary = Salary;
+        this.Points = Points;
+        this.Rebounds = Rebounds;
         this.assists = assists;
         this.steals = steals;
-        this.blocks = blocks;
+        this.Blocks = Blocks;
+    }
+
+    public int getPlayer_id() {
+        return Player_id;
+    }
+
+    public void setPlayer_id(int Player_id) {
+        this.Player_id = Player_id;
+    }
+
+    public String getPlayer_Name() {
+        return Player_Name;
+    }
+
+    public void setPlayer_Name(String Player_Name) {
+        this.Player_Name = Player_Name;
+    }
+
+    public Double getWeight() {
+        return Weight;
+    }
+
+    public void setWeight(Double Weight) {
+        this.Weight = Weight;
+    }
+
+    public Double getHeight() {
+        return Height;
+    }
+
+    public void setHeight(Double Height) {
+        this.Height = Height;
+    }
+
+    public String getPosition() {
+        return Position;
+    }
+
+    public void setPosition(String Position) {
+        this.Position = Position;
+    }
+
+    public int getSalary() {
+        return Salary;
+    }
+
+    public void setSalary(int Salary) {
+        this.Salary = Salary;
+    }
+
+    public int getPoints() {
+        return Points;
+    }
+
+    public void setPoints(int Points) {
+        this.Points = Points;
+    }
+
+    public int getRebounds() {
+        return Rebounds;
+    }
+
+    public void setRebounds(int Rebounds) {
+        this.Rebounds = Rebounds;
+    }
+
+    public int getAssists() {
+        return assists;
+    }
+
+    public void setAssists(int assists) {
+        this.assists = assists;
+    }
+
+    public int getSteals() {
+        return steals;
+    }
+
+    public void setSteals(int steals) {
+        this.steals = steals;
+    }
+
+    public int getBlocks() {
+        return Blocks;
+    }
+
+    public void setBlocks(int Blocks) {
+        this.Blocks = Blocks;
     }
 
    
+   
     
-    public String toString (){
-       return String.format("%s,%d,%.2f,%.2f,%s,%d,%.1f,%.1f,%.1f,%.1f,%.1f\n",name,age,height,weight,position,salary,points,rebounds,assists,steals,blocks);
-    }
-    
-    public String printPlayer(){
-       return String.format("| %-15s | %-5d | %7.2f  | %7.2f  |%10s |%7d  | %7.2f   | %7.2f    | %7.2f    | %7.2f    | %7.2f    |\n",name,age,height,weight,position,salary,points,rebounds,assists,steals,blocks);
-    }
-    
+   
     
 }
