@@ -12,6 +12,8 @@ package assignment;
 import java.sql.*;
 import java.io.*;
 
+
+
 public class CsvToSql {
     public static void main(String[] args) {
         Connection con = null;
@@ -54,9 +56,9 @@ public class CsvToSql {
               pst.addBatch();
               
              count++;
+             
               if(count%batchSize==0)
                   pst.executeBatch();
-           
             }
             
             br.close();
