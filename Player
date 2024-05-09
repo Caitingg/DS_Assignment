@@ -1,0 +1,45 @@
+class Player {
+    private String name;
+    private int age;
+    private double height;
+    private double weight;
+    private String position;
+    private double salary;
+    private double points;
+    private double rebounds;
+    private double assists;
+    private double steals;
+    private double blocks;
+
+    public Player(String name, int age, double height, double weight, String position, double salary,
+                  double points, double rebounds, double assists, double steals, double blocks) {
+        this.name = name;
+        this.age = age;
+        this.height = height;
+        this.weight = weight;
+        this.position = position;
+        this.salary = salary;
+        this.points = points;
+        this.rebounds = rebounds;
+        this.assists = assists;
+        this.steals = steals;
+        this.blocks = blocks;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    @Override
+    public String toString() {
+        return name + " | Age: " + age + " | Height: " + height + " | Weight: " + weight + " | Position: " + position;
+    }
+}
