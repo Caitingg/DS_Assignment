@@ -14,7 +14,6 @@ public class DynamicSearch {
 
         // Get user input for search conditions
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the search conditions:");
         System.out.print("Find attributes: ");
         String attributes = scanner.nextLine();
 
