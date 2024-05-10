@@ -1,0 +1,58 @@
+class Player {
+    private String name;
+    private int age;
+    private double points;
+    private double rebounds;
+    private double assists;
+    private double steals;
+    private double blocks;
+    private String position;
+    private double compositeScore;
+
+    public Player(String name, int age, double points, double rebounds, double assists, double steals, double blocks, String position) {
+        this.name = name;
+        this.age = age;
+        this.points = points;
+        this.rebounds = rebounds;
+        this.assists = assists;
+        this.steals = steals;
+        this.blocks = blocks;
+        this.position = position;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getCompositeScore() {
+        return compositeScore;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public double getPoints() {
+        return points;
+    }
+
+    public double getRebounds() {
+        return rebounds;
+    }
+
+    public double getAssists() {
+        return assists;
+    }
+
+    public double getSteals() {
+        return steals;
+    }
+
+    public double getBlocks() {
+        return blocks;
+    }
+
+    public void setCompositeScore(double compositeScore) {
+        this.compositeScore = compositeScore;
+    }
+}
