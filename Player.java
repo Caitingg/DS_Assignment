@@ -10,11 +10,11 @@ package assignment;
  */
 public class Player {
     
-   private int Player_id;
-   private String Player_Name;
-   private Double Weight,Height;
-   private String Position;
-   private int Salary,Points,Rebounds,assists,steals,Blocks;
+    int Player_id;
+   String Player_Name;
+    Double Weight,Height;
+   String Position;
+   int Salary,Points,Rebounds,assists,steals,Blocks;
 
     public Player(int Player_id, String Player_Name, Double Weight, Double Height, String Position, int Salary, int Points, int Rebounds, int assists, int steals, int Blocks) {
         this.Player_id = Player_id;

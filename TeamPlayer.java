@@ -8,6 +8,7 @@ package assignment;
  *
  * @author ONG KAI YIN
  */
+
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,15 +18,14 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
-public class DisplayData extends javax.swing.JFrame {
+
+public class TeamPlayer extends javax.swing.JFrame {
 
      Connection con = null;
     ResultSet rs = null;
     PreparedStatement pst =null;
-    /**
-     * Creates new form DisplayData
-     */
-    public DisplayData() {
+    
+    public TeamPlayer() {
         initComponents();
         generate_Table();
     }
@@ -42,9 +42,8 @@ public class DisplayData extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl = new javax.swing.JTable();
         name = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         text = new javax.swing.JLabel();
-        text1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -58,66 +57,96 @@ public class DisplayData extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tbl);
 
-        name.setToolTipText("");
-        name.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setText("Remove ");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nameActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
-        jButton2.setText("add");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        text.setText("................");
-
-        text1.setText(".....");
+        text.setText("..");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(text, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(name, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(text1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(76, 76, 76)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 886, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(47, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(70, 70, 70)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(name)
+                    .addComponent(text, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(57, 57, 57)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(260, 260, 260)
-                        .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(text)
-                        .addGap(9, 9, 9)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(text1))
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(326, Short.MAX_VALUE))
+                        .addGap(174, 174, 174)
+                        .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(text)))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+            String Name=name.getText();
+        
+        try {
+             Class.forName("com.mysql.cj.jdbc.Driver");
+             con=DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/nba","root","");
+             
+             // check whether the player that remove is exist on the database 
+             String sql_check="SELECT Player_Name FROM teamplayer WHERE Player_Name = '"+Name+"'";
+             Statement check = con.createStatement();
+             rs = check.executeQuery(sql_check);
+             
+             if(rs.isBeforeFirst()){
+                 String sql_insert="INSERT INTO agentmarket (Player_ID , Player_Name , Weight , Height , Position , Salary , Points , TotalRebounts , Assists , Steals , Blocks) "
+                     + "SELECT Player_ID , Player_Name , Weight , Height , Position , Salary , Points , TotalRebounts , Assists , Steals , Blocks FROM teamplayer "
+                     + "WHERE Player_Name = '"+Name+"'";
+                 
+                 String sql_delete="DELETE FROM teamplayer WHERE Player_Name ='"+Name+"'";
+ 
+                 Statement st = con.createStatement();
+                 st.executeUpdate(sql_insert);
+                 st.executeUpdate(sql_delete);
+                 text.setText("remove successfully");
+                 
+                 
+                 DefaultTableModel model = (DefaultTableModel) tbl.getModel();
+                 model.setRowCount(0);
+                 generate_Table();
+                 
+             }else{
+                 text.setText("result not found");
+             }
+             
+            
+            
+        }catch(Exception e){
+          e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     public void generate_Table(){
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
+       try{
+            
+           Class.forName("com.mysql.cj.jdbc.Driver");
             con =DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/nba","root","");
-            String sql ="SELECT * from agentmarket";
+            String sql ="SELECT * from teamplayer";
             pst=con.prepareCall(sql);
             rs=pst.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -142,58 +171,10 @@ public class DisplayData extends javax.swing.JFrame {
             con.close();
             
         }catch(Exception e){
-           e.printStackTrace();
+          e.printStackTrace();
         }
     }
-    // add to team player form agent market
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-         
-        
-        String Name=name.getText();
-        
-        try {
-             Class.forName("com.mysql.cj.jdbc.Driver");
-             con=DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/nba","root","");
-             
-             // check whether the player that added is exist on the database 
-             String sql_check="SELECT Player_Name FROM agentmarket WHERE Player_Name = '"+Name+"'";
-             Statement check = con.createStatement();
-             rs = check.executeQuery(sql_check);
-             
-             if(rs.isBeforeFirst()){
-                 text.setText("result found");
-                 String sql_insert="INSERT INTO teamplayer (Player_ID , Player_Name , Weight , Height , Position , Salary , Points , TotalRebounts , Assists , Steals , Blocks) "
-                     + "SELECT Player_ID , Player_Name , Weight , Height , Position , Salary , Points , TotalRebounts , Assists , Steals , Blocks FROM agentmarket "
-                     + "WHERE Player_Name = '"+Name+"'";
-                 
-                 String sql_delete="DELETE FROM agentmarket WHERE Player_Name ='"+Name+"'";
- 
-                 Statement st = con.createStatement();
-                 st.executeUpdate(sql_insert);
-                 st.executeUpdate(sql_delete);
-                 text1.setText("Add successfully");
-                 DefaultTableModel model = (DefaultTableModel) tbl.getModel();
-                 model.setRowCount(0);
-                 generate_Table();
-                 
-             }else{
-                 text.setText("result not found");
-             }
-             
-            
-             
-         } catch (Exception e) {
-            e.printStackTrace();
-         }
-        
-        
-        
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nameActionPerformed
-
+    
     /**
      * @param args the command line arguments
      */
@@ -211,30 +192,29 @@ public class DisplayData extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DisplayData.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TeamPlayer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DisplayData.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TeamPlayer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DisplayData.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TeamPlayer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DisplayData.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TeamPlayer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DisplayData().setVisible(true);
+                new TeamPlayer().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField name;
     private javax.swing.JTable tbl;
     private javax.swing.JLabel text;
-    private javax.swing.JLabel text1;
     // End of variables declaration//GEN-END:variables
 }
