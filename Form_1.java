@@ -573,7 +573,7 @@ public class Form_1 extends javax.swing.JPanel {
     }//GEN-LAST:event_noPlayerActionPerformed
 
     private void btnAddTeam1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTeam1ActionPerformed
-        System.out.println(team.toString());
+        
         if (team.isValidTeam()) {
             team.saveTeam(team,"Ali");
             String message = "You successfully build the team. You can edit your team in Manage Team.";

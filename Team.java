@@ -16,7 +16,6 @@ import javax.swing.JOptionPane;
 
 public class Team {
 
-    
     public class Node<E> {
         Node<E> next;
         Node<E> previous;
@@ -176,7 +175,7 @@ public class Team {
                     break;
                 
                 default:
-                    System.out.println("Invalid option. Please choose again.");
+                    //System.out.println("Invalid option. Please choose again.");
                     break;
             }
         
@@ -355,12 +354,45 @@ public class Team {
             String mss="Player information updated";
             JOptionPane.showMessageDialog(new JFrame(), mss, "Dialog", JOptionPane.INFORMATION_MESSAGE);
           
-            
         }catch(SQLException e){
             e.printStackTrace();
         }
         
+    }
+    
+    public void updatePlayerInfo(int id, String name,double weight,double height, String position, int salary,int points, int rebound,int assist, int steals,int block,String status){
+        String sql = "UPDATE agentmarket SET Weight=?,Height=?,Position=?,Salary=?,Points=?,TotalRebounts=?,Assists=?,Steals=?,Blocks=?,Status=? WHERE Player_ID = ? AND Player_Name=?_";
         
+        try(Connection conn=DriverManager.getConnection(url,user,password);
+            PreparedStatement pst=conn.prepareStatement(sql)){
+            
+            pst.setDouble(1, weight);
+        pst.setDouble(2, height);
+        pst.setString(3, position);
+        pst.setInt(4, salary);
+        pst.setInt(5, points);
+        pst.setInt(6, rebound);
+        pst.setInt(7, assist);
+        pst.setInt(8, steals);
+        pst.setInt(9, block);
+        pst.setString(10, status);
+        pst.setInt(11, id);
+        pst.setString(12, name);
+            
+        
+        int rowsAffected=pst.executeUpdate();
+        
+        if (rowsAffected > 0) {
+            System.out.println("Player info updated successfully.");
+        } else {
+            System.out.println("No player found with the given ID and name.");
+        }
+        
+        }catch(SQLException e){
+            e.printStackTrace();;
+        }
+        
+    
     }
 
 
@@ -394,49 +426,72 @@ public class Team {
     }
     
     //Get User team
-    public Team retrieveTeamPlayerFromDB(){
-        try (Connection conn = DriverManager.getConnection(url, user, password)) {
-            if (conn != null) {
-                // Create a statement object to execute queries
-                Statement stmt = conn.createStatement();
+  public void retrieveTeamPlayerFromDB(String userId) {
+    try (Connection conn = DriverManager.getConnection(url, user, password)) {
+        if (conn != null) {
+            // Prepare the statement for querying the teams table with the user ID
+            String queryTeams = "SELECT Player_ID, Player_Name FROM teams WHERE User_ID = ?";
+            PreparedStatement pstTeams = conn.prepareStatement(queryTeams);
+            pstTeams.setString(1, userId);
+            ResultSet rsTeams = pstTeams.executeQuery();
 
-                // Execute the query to get Player_ID and Player_Name from teams table
-                String queryTeams = "SELECT Player_ID, Player_Name FROM teams";
-                ResultSet rsTeams = stmt.executeQuery(queryTeams);
+            // Prepare the statement for querying the players table
+            String queryPlayers = "SELECT * FROM players WHERE Player_ID = ? AND Player_Name = ?";
+            PreparedStatement pstPlayers = conn.prepareStatement(queryPlayers);
 
-                // Process the result set from the teams table
-                while (rsTeams.next()) {
-                    int player_id = rsTeams.getInt("Player_ID");
-                    String playerName = rsTeams.getString("Player_Name");
+            // Process the result set from the teams table
+            while (rsTeams.next()) {
+                int player_id = rsTeams.getInt("Player_ID");
+                String playerName = rsTeams.getString("Player_Name");
 
-                    // Execute the query to get detailed information from players table using Player_ID
-                    String queryPlayers = "SELECT * FROM players WHERE Player_ID = " + player_id +"AND Player_Name = "+playerName;
-                    ResultSet rsPlayers = stmt.executeQuery(queryPlayers);
+                System.out.println("Retrieved from teams: Player_ID=" + player_id + ", Player_Name=" + playerName);
 
-                    // Process the result set from the players table
-                    while (rsPlayers.next()) {
-                        double height = rsPlayers.getDouble("Height");
-                        double weight = rsPlayers.getDouble("Weight");
-                        String position = rsPlayers.getString("Position");
-                        int salary = rsPlayers.getInt("Salary");
-                        int points = rsPlayers.getInt("Points");
-                        int totalRebounds = rsPlayers.getInt("TotalRebounds");
-                        int assists = rsPlayers.getInt("Assists");
-                        int steals = rsPlayers.getInt("Steals");
-                        int blocks = rsPlayers.getInt("Blocks");
+                // Set parameters for the players query
+                pstPlayers.setInt(1, player_id);
+                pstPlayers.setString(2, playerName);
+                ResultSet rsPlayers = pstPlayers.executeQuery();
 
-                        // Create a Player instance and add it to the list
-                        PLayer play= new PLayer(player_id, playerName, height, weight, position, salary, points, totalRebounds, assists, steals, blocks);
-                       this.addPlayer(play);
-                    }
-                } 
-                return this;
+                // Check if the players query returns any result
+                if (!rsPlayers.isBeforeFirst()) {
+                    System.out.println("No player found with Player_ID=" + player_id + " and Player_Name=" + playerName);
+                }
+
+                // Process the result set from the players table
+                while (rsPlayers.next()) {
+                    double height = rsPlayers.getDouble("Height");
+                    double weight = rsPlayers.getDouble("Weight");
+                    String position = rsPlayers.getString("Position");
+                    int salary = rsPlayers.getInt("Salary");
+                    int points = rsPlayers.getInt("Points");
+                    int totalRebounds = rsPlayers.getInt("TotalRebounts");
+                    int assists = rsPlayers.getInt("Assists");
+                    int steals = rsPlayers.getInt("Steals");
+                    int blocks = rsPlayers.getInt("Blocks");
+
+                    // Create a Player instance and add it to the list
+                    PLayer play = new PLayer(player_id, playerName, height, weight, position, salary, points, totalRebounds, assists, steals, blocks);
+                    this.addPlayer(play);
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+            System.out.println(this.toString());
         }
-       return null;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        System.out.println("An error occurred while fetching the team players from the database.");
     }
+}
+  
+  public boolean isBond(PLayer player){
+      
+      if(player.getStatus().equalsIgnoreCase("Bond")){
+          return true;
+          
+      }
+      
+      return false;
+  }
+
 
 
     //Display All Player
