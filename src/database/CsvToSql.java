@@ -20,7 +20,7 @@ public class CsvToSql {
         Connection con = null;
         ResultSet rs = null;
         PreparedStatement pst =null;
-        String filepath="C:\\Users\\user\\Downloads\\Player.csv";
+        String filepath="C:\\Users\\user\\Downloads\\Player (1).csv";
         
         try{
             Class.forName("com.mysql.jdbc.Driver"); 

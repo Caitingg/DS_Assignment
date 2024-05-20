@@ -555,6 +555,7 @@ public class Form_1 extends javax.swing.JPanel {
         PreviewList.setText(team.toString());
         salary.setText(Integer.toString(team.getSalary()));
         noPlayer.setText(Integer.toString(team.getSize()));
+        
 
     }//GEN-LAST:event_removeActionPerformed
 
@@ -573,10 +574,16 @@ public class Form_1 extends javax.swing.JPanel {
     }//GEN-LAST:event_noPlayerActionPerformed
 
     private void btnAddTeam1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTeam1ActionPerformed
+        
         if (team.isValidTeam()) {
-            //save to database
-            String message = "You successfully build the team";
+            team.saveTeam(team,"Ali");
+            String message = "You successfully build the team. You can edit your team in Manage Team.";
             JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.INFORMATION_MESSAGE);
+            PreviewList.setText("");
+        }else{
+            String message = "Your Team is not valid. Please review your team.";
+            JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+     
         }
     }//GEN-LAST:event_btnAddTeam1ActionPerformed
 
@@ -589,6 +596,7 @@ public class Form_1 extends javax.swing.JPanel {
         PreviewList.setText(team.toString());
         salary.setText(Integer.toString(team.getSalary()));
         noPlayer.setText(Integer.toString(team.getSize()));
+        
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void IDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IDActionPerformed

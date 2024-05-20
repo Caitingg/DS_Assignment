@@ -117,7 +117,8 @@ public class dynamicTest {
                 double assists = rs.getDouble("Assists");
                 double steals = rs.getDouble("Steals");
                 double blocks = rs.getDouble("Blocks");
-                resultPlayers.add(new Player(name, playerId, height, weight, position, salary, points, rebounds, assists, steals, blocks));
+                String status=rs.getString("Status");
+                resultPlayers.add(new Player(name, playerId, height, weight, position, salary, points, rebounds, assists, steals, blocks,status));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -233,9 +234,10 @@ class Player {
     private double assists;
     private double steals;
     private double blocks;
+    private String status;
 
     public Player(String name, int player_id, double height, double weight, String position, double salary,
-            double points, double rebounds, double assists, double steals, double blocks) {
+            double points, double rebounds, double assists, double steals, double blocks,String status) {
         this.name = name;
         this.player_id = player_id;
         this.height = height;
@@ -247,6 +249,7 @@ class Player {
         this.assists = assists;
         this.steals = steals;
         this.blocks = blocks;
+        this.status=status;
     }
 
     public double getHeight() {

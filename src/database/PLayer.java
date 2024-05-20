@@ -11,12 +11,12 @@ package database;
 public class PLayer {
     
     int Player_id;
-   String Player_Name;
+    String Player_Name;
     Double Weight,Height;
-   String Position;
-   int Salary,Points,Rebounds,assists,steals,Blocks;
+    String Position, Status;
+    int Salary,Points,Rebounds,assists,steals,Blocks;
 
-    public PLayer(int Player_id, String Player_Name, Double Weight, Double Height, String Position, int Salary, int Points, int Rebounds, int assists, int steals, int Blocks) {
+    public PLayer(int Player_id, String Player_Name, Double Weight, Double Height, String Position, int Salary, int Points, int Rebounds, int assists, int steals, int Blocks, String Status) {
         this.Player_id = Player_id;
         this.Player_Name = Player_Name;
         this.Weight = Weight;
@@ -28,6 +28,15 @@ public class PLayer {
         this.assists = assists;
         this.steals = steals;
         this.Blocks = Blocks;
+        this.Status = Status;
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String Status) {
+        this.Status = Status;
     }
 
     public PLayer() {
