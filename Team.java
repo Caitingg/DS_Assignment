@@ -69,8 +69,14 @@ public class Team {
     public int getSize(){
         return size;
     }
+    .
     // Method to add a player to the team
     public void addPlayer(PLayer player) {
+        if(player.getStatus().equalsIgnoreCase("BOND")){
+            String message = "Player not available";
+            JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         if (head == null) {
             head = new Node<>(player);
             sumSalary+= player.getSalary();
@@ -341,7 +347,7 @@ public class Team {
     }
     
     public void updatePlayerInfo(int id, String name,double weight,double height, String position, int salary,int points, int rebound,int assist, int steals,int block,String status){
-        String sql = "UPDATE agentmarket SET Weight=?,Height=?,Position=?,Salary=?,Points=?,TotalRebounts=?,Assists=?,Steals=?,Blocks=?,Status=? WHERE Player_ID = ? AND Player_Name=?_";
+        String sql = "UPDATE agentmarket SET Weight=?,Height=?,Position=?,Salary=?,Points=?,TotalRebounts=?,Assists=?,Steals=?,Blocks=?,Status=? WHERE Player_ID = ? AND Player_Name=? ";
         
         try(Connection conn=DriverManager.getConnection(url,user,password);
             PreparedStatement pst=conn.prepareStatement(sql)){
