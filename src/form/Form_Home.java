@@ -132,9 +132,14 @@ public class Form_Home extends javax.swing.JPanel {
                 int playerAssists = resultSet.getInt("Assists");
                 int playerSteals = resultSet.getInt("Steals");
                 int playerBlocks = resultSet.getInt("Blocks");
-                String playerStatus = resultSet.getString("Status");
-                
-                table.addRow(new Object[]{Integer.toString(playerId),playerName,Double.toString(playerWeight),Double.toString(playerHeight),playerPosition,Integer.toString(playerSalary),Integer.toString(playerPoints),Integer.toString(playerRebounds),Integer.toString(playerAssists),Integer.toString(playerSteals),Integer.toString(playerBlocks),StatusType.BOND});
+                String playerStatus = resultSet.getString("status");
+                if(playerStatus.equalsIgnoreCase("bond")){
+                    table.addRow(new Object[]{Integer.toString(playerId),playerName,Double.toString(playerWeight),Double.toString(playerHeight),playerPosition,Integer.toString(playerSalary),Integer.toString(playerPoints),Integer.toString(playerRebounds),Integer.toString(playerAssists),Integer.toString(playerSteals),Integer.toString(playerBlocks),StatusType.BOND});
+                } else if(playerStatus.equalsIgnoreCase("available")){
+                    table.addRow(new Object[]{Integer.toString(playerId),playerName,Double.toString(playerWeight),Double.toString(playerHeight),playerPosition,Integer.toString(playerSalary),Integer.toString(playerPoints),Integer.toString(playerRebounds),Integer.toString(playerAssists),Integer.toString(playerSteals),Integer.toString(playerBlocks),StatusType.AVAILABLE});
+                } else if(playerStatus.equalsIgnoreCase("expired")){
+                    table.addRow(new Object[]{Integer.toString(playerId),playerName,Double.toString(playerWeight),Double.toString(playerHeight),playerPosition,Integer.toString(playerSalary),Integer.toString(playerPoints),Integer.toString(playerRebounds),Integer.toString(playerAssists),Integer.toString(playerSteals),Integer.toString(playerBlocks),StatusType.EXPIRED});
+                }
             }
         } catch (SQLException e) {
             System.err.println("SQL Exception: " + e.getMessage());
@@ -218,13 +223,10 @@ public class Form_Home extends javax.swing.JPanel {
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
+                "ID", "Name", "Weight (kg)", "Height (cm)", "Position", "Salary", "Points", "Total Rebounds", "Assists", "Steals", "Blocks", "Status"
             }
         ));
         spTable.setViewportView(table);
@@ -571,7 +573,7 @@ public class Form_Home extends javax.swing.JPanel {
                         .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, 757, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addComponent(header2, javax.swing.GroupLayout.DEFAULT_SIZE, 989, Short.MAX_VALUE)
+            .addComponent(header2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

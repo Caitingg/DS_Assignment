@@ -8,6 +8,8 @@ import event.EventMenuSelected;
 import form.Form_1;
 import form.Form_2;
 import form.Form_3;
+import form.Form_4;
+import form.Form_5;
 import form.Form_Home;
 import java.awt.Color;
 import javax.swing.JComponent;
@@ -27,6 +29,8 @@ public class main extends javax.swing.JFrame {
     private Form_1 form1;
     private Form_2 form2;
     private Form_3 form3;
+    private Form_4 form4;
+    private Form_5 form5;
     
     public main() {
         initComponents();
@@ -34,6 +38,8 @@ public class main extends javax.swing.JFrame {
         home = new Form_Home();
         form1 = new Form_1();
         form2 = new Form_2();
+        form5 = new Form_5();
+        form4 = new Form_4();
 
         menu.initMoving(main.this);
         menu.addEventMenuSelected(new EventMenuSelected() {
@@ -47,6 +53,10 @@ public class main extends javax.swing.JFrame {
                     setForm(form2);
                 } else if (index == 3) {
                     Form_3 f3=new Form_3();
+                } else if (index == 5) {
+                    Form_4 f4=new Form_4();
+                } else if (index == 4) {
+                    Form_5 f3=new Form_5();
                 }
             }
         });

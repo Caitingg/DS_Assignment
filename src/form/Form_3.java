@@ -140,7 +140,7 @@ public class Form_3 implements ActionListener{
         JFrame frame=new JFrame();
         frame.add(backPhoto);
         frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setSize(989,646);
         frame.setTitle("Find Your Route");
         frame.setResizable(false);
