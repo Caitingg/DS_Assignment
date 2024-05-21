@@ -2,6 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package Team;
 
 /**
@@ -10,9 +14,12 @@ package Team;
  */
 import java.sql.*;
 import database.PLayer;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import model.Model_MemberProfile;
 
 public class Team {
 
@@ -32,9 +39,10 @@ public class Team {
     Node<PLayer> tail;
     int sumSalary;
     private static final int MAX_PLAYERS = 15;
-    String url="jdbc:mysql://127.0.0.1:3308/test";
+    String url="jdbc:mysql://127.0.0.1:3308/java_user_database";
     String user="root";
     String password="";
+    
     
     public Team() {
         
@@ -42,6 +50,16 @@ public class Team {
     
     public Team(String teamName) {
         this.teamName = teamName;
+    }
+    
+    public List<Model_MemberProfile> generateMemberProfile(String username){
+        List<Model_MemberProfile> profile = new ArrayList<>();
+        this.retrieveTeamPlayerFromDB(username);
+        Node<PLayer>temp=head;
+        while(temp!=null){
+            profile.add(new Model_MemberProfile(temp.element.getPlayer_id(),temp.element.getPlayer_Name(),temp.element.getPosition(),temp.element.getStatus()));
+        }
+        return profile;
     }
     
     public int getSalary(){
@@ -202,6 +220,11 @@ public class Team {
           
             return;
         }
+        if(size>15){
+            String message="Exceed maximum number of player in a team";
+            JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+          
+        }
         addPlayer(player);
     }
 
@@ -234,57 +257,11 @@ public class Team {
         return false;
     }
     
-    //Save team build by user
-//    public void saveTeam(String userId){
-//        Node<PLayer>temp=head;
-//        String sql="INSERT INTO teams (Player_ID,Player_Name, Start_Date,End_Date,Status,User_ID,Position)"+"VALUES ((?, ?, ?, ?, ?, ?, ?)";
-//         try (Connection conn = DriverManager.getConnection(url, user, password);
-//             PreparedStatement st = conn.prepareStatement(sql)) {
-//            
-//            conn.setAutoCommit(false); // Disable auto-commit
-//            
-//            while (temp != null) {
-//                PLayer player = temp.element;
-//                int playerId = player.getPlayer_id();
-//                String playerName = player.getPlayer_Name();
-//                String position = player.getPosition();
-//                String status = "Bond";
-//                Date startDate = new Date(System.currentTimeMillis()); 
-//                // Calculate end date (one month after start date)
-//                Calendar calendar = Calendar.getInstance();
-//                calendar.setTime(startDate);
-//                calendar.add(Calendar.DAY_OF_MONTH, 10);
-//                Date endDate = new Date(calendar.getTimeInMillis());
-//                
-//                // Set values to the prepared statement
-//                st.setInt(1, playerId);
-//                st.setString(2, playerName);
-//                st.setDate(3, startDate);
-//                st.setDate(4, endDate);
-//                st.setString(5, status);
-//                st.setString(6, userId); // User ID
-//                st.setString(7, position);
-//                
-//                st.addBatch(); // Add the statement to the batch
-//                temp = temp.next; // Move to the next player
-//            }
-//            
-//            st.executeBatch(); // Execute the batch insert
-//            conn.commit(); // Commit the transaction
-//            
-//            System.out.println("Team saved to database successfully!");
-//            
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            // Handle SQL exceptions
-//        }
-//        
-//    }
     
    public void saveTeam(Team team, String userId) {
     Node<PLayer> temp = team.head; // Assuming head is the head of your player list
-    String sql = "INSERT INTO teams (Player_ID, Player_Name, Start_Date, End_Date, Status, User_ID, Position) " +
-                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
+    String sql = "INSERT INTO teamplayer (Player_ID, Player_Name, Start_Date, End_Date, Status, User_ID, Position,Injury_Reserved) " +
+                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     try (Connection conn = DriverManager.getConnection(url, user, password);
          PreparedStatement st = conn.prepareStatement(sql)) {
@@ -310,6 +287,8 @@ public class Team {
             st.setString(5, status);
             st.setString(6, userId); // User ID
             st.setString(7, position);
+            st.setBoolean(8,false);
+           
 
             st.addBatch(); // Add the statement to the batch
             temp = temp.next; // Move to the next player
@@ -332,13 +311,13 @@ public class Team {
     
     
     //Save new player into players table
-    public void savePlayerToInfo(String id, String name, double height,double weight,String position,int salary,int points,int rebound,int assists, int steal,int block){
-        String sql="INSERT INTO players (Player_ID,Player_Name,Height,Weight,Position,Salary,Points,TotalRebounds,Assists,Steals,Blocks)"+"VALUES ((?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public void savePlayerToInfo(int id, String name, double height,double weight,String position,int salary,int points,int rebound,int assists, int steal,int block,String status){
+        String sql="INSERT INTO agentmarket (Player_ID,Player_Name,Height,Weight,Position,Salary,Points,TotalRebounds,Assists,Steals,Blocks,status)"+"VALUES ((?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
         
         try(Connection conn=DriverManager.getConnection(url,user,password);
             PreparedStatement st=conn.prepareStatement(sql)){
             
-            st.setString(1, id);
+            st.setInt(1, id);
             st.setString(2, name);
             st.setDouble(3, height);
             st.setDouble(4, weight);
@@ -349,6 +328,7 @@ public class Team {
             st.setInt(9, assists);
             st.setInt(10, steal);
             st.setInt(11, block);
+            st.setString(12, status);
             
             st.executeUpdate();
             String mss="Player information updated";
@@ -400,7 +380,7 @@ public class Team {
     private PLayer getPlayerFromDatabase(int playerId) {
         // Retrieve player details from the database
         try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM players WHERE PLayer_ID = ?")) {
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM agentmarket WHERE PLayer_ID = ?")) {
             preparedStatement.setInt(1, playerId);
             try (ResultSet playerResultSet = preparedStatement.executeQuery()) {
                 if (playerResultSet.next()) {
@@ -430,13 +410,13 @@ public class Team {
     try (Connection conn = DriverManager.getConnection(url, user, password)) {
         if (conn != null) {
             // Prepare the statement for querying the teams table with the user ID
-            String queryTeams = "SELECT Player_ID, Player_Name FROM teams WHERE User_ID = ?";
+            String queryTeams = "SELECT Player_ID, Player_Name FROM teamplayer WHERE User_ID = ?";
             PreparedStatement pstTeams = conn.prepareStatement(queryTeams);
             pstTeams.setString(1, userId);
             ResultSet rsTeams = pstTeams.executeQuery();
 
             // Prepare the statement for querying the players table
-            String queryPlayers = "SELECT * FROM players WHERE Player_ID = ? AND Player_Name = ?";
+            String queryPlayers = "SELECT * FROM agentmarket WHERE Player_ID = ? AND Player_Name = ?";
             PreparedStatement pstPlayers = conn.prepareStatement(queryPlayers);
 
             // Process the result set from the teams table
@@ -467,14 +447,14 @@ public class Team {
                     int assists = rsPlayers.getInt("Assists");
                     int steals = rsPlayers.getInt("Steals");
                     int blocks = rsPlayers.getInt("Blocks");
+                    String status=rsPlayers.getString("Status");
 
                     // Create a Player instance and add it to the list
-                    PLayer play = new PLayer(player_id, playerName, height, weight, position, salary, points, totalRebounds, assists, steals, blocks);
+                    PLayer play = new PLayer(player_id, playerName, height, weight, position, salary, points, totalRebounds, assists, steals, blocks,status);
                     this.addPlayer(play);
                 }
             }
 
-            System.out.println(this.toString());
         }
     } catch (SQLException e) {
         e.printStackTrace();
@@ -500,7 +480,7 @@ public class Team {
         // Retrieve player details from the database
         try (Connection connection = DriverManager.getConnection(url,user,password);
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT PLayer_ID, Player_Name, Weight, Height, Position, Points, Salary FROM players")) {
+             ResultSet resultSet = statement.executeQuery("SELECT PLayer_ID, Player_Name, Weight, Height, Position, Points, Salary FROM teamplayer")) {
 
             // Display player details in a table
             System.out.printf("%-12s%-27s%-10s%-10s%-15s%-10s%-10s\n", "Player ID", "Name", "Weight", "Height", "Position", "Points", "Salary");
@@ -535,4 +515,3 @@ public class Team {
 //        }
     
 }
-
