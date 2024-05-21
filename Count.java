@@ -21,7 +21,7 @@ public class Count {
         Statement st = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/nba", "root", "");
+            con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/java_user_database", "root", "");
             st = con.createStatement();
             String alterTableQuery = "ALTER TABLE agentmarket ADD COLUMN game INT DEFAULT 1";
             st.executeUpdate(alterTableQuery);
@@ -66,7 +66,7 @@ public class Count {
             }
             
            Class.forName("com.mysql.cj.jdbc.Driver");
-              con =DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/nba","root","");
+              con =DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/java_user_database","root","");
           Statement st = con.createStatement();
             for(String i : map.keySet()){
                 String sql_insert= "UPDATE agentmarket SET game = '"+map.get(i)+"' WHERE Player_Name =\""+i+"\"";
