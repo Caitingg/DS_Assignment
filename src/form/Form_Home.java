@@ -21,6 +21,7 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import Team.Team;
 
 /**
  *
@@ -35,47 +36,77 @@ public class Form_Home extends javax.swing.JPanel {
     ResultSet rs = null;
     PreparedStatement pst =null;
     
-    public void generate_Table(){
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con =DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/java_user_database","root","");
-            String sql ="SELECT * from agentmarket";
-            pst=con.prepareCall(sql);
-            rs=pst.executeQuery();
-            ResultSetMetaData rsmd = rs.getMetaData();
-            DefaultTableModel model = (DefaultTableModel) table.getModel();
-            
-            // name for columns
-            int cols = rsmd.getColumnCount();
-            String[] colName=new String[cols];
-            for(int i=0;i<cols;i++){
-              colName[i]=rsmd.getColumnName(i+1);
-              model.setColumnIdentifiers(colName);
-            }
-            
-            
-            // show  data in table
-            while(rs.next()){
-                PLayer player = new PLayer(rs.getInt(1),rs.getString(2),rs.getDouble(3),rs.getDouble(4),rs.getString(5),rs.getInt(6),rs.getInt(7),rs.getInt(8),rs.getInt(9),rs.getInt(10),rs.getInt(11));
-                String [] row ={Integer.toString(player.getPlayer_id()),player.getPlayer_Name(),Double.toString(player.getWeight()),Double.toString(player.getHeight()),player.getPosition(),Integer.toString(player.getSalary()),Integer.toString(player.getPoints()),Integer.toString(player.getRebounds()),Integer.toString(player.getAssists()),Integer.toString(player.getSteals()),Integer.toString(player.getBlocks())};
-                model.addRow(row);
-            }
-            pst.close();
-            con.close();
-            
-        }catch(Exception e){
-           e.printStackTrace();
-        }
-    }
+//    public void table(){
+//        try{
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            con =DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/java_user_database","root","");
+//            String sql ="SELECT * from agentmarket";
+//            pst=con.prepareCall(sql);
+//            rs=pst.executeQuery();
+//            ResultSetMetaData rsmd = rs.getMetaData();
+//            DefaultTableModel model = (DefaultTableModel) table.getModel();
+//            
+//            // name for columns
+//            int cols = rsmd.getColumnCount();
+//            String[] colName=new String[cols];
+//            for(int i=0;i<cols;i++){
+//              colName[i]=rsmd.getColumnName(i+1);
+//              model.setColumnIdentifiers(colName);
+//            }
+//            
+//            
+//            // show  data in table
+//            while(rs.next()){
+//                PLayer player = new PLayer(rs.getInt(1),rs.getString(2),rs.getDouble(3),rs.getDouble(4),rs.getString(5),rs.getInt(6),rs.getInt(7),rs.getInt(8),rs.getInt(9),rs.getInt(10),rs.getInt(11)),rs.getString(12);
+//                String [] row ={Integer.toString(player.getPlayer_id()),player.getPlayer_Name(),Double.toString(player.getWeight()),Double.toString(player.getHeight()),player.getPosition(),Integer.toString(player.getSalary()),Integer.toString(player.getPoints()),Integer.toString(player.getRebounds()),Integer.toString(player.getAssists()),Integer.toString(player.getSteals()),Integer.toString(player.getBlocks(),player.getStatus())};
+//                model.addRow(row);
+//            }
+//            pst.close();
+//            con.close();
+//            
+//        }catch(Exception e){
+//           e.printStackTrace();
+//        }
+//    }
+    
+
+//    private PLayer getPlayerFromDatabase(int playerId) {
+//        // Retrieve player details from the database
+//        try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/java_user_database", "root", "");
+//            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM agentmarket WHERE PLayer_ID = ?")) {
+//            preparedStatement.setInt(1, playerId);
+//            try (ResultSet playerResultSet = preparedStatement.executeQuery()) {
+//                if (playerResultSet.next()) {
+//                    PLayer player = new PLayer();
+//                    player.setPlayer_id(playerResultSet.getInt("PLayer_ID"));
+//                    player.setPlayer_Name(playerResultSet.getString("Player_Name"));
+//                    player.setHeight(playerResultSet.getDouble("Height"));
+//                    player.setWeight(playerResultSet.getDouble("Weight"));
+//                    player.setPosition(playerResultSet.getString("Position"));
+//                    player.setSalary(playerResultSet.getInt("Salary"));
+//                    player.setPoints(playerResultSet.getInt("Points"));
+//                    player.setRebounds(playerResultSet.getInt("TotalRebounts"));
+//                    player.setAssists(playerResultSet.getInt("Assists"));
+//                    player.setSteals(playerResultSet.getInt("Steals"));
+//                    player.setBlocks(playerResultSet.getInt("Blocks"));
+//                    player.setStatus(playerResultSet.getString("Status"));
+//                    return player;
+//                }
+//            }
+//        } catch (SQLException ex) {
+//            throw new RuntimeException(ex);
+//        }
+//        return null;
+//    }
     
     public Form_Home() {
         initComponents();
-        generate_Table();
+//        generate_Table();
         card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icon/available.png")), "Available", "count status"));
         card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icon/bond.png")), "Bond", "count status"));
         card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icon/expired.png")), "Expired", "count status"));
         
-        /*
+      
         spTable.setVerticalScrollBar(new ScrollBar());
         sp1.setVerticalScrollBar(new ScrollBar());
         spTable.getVerticalScrollBar().setBackground(Color.WHITE);
@@ -85,48 +116,38 @@ public class Form_Home extends javax.swing.JPanel {
         p.setBackground(Color.WHITE);
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
 
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
-        table.addRow(new Object[]{"23004979", "Jing Min", "58", "161", "C", "3000", "12", StatusType.BOND});
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/java_user_database","root","");
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * from agentmarket")) {
 
-       */         
+            while (resultSet.next()) {
+                int playerId = resultSet.getInt("PLayer_ID");
+                String playerName = resultSet.getString("Player_Name");
+                double playerWeight = resultSet.getDouble("Weight");
+                double playerHeight = resultSet.getDouble("Height");
+                String playerPosition = resultSet.getString("Position");
+                int playerPoints = resultSet.getInt("Points");
+                int playerSalary = resultSet.getInt("Salary");
+                int playerRebounds = resultSet.getInt("TotalRebounts");
+                int playerAssists = resultSet.getInt("Assists");
+                int playerSteals = resultSet.getInt("Steals");
+                int playerBlocks = resultSet.getInt("Blocks");
+                String playerStatus = resultSet.getString("status");
+                if(playerStatus.equalsIgnoreCase("bond")){
+                    table.addRow(new Object[]{Integer.toString(playerId),playerName,Double.toString(playerWeight),Double.toString(playerHeight),playerPosition,Integer.toString(playerSalary),Integer.toString(playerPoints),Integer.toString(playerRebounds),Integer.toString(playerAssists),Integer.toString(playerSteals),Integer.toString(playerBlocks),StatusType.BOND});
+                } else if(playerStatus.equalsIgnoreCase("available")){
+                    table.addRow(new Object[]{Integer.toString(playerId),playerName,Double.toString(playerWeight),Double.toString(playerHeight),playerPosition,Integer.toString(playerSalary),Integer.toString(playerPoints),Integer.toString(playerRebounds),Integer.toString(playerAssists),Integer.toString(playerSteals),Integer.toString(playerBlocks),StatusType.AVAILABLE});
+                } else if(playerStatus.equalsIgnoreCase("expired")){
+                    table.addRow(new Object[]{Integer.toString(playerId),playerName,Double.toString(playerWeight),Double.toString(playerHeight),playerPosition,Integer.toString(playerSalary),Integer.toString(playerPoints),Integer.toString(playerRebounds),Integer.toString(playerAssists),Integer.toString(playerSteals),Integer.toString(playerBlocks),StatusType.EXPIRED});
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        
+     
     }
 
     /**
@@ -146,8 +167,8 @@ public class Form_Home extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         panelBorder1 = new swing.PanelBorder();
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
+        spTable = new javax.swing.JScrollPane();
+        table = new swing.Table();
         sp1 = new javax.swing.JScrollPane();
         panelBorder3 = new swing.PanelBorder();
         jLabel2 = new javax.swing.JLabel();
@@ -161,22 +182,24 @@ public class Form_Home extends javax.swing.JPanel {
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        playerName = new javax.swing.JTextField();
-        weight = new javax.swing.JTextField();
-        height = new javax.swing.JTextField();
-        position = new javax.swing.JComboBox<>();
-        salary = new javax.swing.JSpinner();
-        points = new javax.swing.JSpinner();
-        rebounds = new javax.swing.JSpinner();
-        assists = new javax.swing.JSpinner();
-        steals = new javax.swing.JSpinner();
-        blocks = new javax.swing.JSpinner();
+        playerID = new javax.swing.JTextField();
+        weightT = new javax.swing.JTextField();
+        heightT = new javax.swing.JTextField();
+        positionT = new javax.swing.JComboBox<>();
+        salaryT = new javax.swing.JSpinner();
+        pointsT = new javax.swing.JSpinner();
+        reboundsT = new javax.swing.JSpinner();
+        assistsT = new javax.swing.JSpinner();
+        stealsT = new javax.swing.JSpinner();
+        blocksT = new javax.swing.JSpinner();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         scrollBar1 = new swing.ScrollBar();
         scrollBar2 = new swing.ScrollBar();
+        playerName = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
 
         panel.setLayout(new java.awt.GridLayout(1, 0, 15, 0));
 
@@ -203,10 +226,10 @@ public class Form_Home extends javax.swing.JPanel {
 
             },
             new String [] {
-
+                "ID", "Name", "Weight (kg)", "Height (cm)", "Position", "Salary", "Points", "Total Rebounds", "Assists", "Steals", "Blocks", "Status"
             }
         ));
-        jScrollPane1.setViewportView(table);
+        spTable.setViewportView(table);
 
         javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
         panelBorder1.setLayout(panelBorder1Layout);
@@ -215,19 +238,17 @@ public class Form_Home extends javax.swing.JPanel {
             .addGroup(panelBorder1Layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelBorder1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1))
-                .addContainerGap())
+                    .addComponent(spTable, javax.swing.GroupLayout.PREFERRED_SIZE, 734, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorder1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(spTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -241,7 +262,7 @@ public class Form_Home extends javax.swing.JPanel {
 
         jLabel3.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel3.setText("Full Name");
+        jLabel3.setText("Player ID");
 
         jLabel4.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
@@ -279,60 +300,60 @@ public class Form_Home extends javax.swing.JPanel {
         jLabel12.setForeground(new java.awt.Color(0, 0, 0));
         jLabel12.setText("Blocks");
 
-        playerName.setBackground(new java.awt.Color(255, 255, 255));
-        playerName.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        playerName.setForeground(new java.awt.Color(0, 0, 0));
-        playerName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        playerName.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        playerName.addActionListener(new java.awt.event.ActionListener() {
+        playerID.setBackground(new java.awt.Color(255, 255, 255));
+        playerID.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        playerID.setForeground(new java.awt.Color(0, 0, 0));
+        playerID.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        playerID.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        playerID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                playerNameActionPerformed(evt);
+                playerIDActionPerformed(evt);
             }
         });
 
-        weight.setBackground(new java.awt.Color(255, 255, 255));
-        weight.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        weight.setForeground(new java.awt.Color(0, 0, 0));
-        weight.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        weight.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        weight.addActionListener(new java.awt.event.ActionListener() {
+        weightT.setBackground(new java.awt.Color(255, 255, 255));
+        weightT.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        weightT.setForeground(new java.awt.Color(0, 0, 0));
+        weightT.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        weightT.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        weightT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                weightActionPerformed(evt);
+                weightTActionPerformed(evt);
             }
         });
 
-        height.setBackground(new java.awt.Color(255, 255, 255));
-        height.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        height.setForeground(new java.awt.Color(0, 0, 0));
-        height.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        height.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        height.addActionListener(new java.awt.event.ActionListener() {
+        heightT.setBackground(new java.awt.Color(255, 255, 255));
+        heightT.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        heightT.setForeground(new java.awt.Color(0, 0, 0));
+        heightT.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        heightT.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        heightT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                heightActionPerformed(evt);
+                heightTActionPerformed(evt);
             }
         });
 
-        position.setBackground(new java.awt.Color(255, 255, 255));
-        position.setForeground(new java.awt.Color(0, 0, 0));
-        position.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "F", "C", "G", "F-G", "F-C", "G-F", "C-F" }));
-        position.setBorder(null);
-        position.addActionListener(new java.awt.event.ActionListener() {
+        positionT.setBackground(new java.awt.Color(255, 255, 255));
+        positionT.setForeground(new java.awt.Color(0, 0, 0));
+        positionT.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "F", "C", "G", "F-G", "F-C", "G-F", "C-F" }));
+        positionT.setBorder(null);
+        positionT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                positionActionPerformed(evt);
+                positionTActionPerformed(evt);
             }
         });
 
-        salary.setBorder(null);
+        salaryT.setBorder(null);
 
-        points.setBorder(null);
+        pointsT.setBorder(null);
 
-        rebounds.setBorder(null);
+        reboundsT.setBorder(null);
 
-        assists.setBorder(null);
+        assistsT.setBorder(null);
 
-        steals.setBorder(null);
+        stealsT.setBorder(null);
 
-        blocks.setBorder(null);
+        blocksT.setBorder(null);
 
         jButton1.setBackground(new java.awt.Color(255, 153, 51));
         jButton1.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
@@ -374,6 +395,21 @@ public class Form_Home extends javax.swing.JPanel {
             }
         });
 
+        playerName.setBackground(new java.awt.Color(255, 255, 255));
+        playerName.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        playerName.setForeground(new java.awt.Color(0, 0, 0));
+        playerName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        playerName.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        playerName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playerNameActionPerformed(evt);
+            }
+        });
+
+        jLabel14.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel14.setText("Full name");
+
         javax.swing.GroupLayout panelBorder3Layout = new javax.swing.GroupLayout(panelBorder3);
         panelBorder3.setLayout(panelBorder3Layout);
         panelBorder3Layout.setHorizontalGroup(
@@ -383,12 +419,17 @@ public class Form_Home extends javax.swing.JPanel {
                 .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorder3Layout.createSequentialGroup()
                         .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(panelBorder3Layout.createSequentialGroup()
+                                .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
                         .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(playerName, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(weight, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(playerID, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(weightT, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(playerName, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelBorder3Layout.createSequentialGroup()
                         .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
@@ -396,9 +437,9 @@ public class Form_Home extends javax.swing.JPanel {
                             .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(salary, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(points)
-                            .addComponent(position, javax.swing.GroupLayout.Alignment.TRAILING, 0, 100, Short.MAX_VALUE)))
+                            .addComponent(salaryT, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(pointsT)
+                            .addComponent(positionT, javax.swing.GroupLayout.Alignment.TRAILING, 0, 100, Short.MAX_VALUE)))
                     .addGroup(panelBorder3Layout.createSequentialGroup()
                         .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
@@ -409,13 +450,13 @@ public class Form_Home extends javax.swing.JPanel {
                             .addComponent(jLabel12))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(steals)
-                            .addComponent(assists)
-                            .addComponent(rebounds)
-                            .addComponent(blocks)))
+                            .addComponent(stealsT)
+                            .addComponent(assistsT)
+                            .addComponent(reboundsT)
+                            .addComponent(blocksT)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorder3Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(height, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(heightT, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorder3Layout.createSequentialGroup()
                         .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -432,7 +473,7 @@ public class Form_Home extends javax.swing.JPanel {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        panelBorder3Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {height, weight});
+        panelBorder3Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {heightT, weightT});
 
         panelBorder3Layout.setVerticalGroup(
             panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -445,43 +486,48 @@ public class Form_Home extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(playerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(panelBorder3Layout.createSequentialGroup()
+                        .addComponent(playerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(playerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel14))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(weight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(weightT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
-                    .addComponent(height, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(heightT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(position, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(positionT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(salary, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(salaryT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(points, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pointsT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(rebounds, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(reboundsT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(assists, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(assistsT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(steals, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(stealsT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(blocks, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(blocksT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -490,7 +536,7 @@ public class Form_Home extends javax.swing.JPanel {
                 .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
                     .addComponent(jButton4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         sp1.setViewportView(panelBorder3);
@@ -510,7 +556,7 @@ public class Form_Home extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(sp1, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
+                    .addComponent(sp1)
                     .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -527,7 +573,7 @@ public class Form_Home extends javax.swing.JPanel {
                         .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, 757, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addComponent(header2, javax.swing.GroupLayout.DEFAULT_SIZE, 989, Short.MAX_VALUE)
+            .addComponent(header2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -554,20 +600,40 @@ public class Form_Home extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        
+        int player_id = Integer.parseInt(playerID.getText());
+        String name = playerName.getText();
+        int weight = Integer.parseInt(weightT.getText());
+        int height = Integer.parseInt(heightT.getText());
+        String position = (String)positionT.getSelectedItem();
+        int salary = (Integer)salaryT.getValue();
+        int points = (Integer)pointsT.getValue();
+        int rebounds = (Integer)reboundsT.getValue();
+        int blocks = (Integer)blocksT.getValue();
+        int assists = (Integer)assistsT.getValue();
+        int steals = (Integer)stealsT.getValue();
+        String status="Available";
+        
+        Team team=new Team();
+        team.savePlayerToInfo(player_id, name, height, weight, position, salary, points, rebounds, assists, steals, blocks,status);
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void positionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_positionActionPerformed
+    private void positionTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_positionTActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_positionActionPerformed
+    }//GEN-LAST:event_positionTActionPerformed
 
-    private void heightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_heightActionPerformed
+    private void heightTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_heightTActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_heightActionPerformed
+    }//GEN-LAST:event_heightTActionPerformed
 
-    private void weightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_weightActionPerformed
+    private void weightTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_weightTActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_weightActionPerformed
+    }//GEN-LAST:event_weightTActionPerformed
+
+    private void playerIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playerIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_playerIDActionPerformed
 
     private void playerNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playerNameActionPerformed
         // TODO add your handling code here:
@@ -575,13 +641,13 @@ public class Form_Home extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JSpinner assists;
-    private javax.swing.JSpinner blocks;
+    private javax.swing.JSpinner assistsT;
+    private javax.swing.JSpinner blocksT;
     private component.Card card1;
     private component.Card card2;
     private component.Card card3;
     private component.Header header2;
-    private javax.swing.JTextField height;
+    private javax.swing.JTextField heightT;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -590,6 +656,7 @@ public class Form_Home extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -599,20 +666,21 @@ public class Form_Home extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panel;
     private swing.PanelBorder panelBorder1;
     private swing.PanelBorder panelBorder3;
+    private javax.swing.JTextField playerID;
     private javax.swing.JTextField playerName;
-    private javax.swing.JSpinner points;
-    private javax.swing.JComboBox<String> position;
-    private javax.swing.JSpinner rebounds;
-    private javax.swing.JSpinner salary;
+    private javax.swing.JSpinner pointsT;
+    private javax.swing.JComboBox<String> positionT;
+    private javax.swing.JSpinner reboundsT;
+    private javax.swing.JSpinner salaryT;
     private swing.ScrollBar scrollBar1;
     private swing.ScrollBar scrollBar2;
     private javax.swing.JScrollPane sp1;
-    private javax.swing.JSpinner steals;
-    private javax.swing.JTable table;
-    private javax.swing.JTextField weight;
+    private javax.swing.JScrollPane spTable;
+    private javax.swing.JSpinner stealsT;
+    private swing.Table table;
+    private javax.swing.JTextField weightT;
     // End of variables declaration//GEN-END:variables
 }
