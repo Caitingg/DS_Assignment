@@ -36,7 +36,7 @@ public class Team {
     Node<PLayer> tail;
     int sumSalary;
     private static final int MAX_PLAYERS = 15;
-    String url="jdbc:mysql://127.0.0.1:3306/java_user_database";
+    String url="jdbc:mysql://localhost:3306/nba?useSSL=false";
     String user="root";
     String password="";
     
@@ -246,8 +246,8 @@ public class Team {
     
    public void saveTeam(Team team, String userId) {
     Node<PLayer> temp = team.head; // Assuming head is the head of your player list
-    String sql = "INSERT INTO teamplayer (Player_ID, Player_Name, Start_Date, End_Date, Status, User_ID, Position,Injury_Reserved) " +
-                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    String sql = "INSERT INTO teamplayer (Player_ID, Player_Name, Start_Date, End_Date, Status, Composite_Score,User_ID, Position,Injury_Reserved) " +
+                 "VALUES (?, ?, ?, ?, ?,?, ?, ?, ?)";
 
     try (Connection conn = DriverManager.getConnection(url, user, password);
          PreparedStatement st = conn.prepareStatement(sql)) {
@@ -260,6 +260,7 @@ public class Team {
             String playerName = player.getPlayer_Name();
             String position = player.getPosition();
             String status = "Bond";
+            double score=calculateCompositeScores(player);
             Date startDate = new Date(System.currentTimeMillis());
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(startDate);
@@ -271,9 +272,10 @@ public class Team {
             st.setDate(3, startDate);
             st.setDate(4, endDate);
             st.setString(5, status);
-            st.setString(6, userId); // User ID
-            st.setString(7, position);
-            st.setBoolean(8,false);
+            st.setDouble(6, score);
+            st.setString(7, userId); // User ID
+            st.setString(8, position);
+            st.setBoolean(9,false);
            
 
             st.addBatch(); // Add the statement to the batch
@@ -293,6 +295,19 @@ public class Team {
         e.printStackTrace();
         System.out.println("An error occurred while saving the team to the database.");
     }
+}
+public double calculateCompositeScores(PLayer player) {
+        
+    double compositeScore = 0.0;
+    // Weighted criteria based on player's position
+    if (player.getPosition().equals("C")) {
+         compositeScore += player.getRebounds() * 1.5 + player.getBlocks() * 2.0;
+    } else if (player.getPosition().equals("G")) {
+            compositeScore += player.getAssists() * 1.5 + player.getSteals() * 2.0;
+    }
+    compositeScore += player.getPoints() / player.getGame() + player.getAssists() + player.getRebounds() + player.getSteals() + player.getBlocks();
+    return compositeScore;
+    
 }
     
     
@@ -382,6 +397,7 @@ public class Team {
                     player.setAssists(playerResultSet.getInt("Assists"));
                     player.setSteals(playerResultSet.getInt("Steals"));
                     player.setBlocks(playerResultSet.getInt("Blocks"));
+                    player.setGame(playerResultSet.getInt("Game"));
                     return player;
                 }
             }

@@ -7,19 +7,17 @@ package form;
 import Team.Team;
 import component.PlayerProfile;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
 import model.Model_PlayerProfile;
 import swing.ScrollBar;
 import swing.WrapLayout;
-import java.sql.DriverManager;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import javax.swing.JOptionPane;
 import java.sql.*;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import form.dynamicTest;
@@ -48,6 +46,7 @@ public class Form_1 extends javax.swing.JPanel {
     public Form_1() {
         initComponents();
         init(dynamicTest.profile);
+        //panelProfile.add(new JButton("haha"));
     }
     
     private void init(List<Model_PlayerProfile> profile){
@@ -61,6 +60,7 @@ public class Form_1 extends javax.swing.JPanel {
             panelProfile.add(new PlayerProfile(modal));
             panelProfile.setLayout(new WrapLayout(WrapLayout.CENTER));
         }
+        
         
         
         

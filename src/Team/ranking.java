@@ -8,9 +8,10 @@ package Team;
  *
  * @author user
  */
+import database.PLayer;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 public class ranking {
@@ -19,137 +20,126 @@ public class ranking {
      * @param args the command line arguments
      */
     // Define your database URL, username, and password
-    static final String DB_URL = "jdbc:mysql://localhost:3306/your_database";
-    static final String USER = "your_username";
-    static final String PASS = "your_password"; 
+//        final String DB_URL = "jdbc:mysql://127.0.0.1:3306/java_user_database";
+//        final String USER = "root";
+//        final String PASS = "";
+//    
+//    public static void main(String[] args) {
+//        // Initialize player list
+//        List<Player> players = new ArrayList<>();
+//
+//        // Fetch player data from the database
+//        fetchPlayersFromDatabase(players);
+//
+//        // Calculate composite performance score for each player
+//        calculateCompositeScores(players);
+//
+//        // Sort players based on composite score in descending order
+//        players.sort(Comparator.comparingDouble(Player::getCompositeScore).reversed());
+//
+//        // Display player performance ranking
+//        System.out.println("-- Player Performance Ranking --");
+//        int rank = 1;
+//        for (Player player : players) {
+//            System.out.println("Player: " + player.getName());
+//            System.out.println("Composite Score: " + player.getCompositeScore());
+//            System.out.println("Rank: " + rank);
+//            System.out.println();
+//            rank++;
+//        }
+//    }
     
-    public static void main(String[] args) {
-        // Initialize player list
-        List<Player> players = new ArrayList<>();
+    Connection connection;
+    //LocalDate startDate,endDate;
+    ArrayList<Integer>ranking=new ArrayList<>();
+    String userId;
 
-        // Fetch player data from the database
-        fetchPlayersFromDatabase(players);
 
-        // Calculate composite performance score for each player
-        calculateCompositeScores(players);
-
-        // Sort players based on composite score in descending order
-        players.sort(Comparator.comparingDouble(Player::getCompositeScore).reversed());
-
-        // Display player performance ranking
-        System.out.println("-- Player Performance Ranking --");
-        int rank = 1;
-        for (Player player : players) {
-            System.out.println("Player: " + player.getName());
-            System.out.println("Composite Score: " + player.getCompositeScore());
-            System.out.println("Rank: " + rank);
-            System.out.println();
-            rank++;
+    public void initialise(Connection con,String id){
+        this.connection=con;
+        this.userId=id;
+        
+        try {
+            String sql="SELECT Player_ID FROM teamplayer WHERE User_ID="+userId;
+            Statement statement=connection.createStatement();
+            ResultSet rs=statement.executeQuery(sql);
+            while(rs.next()){
+                int playerId=rs.getInt("Player_ID");
+                ranking.add(playerId);
+            }
+           
+        } catch (SQLException ex) {
+            System.out.println(ex);
         }
     }
-
     // Function to fetch player data from the database
-    public static void fetchPlayersFromDatabase(List<Player> players) {
+    public static ArrayList<PLayer> fetchPlayersFromDatabase(ArrayList<Integer>ranking) {
+        final String DB_URL = "jdbc:mysql://localhost:3306/nba?useSSL=false";
+        final String USER = "root";
+        final String PASS = "";
+        ArrayList<PLayer>players=new ArrayList<>();
+        
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
             Statement stmt = conn.createStatement()) {
-            String sql = "SELECT * FROM players";
-            ResultSet rs = stmt.executeQuery(sql);
+             StringBuilder sql = new StringBuilder ("SELECT Player_ID,Position,Points,TotalRebounts,Assists,Steals,Blocks,game FROM agentmarket WHERE  id IN (");
+            
+            for (int i = 0; i < ranking.size(); i++) {
+                sql.append(ranking.get(i));
+                if (i < ranking.size() - 1) {
+                    sql.append(",");
+                }
+            }
+            sql.append(")");
+            ResultSet rs = stmt.executeQuery(sql.toString());
             while (rs.next()) {
-                String name = rs.getString("name");
-                int age = rs.getInt("age");
-                double points = rs.getDouble("points");
-                double rebounds = rs.getDouble("rebounds");
-                double assists = rs.getDouble("assists");
-                double steals = rs.getDouble("steals");
-                double blocks = rs.getDouble("blocks");
-                String position = rs.getString("position");
-                int gamePlayed = rs.getInt("gamePlayed");
+                int id=rs.getInt("Player_ID");
+                String position=rs.getString("Position");
+                int points = rs.getInt("Points");
+                int rebounds = rs.getInt("TotalRebounts");
+                int assists = rs.getInt("Assists");
+                int steals = rs.getInt("Steals");
+                int blocks = rs.getInt("Blocks");
+                int game = rs.getInt("game");
 
-                players.add(new Player(name, age, points, rebounds, assists, steals, blocks, position,gamePlayed));
+                players.add(new PLayer(id,position,points, rebounds, assists, steals, blocks,game));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return players;
     }
 
     // Function to calculate composite performance score for each player
-    public static void calculateCompositeScores(List<Player> players) {
-        for (Player player : players) {
-            double compositeScore = 0.0;
-            // Weighted criteria based on player's position
-            if (player.getPosition().equals("C")) {
-                compositeScore += player.getRebounds() * 1.5 + player.getBlocks() * 2.0;
-            } else if (player.getPosition().equals("G")) {
+    public double calculateCompositeScores(PLayer player) {
+        
+        double compositeScore = 0.0;
+        // Weighted criteria based on player's position
+        if (player.getPosition().equals("C")) {
+             compositeScore += player.getRebounds() * 1.5 + player.getBlocks() * 2.0;
+        } else if (player.getPosition().equals("G")) {
                 compositeScore += player.getAssists() * 1.5 + player.getSteals() * 2.0;
-            }
-            compositeScore += player.getPoints() / player.getAverageGamePlayed() + player.getAssists() + player.getRebounds() + player.getSteals() + player.getBlocks();
-            player.setCompositeScore(compositeScore);
         }
+        compositeScore += player.getPoints() / player.getGame() + player.getAssists() + player.getRebounds() + player.getSteals() + player.getBlocks();
+        return compositeScore;
+        
     }
     
+        public void updateCompositeScoresInDatabase(List<PLayer> players, Connection connection) {
+            HashMap<Integer,Double>scoreMap=new HashMap<>();
+            for(PLayer p:players){
+                int id=p.getPlayer_id();
+                double score=calculateCompositeScores(p);
+                scoreMap.put(id, score);
+            }
 
-class Player {
-    private String name;
-    private int age;
-    private double points;
-    private double rebounds;
-    private double assists;
-    private double steals;
-    private double blocks;
-    private String position;
-    private double compositeScore;
-    private int gamePlayed;
-
-    public Player(String name, int age, double points, double rebounds, double assists, double steals, double blocks, String position,int gamePlayed) {
-        this.name = name;
-        this.age = age;
-        this.points = points;
-        this.rebounds = rebounds;
-        this.assists = assists;
-        this.steals = steals;
-        this.blocks = blocks;
-        this.position = position;
-        this.gamePlayed = gamePlayed;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public double getCompositeScore() {
-        return compositeScore;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public double getPoints() {
-        return points;
-    }
-
-    public double getRebounds() {
-        return rebounds;
-    }
-
-    public double getAssists() {
-        return assists;
-    }
-
-    public double getSteals() {
-        return steals;
-    }
-
-        public int getGamePlayed() {
-            return gamePlayed;
+            String updateSQL = "UPDATE teamplayer SET Composite_Score = ? WHERE Player_ID = ?";
+            try (PreparedStatement pstmt = connection.prepareStatement(updateSQL)) {
+                for(int i:scoreMap.keySet()){
+                    pstmt.setDouble(1, scoreMap.get(i));
+                    pstmt.setInt(2, i);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-
-    public double getBlocks() {
-        return blocks;
-    }
-
-    public void setCompositeScore(double compositeScore) {
-        this.compositeScore = compositeScore;
-    }
 }
-

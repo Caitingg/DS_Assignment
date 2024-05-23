@@ -204,7 +204,7 @@ public class Login extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         String Email, Password, query, fname = null, passDb = null;
         String SUrl, SUser, SPass;
-        SUrl = "jdbc:MySQL://localhost:3306/java_user_database";
+        SUrl = "jdbc:mysql://localhost:3306/nba?useSSL=false";
         SUser = "root";
         SPass = "";
         int notFound = 0;

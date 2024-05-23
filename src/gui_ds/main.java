@@ -54,9 +54,9 @@ public class main extends javax.swing.JFrame {
                 } else if (index == 3) {
                     Form_3 f3=new Form_3();
                 } else if (index == 5) {
-                    Form_4 f4=new Form_4();
+                    setForm(form5);
                 } else if (index == 4) {
-                    Form_5 f3=new Form_5();
+                    setForm(form4);
                 }
             }
         });

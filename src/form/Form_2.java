@@ -4,32 +4,27 @@
  */
 package form;
 
-import Team.TeamPlayer;
-import Team.contract;
+import Team.*;
 import component.Member_Profile;
-import component.PlayerProfile;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.*;
+import java.util.*;
+import javax.swing.BoxLayout;
+import javax.swing.JOptionPane;
 import model.Model_MemberProfile;
-import model.Model_PlayerProfile;
 import swing.ScrollBar;
-import swing.WrapLayout;
 
 /**
  *
- * @author user
+ * 
+ * Temporary set userName to Ali hahahaha
+ * 
+ * 
+ * 
  */
 public class Form_2 extends javax.swing.JPanel {
-
-    /**
-     * Creates new form Form_2
-     */
+    String userName="Ali";
+    InjuryReserve reserve;
+    
     public Form_2() {
         initComponents();
         init();
@@ -37,39 +32,42 @@ public class Form_2 extends javax.swing.JPanel {
 
     private void init(){
         Connection connection = null;
-        String userID="Venus";
+        sp2.setVerticalScrollBar(new ScrollBar());
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/java_user_database","root","");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false","root","");
         } catch (SQLException ex) {
             System.out.println(ex);
         }
         sp2.setVerticalScrollBar(new ScrollBar());
-         // Clear existing components
-//        panelProfile.removeAll();
+        //Clear existing components
+       //panelProfile.removeAll();
         
-        contract c=new contract();
-        c.initialise(connection,userID);
-        PriorityQueue<TeamPlayer>temp=c.getTeamQueue();
+       contract c=new contract();
+        c.initialise(connection,userName);
+        ArrayList<TeamPlayer>list=c.getTeamList();
         List<Model_MemberProfile>memberList=new ArrayList<>();
-//        List<Model_MemberProfile> 
-        while(!temp.isEmpty()){
-            TeamPlayer tempPlayer=temp.poll();
-            memberList.add(new Model_MemberProfile(tempPlayer.getPlayer_id(),tempPlayer.getPlayer_Name(),tempPlayer.getPosition(),tempPlayer.getStatus(),tempPlayer.getStartDate(),tempPlayer.getEndDate()));
+        for(TeamPlayer p:list){
+            TeamPlayer tempPlayer=p;
+            memberList.add(new Model_MemberProfile(tempPlayer.getPlayer_id(),tempPlayer.getPlayer_Name(),tempPlayer.getPosition(),tempPlayer.getStatus(),tempPlayer.getCompositeScore(),tempPlayer.getStartDate(),tempPlayer.getEndDate()));
         }
         
-        
-        // Iterate over the list and add each profile to the panel
+       
+       panelBorder2.setLayout(new BoxLayout(panelBorder2, BoxLayout.Y_AXIS));
+       // Iterate over the list and add each profile to the panel
         for (Model_MemberProfile modal : memberList) {
             Member_Profile profile=new Member_Profile(modal);
-            panelMemberP.add(profile);
-            panelMemberP.setLayout(new WrapLayout(WrapLayout.CENTER));
+            
+            panelBorder2.add(profile);
+            
         }
-        
+        reserve=new InjuryReserve(userName);
+        listArea.setText(reserve.toString());
+
         
         
          // Refresh the panel to show the newly added components
-        panelMemberP.revalidate();
-        panelMemberP.repaint();
+        // panelMemberP.revalidate();
+        // panelMemberP.repaint();
         
     }
     /**
@@ -89,17 +87,17 @@ public class Form_2 extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton5 = new javax.swing.JButton();
+        reasonField = new javax.swing.JTextField();
+        saveButton = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        idField = new javax.swing.JTextField();
+        recoverButton = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        listArea = new javax.swing.JTextArea();
         jLabel8 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        idField2 = new javax.swing.JTextField();
+        updateButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         panelBorder1.setLayout(null);
@@ -141,12 +139,13 @@ public class Form_2 extends javax.swing.JPanel {
             .addGroup(panelMemberPLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(sp2, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
         panelBorder1.add(panelMemberP);
+        //panelMemberP.add(panelBorder1);
         panelMemberP.setBounds(30, 20, 690, 600);
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0,80));
@@ -157,31 +156,23 @@ public class Form_2 extends javax.swing.JPanel {
 
         jLabel6.setText("Reason");
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
+        
 
-        jButton5.setText("Save");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                saveButtonActionPerformed(evt);
             }
         });
 
         jLabel7.setText("Player ID");
 
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
-            }
-        });
+        
 
-        jButton3.setText("Recovered");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        recoverButton.setText("Recovered");
+        recoverButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                recoverButtonActionPerformed(evt);
             }
         });
 
@@ -189,19 +180,15 @@ public class Form_2 extends javax.swing.JPanel {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("view injury list");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        listArea.setColumns(20);
+        listArea.setRows(5);
+        jScrollPane1.setViewportView(listArea);
 
         jLabel8.setText("Player ID");
 
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
-            }
-        });
+        
 
-        jButton1.setText("Update");
+        updateButton.setText("Update");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -210,16 +197,16 @@ public class Form_2 extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton5)
+                    .addComponent(saveButton)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel6)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(reasonField, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel7)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jLabel3)))
                 .addContainerGap(26, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -230,11 +217,11 @@ public class Form_2 extends javax.swing.JPanel {
                             .addGap(6, 6, 6)
                             .addComponent(jLabel8)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(idField2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3)
+                        .addComponent(recoverButton)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(updateButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20))
         );
         jPanel1Layout.setVerticalGroup(
@@ -245,13 +232,13 @@ public class Form_2 extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(reasonField, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton5)
+                .addComponent(saveButton)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -259,11 +246,11 @@ public class Form_2 extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(idField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3)
+                .addComponent(recoverButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(updateButton)
                 .addContainerGap(27, Short.MAX_VALUE))
         );
 
@@ -286,31 +273,46 @@ public class Form_2 extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        if(idField.getText()==null||reasonField.getText()==null){
+            JOptionPane.showMessageDialog(null, "Please enter valid id and valid reason", "Try Again" ,JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+        int id=Integer.parseInt(idField.getText());
+        String reason=reasonField.getText();
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+        
+        if(reserve.addToInjuryReserve(id, reason)){
+            listArea.setText(reserve.toString());
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "The player id entered is invalid or the player already in injury list", "Try again" ,JOptionPane.ERROR_MESSAGE);
+        }
+        idField.setText("");
+        reasonField.setText("");
+    }
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    private void recoverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recoverButtonActionPerformed
+        
+        
+        
+        if(reserve.removeFromInjuryReserve()){
+            listArea.setText(reserve.toString());
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "The injury list is empty!", "Try again" ,JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton updateButton;
+    private javax.swing.JButton recoverButton;
+    private javax.swing.JButton saveButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -320,10 +322,10 @@ public class Form_2 extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextArea listArea;
+    private javax.swing.JTextField reasonField;
+    private javax.swing.JTextField idField;
+    private javax.swing.JTextField idField2;
     private swing.PanelBorder panelBorder1;
     private swing.PanelBorder panelBorder2;
     private javax.swing.JPanel panelMemberP;

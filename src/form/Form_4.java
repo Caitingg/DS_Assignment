@@ -1,22 +1,70 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
+
 package form;
 
-/**
- *
- * @author user
- */
-public class Form_4 extends javax.swing.JPanel {
+import Team.TeamPlayer;
+import Team.contract;
+import component.PlayerStatusProfile;
 
-    /**
-     * Creates new form Form_4
-     */
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PriorityQueue;
+import model.Model_PlayerStatusProfile;
+import swing.ScrollBar;
+import swing.WrapLayout;
+
+
+public class Form_4 extends javax.swing.JPanel implements ActionListener{
+    Connection connection = null;
+    String userID="Ali";
+    
+    
     public Form_4() {
         initComponents();
+        init();
     }
 
+    private void init(){
+        
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false","root","");
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        sp2.setVerticalScrollBar(new ScrollBar());
+         // Clear existing components
+//        panelProfile.removeAll();
+        
+        contract c=new contract();
+        c.initialise(connection,userID);
+        PriorityQueue<TeamPlayer>temp=c.getTeamQueue();
+        List<Model_PlayerStatusProfile>memberList=new ArrayList<>();
+        int i=1;
+        while(!temp.isEmpty()){
+            TeamPlayer tempPlayer=temp.poll();
+            memberList.add(new Model_PlayerStatusProfile(tempPlayer.getPlayer_id(),tempPlayer.getPlayer_Name(),tempPlayer.getStartDate(),tempPlayer.getEndDate(),tempPlayer.getStatus(),i,tempPlayer.getCompositeScore()));
+            i++;
+        }
+        
+        
+        // Iterate over the list and add each profile to the panel
+        for (Model_PlayerStatusProfile modal : memberList) {
+            PlayerStatusProfile profile=new PlayerStatusProfile(modal);
+            panalPlayerS.add(profile);
+            panalPlayerS.setLayout(new WrapLayout(WrapLayout.LEADING));
+        }
+        
+        
+        
+         // Refresh the panel to show the newly added components
+        // panalPlayerS.revalidate();
+        // panalPlayerS.repaint();
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,25 +75,87 @@ public class Form_4 extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        sp2 = new javax.swing.JScrollPane();
+        panalPlayerS = new swing.PanelBorder();
+        jLabel3 = new javax.swing.JLabel();
+        btnRenew = new javax.swing.JButton();
+        btnRemove = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setLayout(null);
+        btnRenew.addActionListener(this);
+        btnRemove.addActionListener(this);
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0,80));
+
+        jLabel2.setFont(new java.awt.Font("Castellar", 1, 20)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("View Player Status");
+
+        panalPlayerS.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout panalPlayerSLayout = new javax.swing.GroupLayout(panalPlayerS);
+        panalPlayerS.setLayout(panalPlayerSLayout);
+        panalPlayerSLayout.setHorizontalGroup(
+            panalPlayerSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 908, Short.MAX_VALUE)
+        );
+        panalPlayerSLayout.setVerticalGroup(
+            panalPlayerSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 495, Short.MAX_VALUE)
+        );
+
+        sp2.setViewportView(panalPlayerS);
+
+        jLabel3.setFont(new java.awt.Font("Castellar", 1, 20)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("manage contract");
+
+        btnRenew.setBackground(new java.awt.Color(72, 38, 3));
+        btnRenew.setFont(new java.awt.Font("Algerian", 0, 12)); // NOI18N
+        btnRenew.setForeground(new java.awt.Color(255, 255, 255));
+        btnRenew.setText("Renew");
+
+        btnRemove.setBackground(new java.awt.Color(72, 38, 3));
+        btnRemove.setFont(new java.awt.Font("Algerian", 0, 12)); // NOI18N
+        btnRemove.setForeground(new java.awt.Color(255, 255, 255));
+        btnRemove.setText("Remove");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 680, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnRenew, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRemove))
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2)
+                    .addComponent(sp2, javax.swing.GroupLayout.PREFERRED_SIZE, 892, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 580, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(sp2, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnRenew, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                    .addComponent(btnRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         add(jPanel1);
-        jPanel1.setBounds(30, 30, 680, 580);
+        jPanel1.setBounds(30, 30, 940, 580);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/court.jpg"))); // NOI18N
         add(jLabel1);
@@ -53,8 +163,33 @@ public class Form_4 extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRemove;
+    private javax.swing.JButton btnRenew;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private swing.PanelBorder panalPlayerS;
+    private javax.swing.JScrollPane sp2;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+       if(e.getSource()==btnRenew){
+        contract c=new contract();
+        c.initialise(connection, userID);
+        c.extend();
+        panalPlayerS.removeAll();
+        init();
+       }
+       if(e.getSource()==btnRemove){
+        contract c=new contract();
+        c.initialise(connection, userID);
+        c.remove();
+        panalPlayerS.removeAll();
+        init();
+       }
+    }
 }

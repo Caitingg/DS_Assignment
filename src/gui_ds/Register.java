@@ -220,7 +220,7 @@ public class Register extends javax.swing.JFrame {
         //System.out.println("Sign up button clicked");
         String username, email, Password, query;
         String SUrl, SUser, SPass;
-        SUrl = "jdbc:MySQL://localhost:3306/java_user_database";
+        SUrl = "jdbc:mysql://localhost:3306/nba?useSSL=false";
         SUser = "root";
         SPass = "";
         try{
