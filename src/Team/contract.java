@@ -8,8 +8,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 
 /**
@@ -29,7 +28,7 @@ public class contract {
         this.userId=id;
         
         try {
-            String sql="SELECT Player_ID,Player_Name,Start_Date,End_Date,Status,Composite_Score,Position,Injury_Reserved FROM teamplayer WHERE User_ID="+userId;
+            String sql="SELECT Player_ID,Player_Name,Start_Date,End_Date,Status,Composite_Score,Position,Injury_Reserved FROM teamplayer WHERE User_ID='"+userId+"'";
             Statement statement=connection.createStatement();
             ResultSet rs=statement.executeQuery(sql);
             while(rs.next()){
@@ -56,15 +55,16 @@ public class contract {
     }
     
     public void extend(){
-        TeamPlayer temp=queue.peek();
+        TeamPlayer temp=queue.poll();
         LocalDate update=temp.getEndDate();
         update=update.plusYears(1);
         int id=temp.getPlayer_id();
         
-        String sql="UPDATE teamplayer SET End_Date = '" + java.sql.Date.valueOf(update) + "' WHERE Player_ID="+id;
+        String sql="UPDATE teamplayer SET End_Date = '" + java.sql.Date.valueOf(update) + "' WHERE Player_ID="+id+" AND User_ID='"+userId+"'";
         try {
             Statement statement=connection.createStatement();
-            statement.executeUpdate(sql);
+            int row=statement.executeUpdate(sql);
+            System.out.println("row: "+row);
             
         } catch (SQLException e) {
             System.out.println(e);
@@ -74,7 +74,7 @@ public class contract {
     public void remove(){
         TeamPlayer temp=queue.poll();
         int id=temp.getPlayer_id();
-        String sql = "DELETE FROM teamplayer WHERE Player_ID= " + id;
+        String sql = "DELETE FROM teamplayer WHERE Player_ID= " + id+" AND User_ID='"+userId+"'";
         try {
             Statement statement=connection.createStatement();
             statement.executeUpdate(sql);
@@ -94,6 +94,8 @@ public class contract {
         return this.queue;
     }
     public ArrayList<TeamPlayer>getTeamList(){
+        Collections.sort(team);
+        Collections.reverse(team);
         return this.team;
     }
 }

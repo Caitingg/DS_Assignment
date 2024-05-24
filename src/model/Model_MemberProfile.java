@@ -7,8 +7,6 @@ package model;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 /**
@@ -20,17 +18,18 @@ public class Model_MemberProfile {
     int playerID;
     String name;
 
-    public Model_MemberProfile(int playerID, String name,String position,String status, LocalDate start,LocalDate end) {
+    public Model_MemberProfile(int playerID, String name,String position,String status,double score, LocalDate start,LocalDate end) {
         this.playerID = playerID;
         this.name = name;
         this.position = position;
         this.status = status;
         this.start = start;
         this.end = end;
+        this.score=score;
         
         try {
-            Connection connection=DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/java_user_database","root","");
-            String sql="SELECT Weight,Height,Salary,Points,TotalRebounts,Assists,Blocks FROM agentmarket WHERE Player_ID="+this.playerID;
+            Connection connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false","root","");
+            String sql="SELECT Weight,Height,Salary,Points,TotalRebounts,Steals,Assists,Blocks,game FROM agentmarket WHERE Player_ID="+this.playerID;
             Statement statement=connection.createStatement();
             ResultSet rs=statement.executeQuery(sql);
             while(rs.next()){
@@ -42,6 +41,8 @@ public class Model_MemberProfile {
                 this.steals=rs.getInt("Steals");
                 this.blocks=rs.getInt("Blocks");
                 this.assists=rs.getInt("Assists");
+                this.game=rs.getInt("game");
+                
             }
             
         } catch (SQLException ex) {
@@ -49,9 +50,9 @@ public class Model_MemberProfile {
         }
         
     }
-    double weight,height;
+    double weight,height,score;
     String position;
-    int salary,points,rebounds,steals,blocks,assists;
+    int salary,points,rebounds,steals,blocks,assists,game;
     String status;
     LocalDate start,end;
 
@@ -167,5 +168,11 @@ public class Model_MemberProfile {
 
     public void setSalary(int salary) {
         this.salary = salary;
+    }
+    public int getGamePlayed(){
+        return this.game;
+    }
+    public double getScore(){
+        return this.score;
     }
 }

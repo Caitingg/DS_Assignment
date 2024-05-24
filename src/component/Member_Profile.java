@@ -22,6 +22,7 @@ public class Member_Profile extends javax.swing.JPanel {
     private final Model_MemberProfile data;
     
     public Member_Profile(Model_MemberProfile data) {
+        System.out.println(data.getName());
         initComponents();
         this.data = data;
         setOpaque(false);
@@ -39,6 +40,7 @@ public class Member_Profile extends javax.swing.JPanel {
         expiredD.setText(String.valueOf(data.getEnd()));
         statusT.setText(data.getStatus());
         gameT.setText(Integer.toString(data.getGamePlayed()));
+        cScore.setText(String.valueOf(data.getScore()));
     }
 
     

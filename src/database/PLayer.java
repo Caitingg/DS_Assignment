@@ -14,7 +14,8 @@ public class PLayer {
     String Player_Name;
     Double Weight,Height;
     String Position, Status;
-    int Salary,Points,Rebounds,assists,steals,Blocks;
+    int Salary,Points,Rebounds,assists,steals,Blocks,game;
+
 
     public PLayer(int Player_id, String Player_Name, Double Weight, Double Height, String Position, int Salary, int Points, int Rebounds, int assists, int steals, int Blocks, String Status) {
         this.Player_id = Player_id;
@@ -29,6 +30,32 @@ public class PLayer {
         this.steals = steals;
         this.Blocks = Blocks;
         this.Status = Status;
+    }
+    // public PLayer(int Player_id, String Player_Name, Double Weight, Double Height, String Position, int Salary, int Points, int Rebounds, int assists, int steals, int Blocks, String Status,int game) {
+    //     this.Player_id = Player_id;
+    //     this.Player_Name = Player_Name;
+    //     this.Weight = Weight;
+    //     this.Height = Height;
+    //     this.Position = Position;
+    //     this.Salary = Salary;
+    //     this.Points = Points;
+    //     this.Rebounds = Rebounds;
+    //     this.assists = assists;
+    //     this.steals = steals;
+    //     this.Blocks = Blocks;
+    //     this.Status = Status;
+    //     this.game=game;
+    // }
+    
+    public PLayer(int id,String position,int points,int rebounds,int assists,int steals,int blocks,int game){
+        this.Player_id=id;
+        this.Position=position;
+        this.Points=points;
+        this.Rebounds=rebounds;
+        this.assists=assists;
+        this.Blocks=blocks;
+        this.steals=steals;
+        this.game=game;
     }
 
     public String getStatus() {
@@ -128,6 +155,13 @@ public class PLayer {
 
     public void setBlocks(int Blocks) {
         this.Blocks = Blocks;
+    }
+    public int getGame(){
+        return this.game;
+    }
+    public void setGame(int g){
+        this.game=g;
+
     }
 
    

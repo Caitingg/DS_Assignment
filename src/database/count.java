@@ -20,7 +20,7 @@ public class count {
         Statement st = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/java_user_database", "root", "");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false", "root", "");
             st = con.createStatement();
             
         } catch (Exception e) {

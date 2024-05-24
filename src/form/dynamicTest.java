@@ -31,7 +31,7 @@ public class dynamicTest {
      * @param args the command line arguments
      */
     // Define your database URL, username, and password
-    static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/java_user_database";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/nba?useSSL=false";
     static final String USER = "root";
     static final String PASS = "";
     static List<Model_PlayerProfile> profile = new ArrayList<>();

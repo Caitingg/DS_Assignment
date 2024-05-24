@@ -1,37 +1,42 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
 package form;
 
 import Team.TeamPlayer;
 import Team.contract;
-import component.PlayerStatusProfile;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import component.Member_Profile;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
-import model.Model_PlayerStatusProfile;
+import model.Model_MemberProfile;
 import swing.ScrollBar;
 import swing.WrapLayout;
 
+/**
+ *
+ * @author user
+ */
+public class Form_4 extends javax.swing.JPanel {
 
-public class Form_4 extends javax.swing.JPanel implements ActionListener{
-    Connection connection = null;
-    String userID="Ali";
-    
-    
+    /**
+     * Creates new form Form_4
+     */
     public Form_4() {
         initComponents();
         init();
     }
 
     private void init(){
-        
+        Connection connection = null;
+        String userID="Ali";
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false","root","");
+            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/java_user_database","root","");
         } catch (SQLException ex) {
             System.out.println(ex);
         }
@@ -42,18 +47,17 @@ public class Form_4 extends javax.swing.JPanel implements ActionListener{
         contract c=new contract();
         c.initialise(connection,userID);
         PriorityQueue<TeamPlayer>temp=c.getTeamQueue();
-        List<Model_PlayerStatusProfile>memberList=new ArrayList<>();
-        int i=1;
+        List<Model_MemberProfile>memberList=new ArrayList<>();
+//        List<Model_MemberProfile> 
         while(!temp.isEmpty()){
             TeamPlayer tempPlayer=temp.poll();
-            memberList.add(new Model_PlayerStatusProfile(tempPlayer.getPlayer_id(),tempPlayer.getPlayer_Name(),tempPlayer.getStartDate(),tempPlayer.getEndDate(),tempPlayer.getStatus(),i,tempPlayer.getCompositeScore()));
-            i++;
+            memberList.add(new Model_MemberProfile(tempPlayer.getPlayer_id(),tempPlayer.getPlayer_Name(),tempPlayer.getPosition(),tempPlayer.getStatus(),tempPlayer.getStartDate(),tempPlayer.getEndDate()));
         }
         
         
         // Iterate over the list and add each profile to the panel
-        for (Model_PlayerStatusProfile modal : memberList) {
-            PlayerStatusProfile profile=new PlayerStatusProfile(modal);
+        for (Model_MemberProfile modal : memberList) {
+            Member_Profile profile=new Member_Profile(modal);
             panalPlayerS.add(profile);
             panalPlayerS.setLayout(new WrapLayout(WrapLayout.LEADING));
         }
@@ -61,8 +65,8 @@ public class Form_4 extends javax.swing.JPanel implements ActionListener{
         
         
          // Refresh the panel to show the newly added components
-        // panalPlayerS.revalidate();
-        // panalPlayerS.repaint();
+        panalPlayerS.revalidate();
+        panalPlayerS.repaint();
         
     }
     /**
@@ -84,8 +88,6 @@ public class Form_4 extends javax.swing.JPanel implements ActionListener{
         jLabel1 = new javax.swing.JLabel();
 
         setLayout(null);
-        btnRenew.addActionListener(this);
-        btnRemove.addActionListener(this);
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0,80));
 
@@ -163,7 +165,6 @@ public class Form_4 extends javax.swing.JPanel implements ActionListener{
     }// </editor-fold>//GEN-END:initComponents
 
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRemove;
     private javax.swing.JButton btnRenew;
@@ -174,22 +175,4 @@ public class Form_4 extends javax.swing.JPanel implements ActionListener{
     private swing.PanelBorder panalPlayerS;
     private javax.swing.JScrollPane sp2;
     // End of variables declaration//GEN-END:variables
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-       if(e.getSource()==btnRenew){
-        contract c=new contract();
-        c.initialise(connection, userID);
-        c.extend();
-        panalPlayerS.removeAll();
-        init();
-       }
-       if(e.getSource()==btnRemove){
-        contract c=new contract();
-        c.initialise(connection, userID);
-        c.remove();
-        panalPlayerS.removeAll();
-        init();
-       }
-    }
 }
