@@ -31,7 +31,7 @@ public class Form_4 extends javax.swing.JPanel implements ActionListener{
     private void init(){
         
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false","root","");
+            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3308/java_user_database","root","");
         } catch (SQLException ex) {
             System.out.println(ex);
         }

@@ -19,7 +19,7 @@ public class InjuryReserve {
     public InjuryReserve(String username){
         try {
             this.userName=username;
-            connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false","root","");
+            connection=DriverManager.getConnection("jdbc:mysql://localhost:3308/java_user_database","root","");
             String sql="SELECT Player_ID,Player_Name,Reason FROM injuryplayer WHERE User_ID='"+userName+"'";
             Statement st=connection.createStatement();
             ResultSet rs=st.executeQuery(sql);

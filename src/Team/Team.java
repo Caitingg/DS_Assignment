@@ -58,7 +58,7 @@ public class Team {
     }
 
     public void statusBond(int playerId) {
-        String sql = "Update agenttmarket SET Status = ? WHERE Player_ID=" + playerId;
+        String sql = "Update agentmarket SET Status = ? WHERE Player_ID=" + playerId;
         try (Connection conn = DriverManager.getConnection(url, user, password);
                 PreparedStatement st = conn.prepareStatement(sql)) {
 
@@ -187,16 +187,7 @@ public class Team {
 
     //Form team (either add or remove player)
     public void formTeam(int option, int sc) {
-//        System.out.println("List of players: ");
-//        displayPlayer();
 
-//            System.out.println("\n\nOptions:");
-//            System.out.println("1. Add player");
-//            System.out.println("2. Remove player");
-//            System.out.println("3. Show list of added players");
-//            System.out.println("4. Form the team");
-//            System.out.println("0. Exit");
-//            System.out.print("Choose an option: ");
         switch (option) {
             case 1:
                 addPlayerToTeam(sc);
@@ -210,7 +201,6 @@ public class Team {
                 break;
 
             default:
-                //System.out.println("Invalid option. Please choose again.");
                 break;
         }
 
@@ -261,9 +251,7 @@ public class Team {
 
     }
     
-    public void removeFromDb(PLayer player,String userId){
-        
-    }
+   
 
     //check if the player in the database
     public boolean playerExists(int id) {
@@ -277,6 +265,7 @@ public class Team {
         return false;
     }
     
+    //Check if player exist inside team
     public boolean contain(PLayer player){
         Node<PLayer>temp=head;
         while(temp!=null){
@@ -327,13 +316,10 @@ public class Team {
                 st.addBatch();
             
 
-            // Execute the batch insert
             int[] batchResult = st.executeBatch();
 
-            // Commit the transaction
             conn.commit();
 
-            // Print success message
             System.out.println("Team saved to database successfully!");
 
         } catch (SQLException e) {
@@ -342,29 +328,29 @@ public class Team {
         }
     }
     
-    public void removeFromDB(PLayer player,String userId){
-        String sql = "DELETE FROM agenttmarket WHERE Player_ID = ?";
-    try (Connection conn = DriverManager.getConnection(url, user, password);
-         PreparedStatement st = conn.prepareStatement(sql)) {
-        
-        // Set the parameter for the prepared statement
-        st.setInt(1, player.getPlayer_id());
-        
-        // Execute the delete operation
-        int rowsAffected = st.executeUpdate();
-        
-        // Show a confirmation message
-        String mss;
-        if (rowsAffected > 0) {
-            mss = "Player record deleted successfully";
-        } else {
-            mss = "Player record not found";
+    public void removeFromDB(PLayer player, String userId) {
+        String sql = "DELETE FROM teamplayer WHERE Player_ID = ?";
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+                PreparedStatement st = conn.prepareStatement(sql)) {
+
+            // Set the parameter for the prepared statement
+            st.setInt(1, player.getPlayer_id());
+
+            // Execute the delete operation
+            int rowsAffected = st.executeUpdate();
+
+            // Show a confirmation message
+            String mss;
+            if (rowsAffected > 0) {
+                mss = "Player record deleted successfully";
+            } else {
+                mss = "Player record not found";
+            }
+            JOptionPane.showMessageDialog(new JFrame(), mss, "Dialog", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        JOptionPane.showMessageDialog(new JFrame(), mss, "Dialog", JOptionPane.INFORMATION_MESSAGE);
-      
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
     }
 
     public void saveTeam(Team team, String userId) {
@@ -375,6 +361,7 @@ public class Team {
         while(dbtemp!=null){
             if(!this.contain(dbtemp.element)){
                 removeFromDB(dbtemp.element,userId);
+                statusAvailable(dbtemp.element.getPlayer_id());
             }
             dbtemp=dbtemp.next;
         }
@@ -401,7 +388,7 @@ public class Team {
 
     }
 
-    //Save new player into players table
+    //Save new player into agentmarket
     public void savePlayerToInfo(int id, String name, double height, double weight, String position, int salary, int points, int rebound, int assists, int steal, int block, String status) {
         String sql = "INSERT INTO agentmarket (Player_ID,Player_Name,Height,Weight,Position,Salary,Points,TotalRebounds,Assists,Steals,Blocks,status)" + "VALUES ((?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 
@@ -431,6 +418,7 @@ public class Team {
 
     }
 
+    //Add new player into agent market
     public void updatePlayerInfo(int id, String name, double weight, double height, String position, int salary, int points, int rebound, int assist, int steals, int block, String status) {
         String sql = "UPDATE agentmarket SET Weight=?,Height=?,Position=?,Salary=?,Points=?,TotalRebounts=?,Assists=?,Steals=?,Blocks=?,Status=? WHERE Player_ID = ? AND Player_Name=?_";
 
@@ -494,7 +482,7 @@ public class Team {
         return null;
     }
 
-    //Get User team
+    //Get User team from database
     public void retrieveTeamPlayerFromDB(String userId) {
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
             if (conn != null) {
@@ -556,7 +544,6 @@ public class Team {
 
         if (player.getStatus().equalsIgnoreCase("Bond")) {
             return true;
-
         }
 
         return false;

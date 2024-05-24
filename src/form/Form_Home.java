@@ -113,7 +113,7 @@ public class Form_Home extends javax.swing.JPanel {
         p.setBackground(Color.WHITE);
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
 
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false","root","");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3308/java_user_database","root","");
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT * from agentmarket")) {
 
