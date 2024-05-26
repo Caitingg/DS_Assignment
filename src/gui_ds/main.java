@@ -7,9 +7,10 @@ package gui_ds;
 import event.EventMenuSelected;
 import form.Form_1;
 import form.Form_2;
-import form.Form_3;
+// import form.Form_3;
 import form.Form_4;
 import form.Form_5;
+import form.Form_6;
 import form.Form_Home;
 import java.awt.Color;
 import javax.swing.JComponent;
@@ -28,9 +29,10 @@ public class main extends javax.swing.JFrame {
     private Form_Home home;
     private Form_1 form1;
     private Form_2 form2;
-    private Form_3 form3;
+    // private Form_3 form3;
     private Form_4 form4;
     private Form_5 form5;
+    private Form_6 form6;
     
     public main() {
         initComponents();
@@ -40,6 +42,7 @@ public class main extends javax.swing.JFrame {
         form2 = new Form_2();
         form5 = new Form_5();
         form4 = new Form_4();
+        form6 = new Form_6();
 
         menu.initMoving(main.this);
         menu.addEventMenuSelected(new EventMenuSelected() {
@@ -52,7 +55,8 @@ public class main extends javax.swing.JFrame {
                 } else if (index == 2) {
                     setForm(form2);
                 } else if (index == 3) {
-                    Form_3 f3=new Form_3();
+                    setForm(form6);
+                    // Form_3 f3=new Form_3();
                 } else if (index == 5) {
                     setForm(form5);
                 } else if (index == 4) {
