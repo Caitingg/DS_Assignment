@@ -4,19 +4,35 @@
  */
 package component;
 
+import com.sun.jdi.connect.spi.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import model.Model_playerRanking;
+
 /**
  *
  * @author user
  */
 public class playerRank extends javax.swing.JPanel {
-
-    /**
-     * Creates new form playerRank
-     */
-    public playerRank() {
+    Connection con = null;
+    ResultSet rs = null;
+    PreparedStatement pst =null;
+    
+    public playerRank(Model_playerRanking data) {
         initComponents();
+        setOpaque(false);
+//        lbIcon.setIcon(data.getIcon());
+        idText.setText(Integer.toString(data.getPlayerID()));
+        nameText.setText(data.getName());
+        positionText.setText(data.getName());
+        cScores.setText(Double.toString(data.getCompositeScore()));
+        rankText.setText(String.valueOf(data.getRank()));
+        reboundsT.setText(Double.toString(data.getRebounds()));
+        stealsText.setText(Double.toString(data.getSteals()));
+        assitsText.setText(Double.toString(data.getCompositeScore()));
+        blocksText.setText(Double.toString(data.getAssits()));
+        gamesText.setText(Integer.toString(data.getGames()));
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,9 +43,9 @@ public class playerRank extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        idText = new javax.swing.JLabel();
+        nameText = new javax.swing.JLabel();
+        rankText = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -37,43 +53,86 @@ public class playerRank extends javax.swing.JPanel {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         cScores = new javax.swing.JLabel();
-        avgPoints = new javax.swing.JLabel();
-        rebounds = new javax.swing.JLabel();
-        steals = new javax.swing.JLabel();
-        assits = new javax.swing.JLabel();
-        blocks = new javax.swing.JLabel();
+        gamesText = new javax.swing.JLabel();
+        reboundsT = new javax.swing.JLabel();
+        stealsText = new javax.swing.JLabel();
+        assitsText = new javax.swing.JLabel();
+        blocksText = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        positionText = new javax.swing.JLabel();
+
+        setBackground(new java.awt.Color(255, 255, 255));
+        setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/player1.png"))); // NOI18N
 
-        jLabel2.setText("23004979");
+        idText.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 16)); // NOI18N
+        idText.setForeground(new java.awt.Color(0, 0, 0));
+        idText.setText("23004979");
 
-        jLabel3.setText("Venus");
+        nameText.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 15)); // NOI18N
+        nameText.setForeground(new java.awt.Color(0, 0, 0));
+        nameText.setText("Venus");
 
-        jLabel4.setText("Rank 1");
+        rankText.setFont(new java.awt.Font("Algerian", 2, 18)); // NOI18N
+        rankText.setForeground(new java.awt.Color(67, 40, 0));
+        rankText.setText("Rank 1");
 
+        jLabel5.setFont(new java.awt.Font("Bahnschrift", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Composite Score");
 
-        jLabel6.setText("Average point per game");
+        jLabel6.setFont(new java.awt.Font("Bahnschrift", 1, 12)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel6.setText("Total Game Played");
 
+        jLabel7.setFont(new java.awt.Font("Bahnschrift", 1, 12)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("Rebounds");
 
+        jLabel8.setFont(new java.awt.Font("Bahnschrift", 1, 12)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Steals");
 
+        jLabel9.setFont(new java.awt.Font("Bahnschrift", 1, 12)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
         jLabel9.setText("Assists");
 
+        jLabel10.setFont(new java.awt.Font("Bahnschrift", 1, 12)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
         jLabel10.setText("Blocks");
 
+        cScores.setFont(new java.awt.Font("Algerian", 1, 14)); // NOI18N
+        cScores.setForeground(new java.awt.Color(255, 102, 0));
         cScores.setText("90");
 
-        avgPoints.setText("70");
+        gamesText.setFont(new java.awt.Font("Algerian", 0, 14)); // NOI18N
+        gamesText.setForeground(new java.awt.Color(255, 102, 0));
+        gamesText.setText("2");
 
-        rebounds.setText("12");
+        reboundsT.setFont(new java.awt.Font("Algerian", 0, 14)); // NOI18N
+        reboundsT.setForeground(new java.awt.Color(255, 102, 0));
+        reboundsT.setText("12");
 
-        steals.setText("4");
+        stealsText.setFont(new java.awt.Font("Algerian", 0, 14)); // NOI18N
+        stealsText.setForeground(new java.awt.Color(255, 102, 0));
+        stealsText.setText("4");
 
-        assits.setText("4");
+        assitsText.setFont(new java.awt.Font("Algerian", 0, 14)); // NOI18N
+        assitsText.setForeground(new java.awt.Color(255, 102, 0));
+        assitsText.setText("4");
 
-        blocks.setText("4");
+        blocksText.setFont(new java.awt.Font("Algerian", 0, 14)); // NOI18N
+        blocksText.setForeground(new java.awt.Color(255, 102, 0));
+        blocksText.setText("4");
+
+        jLabel11.setFont(new java.awt.Font("Bahnschrift", 1, 12)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel11.setText("Position");
+
+        positionText.setFont(new java.awt.Font("Algerian", 0, 14)); // NOI18N
+        positionText.setForeground(new java.awt.Color(255, 102, 0));
+        positionText.setText("F");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -84,88 +143,95 @@ public class playerRank extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addGap(52, 52, 52)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(93, 93, 93)
-                        .addComponent(cScores))
-                    .addComponent(jLabel7)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(idText)
+                            .addComponent(nameText)
+                            .addComponent(rankText))
+                        .addContainerGap(332, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
                             .addComponent(jLabel6)
-                            .addComponent(jLabel8))
-                        .addGap(55, 55, 55)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(rebounds)
-                                    .addComponent(steals))
-                                .addGap(67, 67, 67)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel10))
-                                .addGap(55, 55, 55)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(blocks)
-                                    .addComponent(assits)))
-                            .addComponent(avgPoints))))
-                .addContainerGap(54, Short.MAX_VALUE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(reboundsT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(stealsText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(gamesText, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cScores, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(61, 61, 61)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel11))
+                        .addGap(50, 50, 50)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(blocksText)
+                            .addComponent(assitsText)
+                            .addComponent(positionText, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2)
+                        .addComponent(rankText)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(idText)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(nameText)
+                        .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
                             .addComponent(cScores))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(avgPoints))
+                            .addComponent(gamesText)
+                            .addComponent(jLabel11)
+                            .addComponent(positionText))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
                             .addComponent(jLabel9)
-                            .addComponent(rebounds)
-                            .addComponent(assits))
+                            .addComponent(reboundsT)
+                            .addComponent(assitsText))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
                             .addComponent(jLabel10)
-                            .addComponent(steals)
-                            .addComponent(blocks)))
-                    .addComponent(jLabel1))
-                .addContainerGap(30, Short.MAX_VALUE))
+                            .addComponent(stealsText)
+                            .addComponent(blocksText))))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel assits;
-    private javax.swing.JLabel avgPoints;
-    private javax.swing.JLabel blocks;
+    private javax.swing.JLabel assitsText;
+    private javax.swing.JLabel blocksText;
     private javax.swing.JLabel cScores;
+    private javax.swing.JLabel gamesText;
+    private javax.swing.JLabel idText;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JLabel rebounds;
-    private javax.swing.JLabel steals;
+    private javax.swing.JLabel nameText;
+    private javax.swing.JLabel positionText;
+    private javax.swing.JLabel rankText;
+    private javax.swing.JLabel reboundsT;
+    private javax.swing.JLabel stealsText;
     // End of variables declaration//GEN-END:variables
 }
