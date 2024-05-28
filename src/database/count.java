@@ -13,14 +13,14 @@ import java.io.*;
 import java.sql.*;
 
 
-public class count {
+public class Count {
     
      private static void addGameColumn() {
         Connection con = null;
         Statement st = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false", "root", "");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3308/java_user_database", "root", "");
             st = con.createStatement();
             
         } catch (Exception e) {
