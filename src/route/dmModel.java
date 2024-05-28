@@ -4,17 +4,11 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 public class dmModel extends Application {
@@ -67,22 +61,38 @@ public class dmModel extends Application {
 
         HBox settings = new HBox(5);
         Label startVertex = new Label("Start Vertex: ");
-        TextField startVertexField = new TextField(); // TextField for start vertex
-        startVertexField.setPrefColumnCount(12);
-        Label destVertex = new Label("Destination Vertex: "); // Label for destination vertex
-        TextField destVertexField = new TextField(); // TextField for destination vertex
-        destVertexField.setPrefColumnCount(12);
+
+        // Replace TextField with ComboBox for start vertex
+        ComboBox<String> startVertexComboBox = new ComboBox<>();
+        startVertexComboBox.getItems().addAll(
+                "Los Angeles", "Golden State", "Oklahoma City",
+                "Phoenix", "Denver", "Houston",
+                "San Antonio", "Boston", "Orlando", "Miami"
+        );
+        startVertexComboBox.setPrefWidth(150); // Set width as needed
+
+        Label destVertex = new Label("Destination Vertex: ");
+
+        // Replace TextField with ComboBox for destination vertex
+        ComboBox<String> destVertexComboBox = new ComboBox<>();
+        destVertexComboBox.getItems().addAll(
+                "Los Angeles", "Golden State", "Oklahoma City",
+                "Phoenix", "Denver", "Houston",
+                "San Antonio", "Boston", "Orlando", "Miami"
+        );
+        destVertexComboBox.setPrefWidth(150); // Set width as needed
+
         Button dfs = new Button("DFS");
         Button bfs = new Button("BFS");
         Button dijkstra = new Button("Dijkstra");
 
-        settings.getChildren().addAll(startVertex, startVertexField, destVertex, destVertexField, dfs, bfs, dijkstra); // Include destination vertex fields
+        settings.getChildren().addAll(startVertex, startVertexComboBox, destVertex, destVertexComboBox, dfs, bfs, dijkstra);
         settings.setAlignment(Pos.CENTER);
         pane.getChildren().add(settings);
 
         dfs.setOnAction(e -> {
             status.setText("");
-            String startVertex_ = startVertexField.getText().trim();
+            String startVertex_ = startVertexComboBox.getValue();
             int index = -1;
             List<City> cities = graph.getVertices();
             for (int i = 0; i < cities.size(); i++) {
@@ -101,7 +111,7 @@ public class dmModel extends Application {
 
         bfs.setOnAction(e -> {
             status.setText("");
-            String startVertex_ = startVertexField.getText().trim();
+            String startVertex_ = startVertexComboBox.getValue();
             int index = -1;
             List<City> cities = graph.getVertices();
             for (int i = 0; i < cities.size(); i++) {
@@ -120,8 +130,8 @@ public class dmModel extends Application {
 
         dijkstra.setOnAction(e -> {
             status.setText("");
-            String startVertex_ = startVertexField.getText().trim();
-            String destVertex_ = destVertexField.getText().trim(); // Get the destination vertex
+            String startVertex_ = startVertexComboBox.getValue();
+            String destVertex_ = destVertexComboBox.getValue(); // Get selected item from ComboBox
             int startIndex = -1;
             int destIndex = -1;
             List<City> cities = graph.getVertices();
@@ -129,7 +139,7 @@ public class dmModel extends Application {
                 if (cities.get(i).getName().equals(startVertex_)) {
                     startIndex = i;
                 }
-                if (cities.get(i).getName().equals(destVertex_)) { // Check for destination vertex index
+                if (cities.get(i).getName().equals(destVertex_)) {
                     destIndex = i;
                 }
             }
@@ -143,7 +153,7 @@ public class dmModel extends Application {
                 return;
             }
 
-
+            // Your Dijkstra's algorithm logic here
         });
 
         Scene scene = new Scene(pane, 750, 500);
@@ -151,8 +161,6 @@ public class dmModel extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
-
 
     static class City implements Displayable {
         private double x, y;
@@ -180,4 +188,3 @@ public class dmModel extends Application {
         }
     }
 }
-
