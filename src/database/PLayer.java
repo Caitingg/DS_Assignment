@@ -31,21 +31,7 @@ public class PLayer {
         this.Blocks = Blocks;
         this.Status = Status;
     }
-    // public PLayer(int Player_id, String Player_Name, Double Weight, Double Height, String Position, int Salary, int Points, int Rebounds, int assists, int steals, int Blocks, String Status,int game) {
-    //     this.Player_id = Player_id;
-    //     this.Player_Name = Player_Name;
-    //     this.Weight = Weight;
-    //     this.Height = Height;
-    //     this.Position = Position;
-    //     this.Salary = Salary;
-    //     this.Points = Points;
-    //     this.Rebounds = Rebounds;
-    //     this.assists = assists;
-    //     this.steals = steals;
-    //     this.Blocks = Blocks;
-    //     this.Status = Status;
-    //     this.game=game;
-    // }
+
     
     public PLayer(int id,String position,int points,int rebounds,int assists,int steals,int blocks,int game){
         this.Player_id=id;
@@ -172,11 +158,12 @@ public class PLayer {
         a.append("Weight: "+this.Weight+"\n");
         a.append("Height: "+this.Height+"\n");
         a.append("Position: "+this.Position+"\n");
+        a.append("Salary: "+this.getSalary()+"\n");
         a.append("Points: "+this.Points+"\n");
-        a.append("Rebound: "+this.Rebounds+"\n");
-        a.append("Assists: "+this.assists+"\n");
-        a.append("Steals: "+this.steals+"\n");
-        a.append("Blocks: "+this.Blocks+"\n");
+//        a.append("Rebound: "+this.Rebounds+"\n");
+//        a.append("Assists: "+this.assists+"\n");
+//        a.append("Steals: "+this.steals+"\n");
+//        a.append("Blocks: "+this.Blocks+"\n");
         return a.toString();
     }
    

@@ -16,6 +16,7 @@ package form;
  *
  * @author user
  */
+import database.PLayer;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,29 +32,43 @@ public class dynamicTest {
      * @param args the command line arguments
      */
     // Define your database URL, username, and password
-    static final String DB_URL = "jdbc:mysql://localhost:3306/nba?useSSL=false";
+    static final String DB_URL = "jdbc:mysql://127.0.0.1:3308/java_user_database";
     static final String USER = "root";
     static final String PASS = "";
     static List<Model_PlayerProfile> profile = new ArrayList<>();
     
+    public dynamicTest(int id){
+        List<Player>name=new ArrayList<>();
+        name=SearchName(id);
+        if(!name.isEmpty()){
+            for (Player player : name) {
+            profile.add(new Model_PlayerProfile(
+                    new ImageIcon(getClass().getResource("/icon/player1.png")), 
+                    player.getName(), 
+                    player.getWeight(), 
+                    player.getHeight(), 
+                    player.getPosition(), 
+                    player.getSalary(),
+                    player.getPlayer_id()));
+            
+            }
+            
+            System.out.println("Found Players:");
+            for (Player player : name) {
+                System.out.println(player);
+            }
+        }
+        
+    }
 
     public dynamicTest(String attributes) {
-        // Initialize player list
-
-        /*
-        // Get user input for search conditions
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the search conditions:");
-        System.out.print("Find attributes: ");
-        String attributes = scanner.nextLine();
-         */
+        
         
         List<Player> playerrr = new ArrayList<>();
         
         // Perform dynamic search based on user input
         playerrr = dynamicSearch(attributes);
-//        createPlayerProfiles(playerrr);
-        // Display search result
+        
         if (!playerrr.isEmpty()) {
 
             for (Player player : playerrr) {
@@ -63,7 +78,9 @@ public class dynamicTest {
                     player.getWeight(), 
                     player.getHeight(), 
                     player.getPosition(), 
-                    player.getSalary()));
+                    player.getSalary(),
+                    player.getPlayer_id()));
+            
             }
             
             System.out.println("Found Players:");
@@ -74,6 +91,34 @@ public class dynamicTest {
             System.out.println("No players found matching the criteria.");
         }
         
+    }
+    
+    public List<Player> SearchName(int id){
+        ArrayList<Player>resultPlayers=new ArrayList<>();
+        String sql="SELECT * FROM agentmarket WHERE Player_ID="+id;
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            ResultSet rs = pstmt.executeQuery();
+           if(rs.next()) {
+               String name=rs.getString("Player_Name");
+                int playerId = rs.getInt("PLayer_ID");
+                double height = rs.getDouble("Height");
+                double weight = rs.getDouble("Weight");
+                String position = rs.getString("Position");
+                double salary = rs.getDouble("Salary");
+                double points = rs.getDouble("Points");
+                double rebounds = rs.getDouble("TotalRebounts");
+                double assists = rs.getDouble("Assists");
+                double steals = rs.getDouble("Steals");
+                double blocks = rs.getDouble("Blocks");
+                String status=rs.getString("Status");
+                resultPlayers.add(new Player(name, playerId, height, weight, position, salary, points, rebounds, assists, steals, blocks,status));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultPlayers;
     }
 
     public List<Player> dynamicSearch(String attributes) {

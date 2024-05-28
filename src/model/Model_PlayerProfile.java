@@ -12,6 +12,14 @@ import javax.swing.ImageIcon;
  * @author user
  */
 public class Model_PlayerProfile {
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     
     public Icon getIcon() {
         return icon;
@@ -61,13 +69,14 @@ public class Model_PlayerProfile {
         this.salary = salary;
     }
 
-    public Model_PlayerProfile(ImageIcon icon, String name, double weight, double height, String position, double salary) {
+    public Model_PlayerProfile(ImageIcon icon, String name, double weight, double height, String position, double salary,int id) {
         this.icon = icon;
         this.name = name;
         this.weight = weight;
         this.height = height;
         this.position = position;
         this.salary = salary;
+        this.id=id;
     }
 
     public Model_PlayerProfile() {
@@ -79,4 +88,5 @@ public class Model_PlayerProfile {
     private double height;
     private String position;
     private double salary;
+    private int id;
 }

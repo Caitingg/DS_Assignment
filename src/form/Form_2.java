@@ -34,7 +34,7 @@ public class Form_2 extends javax.swing.JPanel {
         Connection connection = null;
         sp2.setVerticalScrollBar(new ScrollBar());
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false","root","");
+            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3308/java_user_database","root","");
         } catch (SQLException ex) {
             System.out.println(ex);
         }
@@ -273,7 +273,7 @@ public class Form_2 extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
         if(idField.getText()==null||reasonField.getText()==null){
             JOptionPane.showMessageDialog(null, "Please enter valid id and valid reason", "Try Again" ,JOptionPane.ERROR_MESSAGE);
             return;
@@ -293,7 +293,7 @@ public class Form_2 extends javax.swing.JPanel {
         reasonField.setText("");
     }
 
-    private void recoverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recoverButtonActionPerformed
+    private void recoverButtonActionPerformed(java.awt.event.ActionEvent evt) {                                              
         
         
         
