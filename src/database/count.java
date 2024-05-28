@@ -39,8 +39,6 @@ public class Count {
         String file ="PlayerStats.csv";
         HashMap<Integer,Integer> map = new HashMap<>();
         Connection con = null;
-    ResultSet rs = null;
-    PreparedStatement pst =null;
 
 //    addGameColumn();
 
@@ -53,7 +51,8 @@ public class Count {
             
             while((s=br.readLine())!=null){
                 read=s.split(",");
-                int id=Integer.parseInt(read[0]);
+                
+                int id=Integer.parseInt(read[20].substring(1, read[20].length()-1));
                 if(map.containsKey(id)){
                     map.put(id, map.get(id)+1);
                 }else{
@@ -64,10 +63,12 @@ public class Count {
             }
             
            Class.forName("com.mysql.cj.jdbc.Driver");
-              con =DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/java_user_database","root","");
+              con =DriverManager.getConnection("jdbc:mysql://127.0.0.1:3308/java_user_database","root","");
           Statement st = con.createStatement();
             for(int i : map.keySet()){
-                String sql_insert= "UPDATE agentmarket SET game = '"+map.get(i)+"' WHERE PLayer_ID =\""+i+"\"";
+                
+                String sql_insert= "UPDATE agentmarket SET game = "+map.get(i)+" WHERE Player_ID = "+i;
+                System.out.println(sql_insert);
                 st.executeUpdate(sql_insert);
             }
                                  
