@@ -21,40 +21,39 @@ public class dmModel extends Application {
     @Override
     public void start(Stage primaryStage) {
         City[] vertices = {
-                new City("San Antonio", 75, 50),
+                new City("Los Angeles", 75, 50),
                 new City("Golden State", 50, 210),
-                new City("Boston", 75, 275),
-                new City("Miami", 275, 175),
-                new City("Los Angeles", 400, 245),
-                new City("Phoenix", 450, 100),
-                new City("Orlando", 700, 80),
-                new City("Denver", 675, 120),
-                new City("Oklahoma City", 575, 295),
-                new City("Houston", 600, 400)
+                new City("Oklahoma City", 75, 275),
+                new City("Phoenix", 275, 175),
+                new City("Denver", 400, 245),
+                new City("Houston", 450, 100),
+                new City("San Antonio", 700, 80),
+                new City("Boston", 675, 120),
+                new City("Orlando", 575, 295),
+                new City("Miami", 600, 400)
         };
 
         int[][] edges = {
-                // San Antonio
-                {0, 1, 554}, {0, 2, 1901}, {0, 5, 577}, {0, 8, 983},
-                // Golden State
-                {1, 0, 554}, {1, 2, 1507}, {1, 8, 2214},
-                // Boston
-                {2, 0, 1901}, {2, 1, 1507}, {2, 7, 2845}, {2, 9, 2584}, {2, 8, 778},
-                // Miami
-                {3, 5, 268}, {3, 9, 3045},
                 // Los Angeles
-                {4, 5, 1507}, {4, 8, 778}, {4, 9, 983},
-                // Phoenix
-                {5, 0, 577}, {5, 4, 1507}, {5, 8, 942},
-                // Orlando
-                {6, 7, 268}, {6, 9, 1137},
-                // Denver
-                {7, 2, 2845}, {7, 9, 1200},
+                {0, 1, 554}, {0, 2, 1901}, {0, 5, 577},
+                // Golden State
+                {1, 4, 1507}, {1, 2, 2214},
                 // Oklahoma City
-                {8, 0, 983}, {8, 1, 2214}, {8, 5, 942}, {8, 9, 678},
+                {2, 4, 942}, {2, 6, 678}, {2, 5, 778},
+                // Phoenix
+                {3, 6, 500},
+                // Denver
+                {4, 7, 2845},
                 // Houston
-                {9, 2, 2584}, {9, 3, 3045}, {9, 4, 983}, {9, 6, 1137}, {9, 7, 1200},
+                {5, 7, 2584}, {5, 8, 458}, {5, 6, 983},
+                // San Antonio
+                {6, 8, 1137},
+                // Boston
+                {7, 9, 3045},
+                // Orlando
+                {8, 9, 268}
         };
+
 
         VBox pane = new VBox(5);
         pane.setAlignment(Pos.CENTER);
