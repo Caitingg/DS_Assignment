@@ -35,6 +35,12 @@ public class GraphView extends BorderPane
         repaintGraph();
     }
 
+    public void dijistra(int index)
+    {
+        tree = graph.dijkstra(index);
+        repaintGraph();
+    }
+
     private void repaintGraph()
     {
         group.getChildren().clear(); // Clear group for a new display
