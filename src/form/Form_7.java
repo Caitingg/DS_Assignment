@@ -7,8 +7,12 @@ package form;
 import java.sql.*;
 import Team.performRanking;
 import java.util.ArrayList;
+
+import javax.swing.BoxLayout;
+
 import model.Model_playerRanking;
 import Team.performRanking.player;
+import component.playerRank;
 import swing.ScrollBar;
 
 
@@ -18,6 +22,8 @@ import swing.ScrollBar;
  */
 public class Form_7 extends javax.swing.JPanel {
 
+
+    String userName="Ali";
     /**
      * Creates new form Form_7
      */
@@ -26,21 +32,22 @@ public class Form_7 extends javax.swing.JPanel {
     sp.setVerticalScrollBar(new ScrollBar());
     sp.setHorizontalScrollBar(new ScrollBar());
     
-    performRanking pr = new performRanking();
-    try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3308/java_user_database", "root", "")) {
-        pr.initialise(conn, "1");
-        pr.fetchPlayers();
-
+    
+    
+    try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false", "root", "")) {
+        performRanking pr=new performRanking(conn,userName);
         ArrayList<performRanking.player> sortedPlayers = pr.getPlayerList();
         int rank = 1;
+        panelRank.setLayout(new BoxLayout(panelRank, BoxLayout.Y_AXIS));;
         
         for (performRanking.player p : sortedPlayers) {
             Model_playerRanking modelPlayer = new Model_playerRanking(p.getPlayerID(), rank++, p.getGames(), p.getName(), p.getPosition(), p.getCompositeScore(), p.getSteals(), p.getBlocks(), p.getRebounds(), p.getAssists());
-            System.out.println(modelPlayer);
+            panelRank.add(new playerRank(modelPlayer));
             
             // Add modelPlayer to panelRank
-            panelRank.add(modelPlayer);
+            
         }
+        
     } catch (SQLException ex) {
         System.out.println(ex);
     }
@@ -84,6 +91,7 @@ public class Form_7 extends javax.swing.JPanel {
         );
 
         sp.setViewportView(panelRank);
+        
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

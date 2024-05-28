@@ -137,7 +137,7 @@ public class Home extends javax.swing.JFrame {
 
     private void NextToMainBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextToMainBtnActionPerformed
         // TODO add your handling code here:
-        main main = new main();
+        mainMethod main = new mainMethod();
         main.setVisible(true);
         main.pack();
         main.setLocationRelativeTo(null);

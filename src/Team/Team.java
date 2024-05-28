@@ -37,7 +37,7 @@ public class Team {
     Node<PLayer> tail;
     int sumSalary;
     private static final int MAX_PLAYERS = 15;
-    String url = "jdbc:mysql://localhost:3308/java_user_database";
+    String url = "jdbc:mysql://localhost:3306/nba?useSSL=false";
     String user = "root";
     String password = "";
 

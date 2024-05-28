@@ -42,7 +42,7 @@ public class Form_1 extends javax.swing.JPanel {
     Team team = new Team();
     int playerId;
     
-    static final String DB_URL = "jdbc:mysql://127.0.0.1:3308/java_user_database";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/nba?useSSL=false";
     static final String USER = "root";
     static final String PASS = "";
     

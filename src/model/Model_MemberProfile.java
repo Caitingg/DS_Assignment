@@ -28,7 +28,7 @@ public class Model_MemberProfile {
         this.score=score;
         
         try {
-            Connection connection=DriverManager.getConnection("jdbc:mysql://127.0.0.1:3308/java_user_database","root","");
+            Connection connection=DriverManager.getConnection("jdbc:mysql://127.0.0.1:3308/nba","root","");
             String sql="SELECT Weight,Height,Salary,Points,TotalRebounts,Steals,Assists,Blocks,game FROM agentmarket WHERE Player_ID="+this.playerID;
             Statement statement=connection.createStatement();
             ResultSet rs=statement.executeQuery(sql);

@@ -79,6 +79,7 @@ public class TeamPlayer implements Comparable<TeamPlayer>{
     public String getReason(){
         return this.reason;
     }
+    
 
    
 

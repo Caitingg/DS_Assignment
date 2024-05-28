@@ -34,7 +34,7 @@ public class Form_2 extends javax.swing.JPanel {
         Connection connection = null;
         sp2.setVerticalScrollBar(new ScrollBar());
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3308/java_user_database","root","");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false","root","");
         } catch (SQLException ex) {
             System.out.println(ex);
         }

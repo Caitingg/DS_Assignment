@@ -177,11 +177,11 @@ public class Form_6 extends javax.swing.JPanel {
             
 
 //            bfsArea.setText(breath.getRoute()+"\n");
-            bfsArea.setText(breath.getRoute()+"\n"+"Distance: "+breath.getDistance()+" km");
+            bfsArea.setText(breath.getPath()+"\n"+"Distance: "+breath.getDistance()+" km");
 //            dfsArea.setText(depth.getRoute()+"\n");
-            dfsArea.setText(depth.getRoute()+"\n"+"Distance: "+depth.getDistance()+" km");
+            dfsArea.setText(depth.getPath()+"\n"+"Distance: "+depth.getDistance()+" km");
 //            dArea.setText(dij.getRoute()+"\n");
-            dArea.setText(dij.getRoute()+"\n"+"Distance: "+dij.getDistance()+" km");
+            dArea.setText(dij.getPath()+"\n"+"Distance: "+dij.getDistance()+" km");
     }//GEN-LAST:event_findbottonActionPerformed
 
     private void depActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_depActionPerformed
