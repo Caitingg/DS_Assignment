@@ -35,7 +35,7 @@ public class GraphView extends BorderPane
         repaintGraph();
     }
 
-    public void dijistra(int index)
+    public void dijkstra(int index)
     {
         tree = graph.dijkstra(index);
         repaintGraph();
