@@ -66,7 +66,7 @@ public class Form_7 extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         sp = new javax.swing.JScrollPane();
-        panelRank = new swing.PanelBorder();
+        panelBorder1 = new swing.PanelBorder();
         jLabel2 = new javax.swing.JLabel();
 
         setLayout(null);
@@ -77,21 +77,20 @@ public class Form_7 extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("-- Player Performance Ranking --");
 
-        panelRank.setBackground(new java.awt.Color(255, 255, 255));
-        panelRank.setForeground(new java.awt.Color(255, 255, 255));
+        panelBorder1.setBackground(new java.awt.Color(255, 255, 255));
 
-        javax.swing.GroupLayout panelRankLayout = new javax.swing.GroupLayout(panelRank);
-        panelRank.setLayout(panelRankLayout);
-        panelRankLayout.setHorizontalGroup(
-            panelRankLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 860, Short.MAX_VALUE)
+        javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
+        panelBorder1.setLayout(panelBorder1Layout);
+        panelBorder1Layout.setHorizontalGroup(
+            panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 788, Short.MAX_VALUE)
         );
-        panelRankLayout.setVerticalGroup(
-            panelRankLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 480, Short.MAX_VALUE)
+        panelBorder1Layout.setVerticalGroup(
+            panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 502, Short.MAX_VALUE)
         );
 
-        sp.setViewportView(panelRank);
+        sp.setViewportView(panelBorder1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -102,18 +101,18 @@ public class Form_7 extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addGap(245, 245, 245))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(75, 75, 75)
-                .addComponent(sp, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addGap(84, 84, 84)
+                .addComponent(sp, javax.swing.GroupLayout.PREFERRED_SIZE, 773, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(73, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(27, Short.MAX_VALUE)
+                .addContainerGap(25, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(sp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addContainerGap())
         );
 
         add(jPanel1);
@@ -129,7 +128,7 @@ public class Form_7 extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private swing.PanelBorder panelRank;
+    private swing.PanelBorder panelBorder1;
     private javax.swing.JScrollPane sp;
     // End of variables declaration//GEN-END:variables
 }
