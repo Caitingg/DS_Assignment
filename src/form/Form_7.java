@@ -4,7 +4,6 @@
  */
 package form;
 
-import java.awt.GridLayout;
 import java.sql.*;
 import Team.performRanking;
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class Form_7 extends javax.swing.JPanel {
     this.userName=name;
     initComponents();
     sp.setVerticalScrollBar(new ScrollBar());
-    //sp.setHorizontalScrollBar(new ScrollBar());
+    sp.setHorizontalScrollBar(new ScrollBar());
     
     
     
@@ -40,13 +39,13 @@ public class Form_7 extends javax.swing.JPanel {
         performRanking pr=new performRanking(conn,userName);
         ArrayList<performRanking.player> sortedPlayers = pr.getPlayerList();
         int rank = 1;
-        panelBorder1.setLayout(new GridLayout(sortedPlayers.size(),1));
+        panelRank.setLayout(new BoxLayout(panelRank, BoxLayout.Y_AXIS));;
         
         for (performRanking.player p : sortedPlayers) {
             Model_playerRanking modelPlayer = new Model_playerRanking(p.getPlayerID(), rank++, p.getGames(), p.getName(), p.getPosition(), p.getCompositeScore(), p.getSteals(), p.getBlocks(), p.getRebounds(), p.getAssists());
-            panelBorder1.add(new playerRank(modelPlayer));
+            panelRank.add(new playerRank(modelPlayer));
             
-            // Add modelPlayer to panelBorder1
+            // Add modelPlayer to panelRank
             
         }
         
@@ -79,18 +78,7 @@ public class Form_7 extends javax.swing.JPanel {
         jLabel1.setText("-- Player Performance Ranking --");
 
         panelBorder1.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
-        panelBorder1.setLayout(panelBorder1Layout);
-        panelBorder1Layout.setHorizontalGroup(
-            panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 788, Short.MAX_VALUE)
-        );
-        panelBorder1Layout.setVerticalGroup(
-            panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 502, Short.MAX_VALUE)
-        );
-
+        panelBorder1.setLayout(new java.awt.GridLayout(15, 1, 10, 10));
         sp.setViewportView(panelBorder1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -98,22 +86,23 @@ public class Form_7 extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(245, 245, 245))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(84, 84, 84)
-                .addComponent(sp, javax.swing.GroupLayout.PREFERRED_SIZE, 773, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(124, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(244, 244, 244))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(sp, javax.swing.GroupLayout.PREFERRED_SIZE, 709, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(97, 97, 97))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
+                .addContainerGap(32, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(sp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(sp, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42))
         );
 
         add(jPanel1);
