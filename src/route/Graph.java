@@ -50,8 +50,8 @@ public interface Graph<V>
     /** Obtain a breadth-first search tree */
     public UnweightedGraph<V>.SearchTree bfs(int v);
 
+    public UnweightedGraph<V>.SearchTree dijkstra(int v);
     /** Return a Hamiltonian cycle
      * Return null if the graph doesn't contain a Hamiltonian cycle */
     public List<Integer> getHamiltonianCycle();
 }
-

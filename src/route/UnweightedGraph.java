@@ -2,9 +2,7 @@ package  route;
 
 
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 
 public class UnweightedGraph<V> implements Graph<V>
@@ -303,6 +301,43 @@ public class UnweightedGraph<V> implements Graph<V>
         return new SearchTree(v, parent, searchOrder);
     }
 
+    @Override
+    public SearchTree dijkstra(int v) {
+        // Initialize data structures for Dijkstra's algorithm
+        List<Integer> searchOrder = new ArrayList<>();
+        int[] parent = new int[vertices.size()];
+        int[] distance = new int[vertices.size()];
+        Arrays.fill(parent, -1);
+        Arrays.fill(distance, Integer.MAX_VALUE);
+
+        // Use a PriorityQueue to efficiently select the vertex with the smallest tentative distance
+        PriorityQueue<Vertex> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(Vertex::getDistance));
+        distance[v] = 0; // Set the distance of the source vertex to 0
+        priorityQueue.offer(new Vertex(v, 0)); // Enqueue the source vertex
+
+        while (!priorityQueue.isEmpty()) {
+            Vertex currentVertex = priorityQueue.poll();
+            int u = currentVertex.getIndex();
+            if (distance[u] == Integer.MAX_VALUE) {
+                break; // All remaining vertices are inaccessible
+            }
+            searchOrder.add(u); // Record the search order
+            // Explore neighbors of the current vertex
+            for (Edge edge : neighbors.get(u)) {
+                int neighborIndex = edge.getV();
+                int newDistance = (int) (distance[u] + edge.getWeight()); // Calculate the new tentative distance
+                if (newDistance < distance[neighborIndex]) {
+                    distance[neighborIndex] = newDistance; // Update the distance
+                    parent[neighborIndex] = u; // Update the parent
+                    priorityQueue.offer(new Vertex(neighborIndex, newDistance)); // Enqueue the neighbor
+                }
+            }
+        }
+
+        // Return a SearchTree object containing the search order and parent vertices
+        return new SearchTree(v, parent, searchOrder);
+    }
+
 
 
     /**
@@ -495,5 +530,23 @@ public class UnweightedGraph<V> implements Graph<V>
 
         for (int node: getNeighbors(currentNode))
             getHamiltonianCycle(new ArrayList<>(visited), node, cycle, start);
+    }
+}
+
+class Vertex {
+    private final int index;
+    private final int distance;
+
+    public Vertex(int index, int distance) {
+        this.index = index;
+        this.distance = distance;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public int getDistance() {
+        return distance;
     }
 }

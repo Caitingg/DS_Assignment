@@ -13,6 +13,11 @@ public class Edge {
         this.distance = distance;
     }
 
+    // Getter for the v field
+    public int getV() {
+        return v;
+    }
+
     // Constructor for edges with cities and distances
     public Edge(City city, int distance) {
         this.city = city;
