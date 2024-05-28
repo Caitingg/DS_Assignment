@@ -4,6 +4,7 @@
  */
 package form;
 
+import java.awt.GridLayout;
 import java.sql.*;
 import Team.performRanking;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class Form_7 extends javax.swing.JPanel {
     this.userName=name;
     initComponents();
     sp.setVerticalScrollBar(new ScrollBar());
-    sp.setHorizontalScrollBar(new ScrollBar());
+    //sp.setHorizontalScrollBar(new ScrollBar());
     
     
     
@@ -39,13 +40,13 @@ public class Form_7 extends javax.swing.JPanel {
         performRanking pr=new performRanking(conn,userName);
         ArrayList<performRanking.player> sortedPlayers = pr.getPlayerList();
         int rank = 1;
-        panelRank.setLayout(new BoxLayout(panelRank, BoxLayout.Y_AXIS));;
+        panelBorder1.setLayout(new GridLayout(sortedPlayers.size(),1));
         
         for (performRanking.player p : sortedPlayers) {
             Model_playerRanking modelPlayer = new Model_playerRanking(p.getPlayerID(), rank++, p.getGames(), p.getName(), p.getPosition(), p.getCompositeScore(), p.getSteals(), p.getBlocks(), p.getRebounds(), p.getAssists());
-            panelRank.add(new playerRank(modelPlayer));
+            panelBorder1.add(new playerRank(modelPlayer));
             
-            // Add modelPlayer to panelRank
+            // Add modelPlayer to panelBorder1
             
         }
         
