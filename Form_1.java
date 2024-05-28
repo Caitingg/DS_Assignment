@@ -6,23 +6,20 @@ package form;
 
 import Team.Team;
 import component.PlayerProfile;
-import javax.swing.ImageIcon;
+import database.PLayer;
+
 import model.Model_PlayerProfile;
 import swing.ScrollBar;
 import swing.WrapLayout;
-import java.sql.DriverManager;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import javax.swing.JOptionPane;
 import java.sql.*;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import form.dynamicTest;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 
@@ -45,35 +42,51 @@ public class Form_1 extends javax.swing.JPanel {
     Team team = new Team();
     int playerId;
     
+    static final String DB_URL = "jdbc:mysql://127.0.0.1:3308/java_user_database";
+    static final String USER = "root";
+    static final String PASS = "";
+    
     public Form_1() {
+        
         initComponents();
         init(dynamicTest.profile);
+        //panelProfile.add(new JButton("haha"));
+        team.retrieveTeamPlayerFromDB("Ali");
+        PreviewList.setText(team.toString());
+        salary.setText(Integer.toString(team.getSalary()));
+        noPlayer.setText(Integer.toString(team.getSize()));
+        
     }
     
     private void init(List<Model_PlayerProfile> profile){
         
-        sp2.setVerticalScrollBar(new ScrollBar());
+        jScrollPane2.setVerticalScrollBar(new ScrollBar());
          // Clear existing components
-//        panelProfile.removeAll();
+         
+
         
         // Iterate over the list and add each profile to the panel
         for (Model_PlayerProfile modal : profile) {
-            panelProfile.add(new PlayerProfile(modal));
-            panelProfile.setLayout(new WrapLayout(WrapLayout.CENTER));
+            panelBorder1.add(new PlayerProfile(modal));
+            panelBorder1.setLayout(new WrapLayout(WrapLayout.CENTER));
         }
         
-        
-        
          // Refresh the panel to show the newly added components
-        panelProfile.revalidate();
-        panelProfile.repaint();
+        panelBorder1.revalidate();
+        panelBorder1.repaint();
+        
         
     }
     
     public void reset() {
-        textName.setText("");
+        panelBorder1.removeAll();
+        textID.setText("");
         textWeight.setText("");
         textHeight.setText("");
+        condW.setSelectedIndex(0);
+        condH.setSelectedIndex(0);
+        pos.setSelectedIndex(0);
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -82,15 +95,15 @@ public class Form_1 extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        sp2 = new javax.swing.JScrollPane();
-        panelProfile = new swing.PanelBorder();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        panelBorder1 = new swing.PanelBorder();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        textName = new javax.swing.JTextField();
+        textID = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
         condW = new javax.swing.JComboBox<>();
         condH = new javax.swing.JComboBox<>();
@@ -111,6 +124,7 @@ public class Form_1 extends javax.swing.JPanel {
         btnAdd = new javax.swing.JButton();
         ID = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
 
         setLayout(null);
@@ -121,20 +135,9 @@ public class Form_1 extends javax.swing.JPanel {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Player info");
 
-        panelProfile.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout panelProfileLayout = new javax.swing.GroupLayout(panelProfile);
-        panelProfile.setLayout(panelProfileLayout);
-        panelProfileLayout.setHorizontalGroup(
-            panelProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 679, Short.MAX_VALUE)
-        );
-        panelProfileLayout.setVerticalGroup(
-            panelProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 540, Short.MAX_VALUE)
-        );
-
-        sp2.setViewportView(panelProfile);
+        panelBorder1.setBackground(new java.awt.Color(255, 255, 255));
+        panelBorder1.setLayout(new java.awt.GridLayout(100, 3, 10, 3));
+        jScrollPane2.setViewportView(panelBorder1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -144,17 +147,17 @@ public class Form_1 extends javax.swing.JPanel {
                 .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(sp2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 685, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(sp2, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         add(jPanel1);
@@ -168,7 +171,7 @@ public class Form_1 extends javax.swing.JPanel {
 
         jLabel4.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Name");
+        jLabel4.setText("Player ID");
 
         jLabel5.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -182,13 +185,13 @@ public class Form_1 extends javax.swing.JPanel {
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Position");
 
-        textName.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        textName.setForeground(new java.awt.Color(0, 0, 0));
-        textName.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        textName.setBorder(null);
-        textName.addActionListener(new java.awt.event.ActionListener() {
+        textID.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        textID.setForeground(new java.awt.Color(0, 0, 0));
+        textID.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+        textID.setBorder(null);
+        textID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textNameActionPerformed(evt);
+                textIDActionPerformed(evt);
             }
         });
 
@@ -224,7 +227,7 @@ public class Form_1 extends javax.swing.JPanel {
 
         pos.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         pos.setForeground(new java.awt.Color(0, 0, 0));
-        pos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "F", "G", "C" }));
+        pos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "F", "G", "C", "F-G", "F-C", "C-F", "G-F" }));
         pos.setBorder(null);
         pos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -284,7 +287,7 @@ public class Form_1 extends javax.swing.JPanel {
                             .addComponent(jLabel4)
                             .addGap(51, 51, 51)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(textName, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(textID, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(jPanel2Layout.createSequentialGroup()
                                     .addGap(1, 1, 1)
                                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -301,7 +304,7 @@ public class Form_1 extends javax.swing.JPanel {
                         .addComponent(btnSearch)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(8, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
@@ -314,7 +317,7 @@ public class Form_1 extends javax.swing.JPanel {
                 .addComponent(jLabel3)
                 .addGap(8, 8, 8)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textName, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textID, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -412,7 +415,6 @@ public class Form_1 extends javax.swing.JPanel {
 
         ID.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ID.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        ID.setText("Player ID");
         ID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 IDActionPerformed(evt);
@@ -423,29 +425,36 @@ public class Form_1 extends javax.swing.JPanel {
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("build team");
 
+        jLabel12.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setText("Player ID");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
                 .addGap(6, 6, 6))
             .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(61, 61, 61)
-                        .addComponent(jLabel11)
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ID, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
+                        .addGap(35, 35, 35)
+                        .addComponent(jLabel11))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(remove)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(21, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -466,19 +475,21 @@ public class Form_1 extends javax.swing.JPanel {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(17, Short.MAX_VALUE)
+                .addContainerGap(8, Short.MAX_VALUE)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel11)
-                        .addGap(31, 31, 31)))
+                .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(ID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(4, 4, 4)))
+                .addGap(13, 13, 13)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(remove)
                     .addComponent(btnAdd))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -501,9 +512,9 @@ public class Form_1 extends javax.swing.JPanel {
         jLabel10.setBounds(0, 0, 990, 630);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void textNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textNameActionPerformed
-        String name = textName.getText();
-    }//GEN-LAST:event_textNameActionPerformed
+    private void textIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textIDActionPerformed
+        String name = textID.getText();
+    }//GEN-LAST:event_textIDActionPerformed
 
     private void condHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_condHActionPerformed
         condHeight = (String) condH.getSelectedItem();
@@ -513,31 +524,53 @@ public class Form_1 extends javax.swing.JPanel {
         
     }//GEN-LAST:event_posActionPerformed
 
+    
+    
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-//        int id = Integer.parseInt(textName.getText());
-        condWeight = (String) condW.getSelectedItem();
-        condHeight = (String) condH.getSelectedItem();
-        height = textHeight.getText();
-        weight = textWeight.getText();
-        position = (String) pos.getSelectedItem();
-        StringBuilder a = new StringBuilder();
-        a.append("Height,");
-        a.append(condHeight + ",");
-        a.append(height);
-        a.append(",");
-        a.append("Weight,");
-        a.append(condWeight + ",");
-        a.append(weight);
-        a.append(",Position,=,");
-        a.append(position);
-        String attribute = a.toString();
         
-        dynamicTest test = new dynamicTest(attribute);
-        init(dynamicTest.profile);
+//        int id = Integer.parseInt(textName.getText());
+        
+        if (!textID.getText().isBlank()) {
+            int id = Integer.parseInt(textID.getText());
+            dynamicTest test = new dynamicTest(id);
+            
+            init(dynamicTest.profile);
+        } else {
+            panelBorder1.removeAll();
+            
+            condWeight = (String) condW.getSelectedItem();
+            condHeight = (String) condH.getSelectedItem();
+            height = textHeight.getText();
+            weight = textWeight.getText();
+            position = (String) pos.getSelectedItem();
+            StringBuilder a = new StringBuilder();
+            a.append("Height,");
+            a.append(condHeight + ",");
+            a.append(height);
+            a.append(",");
+            a.append("Weight,");
+            a.append(condWeight + ",");
+            a.append(weight);
+            a.append(",Position,=,");
+            a.append(position);
+            String attribute = a.toString();
+
+            dynamicTest test = new dynamicTest(attribute);
+            //init(dynamicTest.profile);
+        }
+         // Remove all components from panelBorder1
+    panelBorder1.removeAll();
+    
+    // Initialize new components based on dynamicTest.profile
+    init(dynamicTest.profile);
+    
+    
+
 
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+       panelBorder1.removeAll();
         reset();
     }//GEN-LAST:event_btnResetActionPerformed
 
@@ -548,13 +581,14 @@ public class Form_1 extends javax.swing.JPanel {
     private void textHeightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textHeightActionPerformed
        
     }//GEN-LAST:event_textHeightActionPerformed
-    
+    int row;
     private void removeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeActionPerformed
         int row=Integer.parseInt(ID.getText());
         team.formTeam(2, row);
         PreviewList.setText(team.toString());
         salary.setText(Integer.toString(team.getSalary()));
         noPlayer.setText(Integer.toString(team.getSize()));
+        
 
     }//GEN-LAST:event_removeActionPerformed
 
@@ -578,7 +612,7 @@ public class Form_1 extends javax.swing.JPanel {
             team.saveTeam(team,"Ali");
             String message = "You successfully build the team. You can edit your team in Manage Team.";
             JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.INFORMATION_MESSAGE);
-            PreviewList.setText("");
+            
         }else{
             String message = "Your Team is not valid. Please review your team.";
             JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
@@ -595,7 +629,6 @@ public class Form_1 extends javax.swing.JPanel {
         PreviewList.setText(team.toString());
         salary.setText(Integer.toString(team.getSalary()));
         noPlayer.setText(Integer.toString(team.getSize()));
-        
         
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -617,6 +650,7 @@ public class Form_1 extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -629,14 +663,18 @@ public class Form_1 extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField noPlayer;
-    private swing.PanelBorder panelProfile;
+    private swing.PanelBorder panelBorder1;
     private javax.swing.JComboBox<String> pos;
     private javax.swing.JButton remove;
     private javax.swing.JTextField salary;
-    private javax.swing.JScrollPane sp2;
     private javax.swing.JTextField textHeight;
-    private javax.swing.JTextField textName;
+    private javax.swing.JTextField textID;
     private javax.swing.JTextField textWeight;
     // End of variables declaration//GEN-END:variables
-}
+
+   
+        
+    }
+
