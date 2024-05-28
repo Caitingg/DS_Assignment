@@ -1,10 +1,10 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package form;
 
-import database.PLayer;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -12,10 +12,11 @@ import javax.swing.JScrollPane;
 import model.Model_Card;
 import model.StatusType;
 import swing.ScrollBar;
-
-import javax.swing.JOptionPane;
 import java.sql.*;
 import Team.Team;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -30,75 +31,51 @@ public class Form_Home extends javax.swing.JPanel {
     ResultSet rs = null;
     PreparedStatement pst =null;
     
-//    public void table(){
-//        try{
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//            con =DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/java_user_database","root","");
-//            String sql ="SELECT * from agentmarket";
-//            pst=con.prepareCall(sql);
-//            rs=pst.executeQuery();
-//            ResultSetMetaData rsmd = rs.getMetaData();
-//            DefaultTableModel model = (DefaultTableModel) table.getModel();
-//            
-//            // name for columns
-//            int cols = rsmd.getColumnCount();
-//            String[] colName=new String[cols];
-//            for(int i=0;i<cols;i++){
-//              colName[i]=rsmd.getColumnName(i+1);
-//              model.setColumnIdentifiers(colName);
-//            }
-//            
-//            
-//            // show  data in table
-//            while(rs.next()){
-//                PLayer player = new PLayer(rs.getInt(1),rs.getString(2),rs.getDouble(3),rs.getDouble(4),rs.getString(5),rs.getInt(6),rs.getInt(7),rs.getInt(8),rs.getInt(9),rs.getInt(10),rs.getInt(11)),rs.getString(12);
-//                String [] row ={Integer.toString(player.getPlayer_id()),player.getPlayer_Name(),Double.toString(player.getWeight()),Double.toString(player.getHeight()),player.getPosition(),Integer.toString(player.getSalary()),Integer.toString(player.getPoints()),Integer.toString(player.getRebounds()),Integer.toString(player.getAssists()),Integer.toString(player.getSteals()),Integer.toString(player.getBlocks(),player.getStatus())};
-//                model.addRow(row);
-//            }
-//            pst.close();
-//            con.close();
-//            
-//        }catch(Exception e){
-//           e.printStackTrace();
-//        }
-//    }
     
+        String DB_URL = "jdbc:mysql://127.0.0.1:3306/nba";
+        String DB_USER = "root";
+        String DB_PASSWORD = "";
+        
+        public String find(String status) {
+        int count = 0;
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
 
-//    private PLayer getPlayerFromDatabase(int playerId) {
-//        // Retrieve player details from the database
-//        try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/java_user_database", "root", "");
-//            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM agentmarket WHERE PLayer_ID = ?")) {
-//            preparedStatement.setInt(1, playerId);
-//            try (ResultSet playerResultSet = preparedStatement.executeQuery()) {
-//                if (playerResultSet.next()) {
-//                    PLayer player = new PLayer();
-//                    player.setPlayer_id(playerResultSet.getInt("PLayer_ID"));
-//                    player.setPlayer_Name(playerResultSet.getString("Player_Name"));
-//                    player.setHeight(playerResultSet.getDouble("Height"));
-//                    player.setWeight(playerResultSet.getDouble("Weight"));
-//                    player.setPosition(playerResultSet.getString("Position"));
-//                    player.setSalary(playerResultSet.getInt("Salary"));
-//                    player.setPoints(playerResultSet.getInt("Points"));
-//                    player.setRebounds(playerResultSet.getInt("TotalRebounts"));
-//                    player.setAssists(playerResultSet.getInt("Assists"));
-//                    player.setSteals(playerResultSet.getInt("Steals"));
-//                    player.setBlocks(playerResultSet.getInt("Blocks"));
-//                    player.setStatus(playerResultSet.getString("Status"));
-//                    return player;
-//                }
-//            }
-//        } catch (SQLException ex) {
-//            throw new RuntimeException(ex);
-//        }
-//        return null;
-//    }
+        try {
+            con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            String sql = "SELECT COUNT(*) AS count FROM agentmarket WHERE Status = ?";
+            pst = con.prepareStatement(sql);
+            pst.setString(1, status);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return Integer.toString(count);
+    }
     
-    public Form_Home() {
-        initComponents();
-//        generate_Table();
-        card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icon/available.png")), "Available", "count status"));
-        card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icon/bond.png")), "Bond", "count status"));
-        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icon/expired.png")), "Expired", "count status"));
+    public  void generate(){
+        card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icon/available.png")), "Available", find("available") ));
+        card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icon/bond.png")), "Bond",  find("Bond")));
+        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icon/expired.png")), "Expired", find("Expired")));
         
       
         spTable.setVerticalScrollBar(new ScrollBar());
@@ -110,7 +87,7 @@ public class Form_Home extends javax.swing.JPanel {
         p.setBackground(Color.WHITE);
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
 
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false","root","");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/nba","root","");
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT * from agentmarket")) {
 
@@ -141,6 +118,11 @@ public class Form_Home extends javax.swing.JPanel {
             throw new RuntimeException(e);
         }
         
+     
+    }
+    public Form_Home() {
+        initComponents();
+        generate();
      
     }
 
@@ -186,10 +168,10 @@ public class Form_Home extends javax.swing.JPanel {
         assistsT = new javax.swing.JSpinner();
         stealsT = new javax.swing.JSpinner();
         blocksT = new javax.swing.JSpinner();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        add = new javax.swing.JButton();
+        delete = new javax.swing.JButton();
+        update = new javax.swing.JButton();
+        clear = new javax.swing.JButton();
         scrollBar1 = new swing.ScrollBar();
         scrollBar2 = new swing.ScrollBar();
         playerName = new javax.swing.JTextField();
@@ -329,7 +311,7 @@ public class Form_Home extends javax.swing.JPanel {
 
         positionT.setBackground(new java.awt.Color(255, 255, 255));
         positionT.setForeground(new java.awt.Color(0, 0, 0));
-        positionT.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "F", "C", "G", "F-G", "F-C", "G-F", "C-F" }));
+        positionT.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "F", "C", "G", "F-G", "F-C", "G-F", "C-F" }));
         positionT.setBorder(null);
         positionT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -349,43 +331,43 @@ public class Form_Home extends javax.swing.JPanel {
 
         blocksT.setBorder(null);
 
-        jButton1.setBackground(new java.awt.Color(255, 153, 51));
-        jButton1.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setText("Add");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        add.setBackground(new java.awt.Color(255, 153, 51));
+        add.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
+        add.setForeground(new java.awt.Color(0, 0, 0));
+        add.setText("Add");
+        add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                addActionPerformed(evt);
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(255, 153, 51));
-        jButton2.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(0, 0, 0));
-        jButton2.setText("Delete");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        delete.setBackground(new java.awt.Color(255, 153, 51));
+        delete.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
+        delete.setForeground(new java.awt.Color(0, 0, 0));
+        delete.setText("Delete");
+        delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                deleteActionPerformed(evt);
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(255, 153, 51));
-        jButton3.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(0, 0, 0));
-        jButton3.setText("Update");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        update.setBackground(new java.awt.Color(255, 153, 51));
+        update.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
+        update.setForeground(new java.awt.Color(0, 0, 0));
+        update.setText("Update");
+        update.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                updateActionPerformed(evt);
             }
         });
 
-        jButton4.setBackground(new java.awt.Color(255, 153, 51));
-        jButton4.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(0, 0, 0));
-        jButton4.setText("Clear");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        clear.setBackground(new java.awt.Color(255, 153, 51));
+        clear.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
+        clear.setForeground(new java.awt.Color(0, 0, 0));
+        clear.setText("Clear");
+        clear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                clearActionPerformed(evt);
             }
         });
 
@@ -453,12 +435,12 @@ public class Form_Home extends javax.swing.JPanel {
                         .addComponent(heightT, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorder3Layout.createSequentialGroup()
                         .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(add, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(update, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(10, 10, 10)
                         .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(delete, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
+                            .addComponent(clear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(13, 13, 13)
                 .addComponent(scrollBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(panelBorder3Layout.createSequentialGroup()
@@ -524,12 +506,12 @@ public class Form_Home extends javax.swing.JPanel {
                     .addComponent(blocksT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(add)
+                    .addComponent(delete))
                 .addGap(18, 18, 18)
                 .addGroup(panelBorder3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(update)
+                    .addComponent(clear))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
 
@@ -581,24 +563,136 @@ public class Form_Home extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
+        reset();
+    }//GEN-LAST:event_clearActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    
+    public void reset(){
+        playerID.setText("");
+        playerName.setText("");
+        weightT.setText("");
+        heightT.setText("");
+        positionT.setSelectedIndex(0);
+        salaryT.setValue(0);
+        pointsT.setValue(0);
+        reboundsT.setValue(0);
+        assistsT.setValue(0);
+        stealsT.setValue(0);
+        blocksT.setValue(0);
+        
+        
+    }
+    
+   public void delete(String cond, String val) {
+        Connection con = null;
+        PreparedStatement pst = null;
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+        try {
+            con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            String sql = "DELETE FROM agentmarket WHERE " + cond + " = ? AND Status = 'available'";
+            pst = con.prepareStatement(sql);
+            pst.setString(1, val);
+            int rowsDeleted = pst.executeUpdate();
+            if (rowsDeleted == 0) {
+                String message = "Please enter correct player id and only available players can be deleted";
+            JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+            
+            } else{
+                 String message = "Player Successfully deleleted";
+            JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+            }
+        } catch (SQLException e) {
+            System.err.println("Error deleting player(s): " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+   
+   
+    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+         int player_id = Integer.parseInt(playerID.getText());
+        String name = playerName.getText();
+        double weight = Double.parseDouble(weightT.getText());
+        double height = Double.parseDouble(heightT.getText());
+        String position = (String)positionT.getSelectedItem();
+        int salary = (Integer)salaryT.getValue();
+        int points = (Integer)pointsT.getValue();
+        int rebounds = (Integer)reboundsT.getValue();
+        int blocks = (Integer)blocksT.getValue();
+        int assists = (Integer)assistsT.getValue();
+        int steals = (Integer)stealsT.getValue();
+        
+         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+        String sql = "UPDATE agentmarket SET Weight=?, Height=?, Position=?, Salary=?, Points=?, TotalRebounts=?, Assists=?, Steals=?, Blocks=?, game=game+1 WHERE Player_ID=? AND Player_Name=?";
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setDouble(1, weight);
+            st.setDouble(2, height);
+            st.setString(3, position);
+            st.setInt(4, salary);
+            st.setInt(5, points);
+            st.setInt(6, rebounds);
+            st.setInt(7, assists);
+            st.setInt(8, steals);
+            st.setInt(9, blocks);
+            st.setInt(10, player_id);
+            st.setString(11, name);
+            
+            int rowsUpdated = st.executeUpdate();
+            if (rowsUpdated > 0) {
+                String message = "Player information updated successfully.";
+                JOptionPane.showMessageDialog(null, message);
+            } else {
+                String message = "No player found with ID: " + player_id + " and Name: " + name;
+                JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        generate();
+        
+    }//GEN-LAST:event_updateActionPerformed
+
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+        String name=playerName.getText();
+        String id=playerID.getText();
+        if(name.equals("")&&id.equals("")){
+            
+        String message = "Please enter player name or id to delete player";
+        JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+        }else if(id.equals("")){
+            delete("Player_Name",name);
+        }else{
+            delete("Player_ID",id);
+        }
+        
+        
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        generate();
+    }//GEN-LAST:event_deleteActionPerformed
+
+    private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
         
         int player_id = Integer.parseInt(playerID.getText());
         String name = playerName.getText();
-        int weight = Integer.parseInt(weightT.getText());
-        int height = Integer.parseInt(heightT.getText());
+        double weight = Double.parseDouble(weightT.getText());
+        double height = Double.parseDouble(heightT.getText());
         String position = (String)positionT.getSelectedItem();
         int salary = (Integer)salaryT.getValue();
         int points = (Integer)pointsT.getValue();
@@ -611,7 +705,11 @@ public class Form_Home extends javax.swing.JPanel {
         Team team=new Team();
         team.savePlayerToInfo(player_id, name, height, weight, position, salary, points, rebounds, assists, steals, blocks,status);
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        generate();
+        
+    }//GEN-LAST:event_addActionPerformed
 
     private void positionTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_positionTActionPerformed
         // TODO add your handling code here:
@@ -635,17 +733,16 @@ public class Form_Home extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton add;
     private javax.swing.JSpinner assistsT;
     private javax.swing.JSpinner blocksT;
     private component.Card card1;
     private component.Card card2;
     private component.Card card3;
+    private javax.swing.JButton clear;
+    private javax.swing.JButton delete;
     private component.Header header2;
     private javax.swing.JTextField heightT;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -675,6 +772,7 @@ public class Form_Home extends javax.swing.JPanel {
     private javax.swing.JScrollPane spTable;
     private javax.swing.JSpinner stealsT;
     private swing.Table table;
+    private javax.swing.JButton update;
     private javax.swing.JTextField weightT;
     // End of variables declaration//GEN-END:variables
 }

@@ -13,13 +13,13 @@ import swing.ScrollBar;
 import swing.WrapLayout;
 import java.sql.*;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import form.dynamicTest;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 
@@ -52,7 +52,7 @@ public class Form_1 extends javax.swing.JPanel {
         initComponents();
         init(dynamicTest.profile);
         //panelProfile.add(new JButton("haha"));
-        team.retrieveTeamPlayerFromDB(username);
+        team.retrieveTeamPlayerFromDB("Ali");
         PreviewList.setText(team.toString());
         salary.setText(Integer.toString(team.getSalary()));
         noPlayer.setText(Integer.toString(team.getSize()));
@@ -61,27 +61,33 @@ public class Form_1 extends javax.swing.JPanel {
     
     private void init(List<Model_PlayerProfile> profile){
         
-        sp2.setVerticalScrollBar(new ScrollBar());
+        jScrollPane2.setVerticalScrollBar(new ScrollBar());
          // Clear existing components
-//        panelProfile.removeAll();
+         
+
         
         // Iterate over the list and add each profile to the panel
         for (Model_PlayerProfile modal : profile) {
-            panelProfile.add(new PlayerProfile(modal));
-            panelProfile.setLayout(new WrapLayout(WrapLayout.CENTER));
+            panelBorder1.add(new PlayerProfile(modal));
+            panelBorder1.setLayout(new WrapLayout(WrapLayout.CENTER));
         }
         
          // Refresh the panel to show the newly added components
-        panelProfile.revalidate();
-        panelProfile.repaint();
+        panelBorder1.revalidate();
+        panelBorder1.repaint();
         
         
     }
     
     public void reset() {
+        panelBorder1.removeAll();
         textID.setText("");
         textWeight.setText("");
         textHeight.setText("");
+        condW.setSelectedIndex(0);
+        condH.setSelectedIndex(0);
+        pos.setSelectedIndex(0);
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -90,8 +96,8 @@ public class Form_1 extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        sp2 = new javax.swing.JScrollPane();
-        panelProfile = new swing.PanelBorder();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        panelBorder1 = new swing.PanelBorder();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -130,20 +136,9 @@ public class Form_1 extends javax.swing.JPanel {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Player info");
 
-        panelProfile.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout panelProfileLayout = new javax.swing.GroupLayout(panelProfile);
-        panelProfile.setLayout(panelProfileLayout);
-        panelProfileLayout.setHorizontalGroup(
-            panelProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 679, Short.MAX_VALUE)
-        );
-        panelProfileLayout.setVerticalGroup(
-            panelProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 540, Short.MAX_VALUE)
-        );
-
-        sp2.setViewportView(panelProfile);
+        panelBorder1.setBackground(new java.awt.Color(255, 255, 255));
+        panelBorder1.setLayout(new java.awt.GridLayout(100, 3, 10, 3));
+        jScrollPane2.setViewportView(panelBorder1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -153,17 +148,17 @@ public class Form_1 extends javax.swing.JPanel {
                 .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(sp2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 685, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(sp2, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         add(jPanel1);
@@ -233,7 +228,7 @@ public class Form_1 extends javax.swing.JPanel {
 
         pos.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         pos.setForeground(new java.awt.Color(0, 0, 0));
-        pos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "F", "G", "C" }));
+        pos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "F", "G", "C", "F-G", "F-C", "C-F", "G-F" }));
         pos.setBorder(null);
         pos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -530,14 +525,20 @@ public class Form_1 extends javax.swing.JPanel {
         
     }//GEN-LAST:event_posActionPerformed
 
+    
+    
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        
 //        int id = Integer.parseInt(textName.getText());
+        
         if (!textID.getText().isBlank()) {
             int id = Integer.parseInt(textID.getText());
             dynamicTest test = new dynamicTest(id);
+            
             init(dynamicTest.profile);
         } else {
-
+            panelBorder1.removeAll();
+            
             condWeight = (String) condW.getSelectedItem();
             condHeight = (String) condH.getSelectedItem();
             height = textHeight.getText();
@@ -556,12 +557,21 @@ public class Form_1 extends javax.swing.JPanel {
             String attribute = a.toString();
 
             dynamicTest test = new dynamicTest(attribute);
-            init(dynamicTest.profile);
+            //init(dynamicTest.profile);
         }
+         // Remove all components from panelBorder1
+    panelBorder1.removeAll();
+    
+    // Initialize new components based on dynamicTest.profile
+    init(dynamicTest.profile);
+    
+    
+
 
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+       panelBorder1.removeAll();
         reset();
     }//GEN-LAST:event_btnResetActionPerformed
 
@@ -654,14 +664,17 @@ public class Form_1 extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField noPlayer;
-    private swing.PanelBorder panelProfile;
+    private swing.PanelBorder panelBorder1;
     private javax.swing.JComboBox<String> pos;
     private javax.swing.JButton remove;
     private javax.swing.JTextField salary;
-    private javax.swing.JScrollPane sp2;
     private javax.swing.JTextField textHeight;
     private javax.swing.JTextField textID;
     private javax.swing.JTextField textWeight;
     // End of variables declaration//GEN-END:variables
-}
+
+   
+        
+    }
