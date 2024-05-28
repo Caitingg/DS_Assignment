@@ -41,17 +41,18 @@ public class Form_1 extends javax.swing.JPanel {
     String condWeight, condHeight;
     Team team = new Team();
     int playerId;
+    String username;
     
     static final String DB_URL = "jdbc:mysql://localhost:3306/nba?useSSL=false";
     static final String USER = "root";
     static final String PASS = "";
     
-    public Form_1() {
-        
+    public Form_1(String name) {
+        this.username=name;
         initComponents();
         init(dynamicTest.profile);
         //panelProfile.add(new JButton("haha"));
-        team.retrieveTeamPlayerFromDB("Ali");
+        team.retrieveTeamPlayerFromDB(username);
         PreviewList.setText(team.toString());
         salary.setText(Integer.toString(team.getSalary()));
         noPlayer.setText(Integer.toString(team.getSize()));

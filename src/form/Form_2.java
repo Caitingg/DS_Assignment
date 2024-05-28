@@ -22,10 +22,11 @@ import swing.ScrollBar;
  * 
  */
 public class Form_2 extends javax.swing.JPanel {
-    String userName="Ali";
+    String userName;
     InjuryReserve reserve;
     
-    public Form_2() {
+    public Form_2(String name) {
+        this.userName=name;
         initComponents();
         init();
     }

@@ -18,7 +18,7 @@ import static javax.swing.JOptionPane.showMessageDialog;
  * @author user
  */
 public class Login extends javax.swing.JFrame {
-
+    String username;
     /**
      * Creates new form Login
      */
@@ -204,7 +204,7 @@ public class Login extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         String Email, Password, query, fname = null, passDb = null;
         String SUrl, SUser, SPass;
-        SUrl = "jdbc:mysql://127.0.0.1:3308/nba";
+        SUrl = "jdbc:mysql://localhost:3306/nba?useSSL=false";
         SUser = "root";
         SPass = "";
         int notFound = 0;
@@ -227,9 +227,10 @@ public class Login extends javax.swing.JFrame {
                     passDb = rs.getString("password");
                     fname = rs.getString("user_name");
                     notFound = 1;
+                    this.username=fname;
                 }
                 if(notFound == 1 && Password.equals(passDb)){
-                    Home HomeFrame = new Home();
+                    Home HomeFrame = new Home(username);
                     HomeFrame.setUser(fname);
                     HomeFrame.setVisible(true);
                     HomeFrame.pack();

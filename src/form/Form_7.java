@@ -23,11 +23,12 @@ import swing.ScrollBar;
 public class Form_7 extends javax.swing.JPanel {
 
 
-    String userName="Ali";
+    String userName;
     /**
      * Creates new form Form_7
      */
-    public Form_7() {
+    public Form_7(String name) {
+    this.userName=name;
     initComponents();
     sp.setVerticalScrollBar(new ScrollBar());
     sp.setHorizontalScrollBar(new ScrollBar());

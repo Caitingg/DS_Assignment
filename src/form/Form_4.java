@@ -20,10 +20,11 @@ import swing.WrapLayout;
 
 public class Form_4 extends javax.swing.JPanel implements ActionListener{
     Connection connection = null;
-    String userID="Ali";
+    String userID;
     
     
-    public Form_4() {
+    public Form_4(String name) {
+        this.userID=name;
         initComponents();
         init();
     }
