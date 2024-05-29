@@ -17,52 +17,40 @@ public class dmModel extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+
         ArrayList<String> cities = new ArrayList<>(
-                Arrays.asList("Los Angeles", "Golden State", "Oklahoma City", "Phoenix", "Denver",
-                        "Houston", "San Antonio", "Boston", "Orlando", "Miami", "Seattle", "San Francisco")
+                Arrays.asList("San Antonio", "Golden State", "Boston", "Miami", "Los Angeles",
+                        "Phoenix", "Orlando", "Denver", "Oklahoma City", "Houston")
         );
 
         City[] vertices = {
-                new City("Los Angeles", 100, 300),
-                new City("Golden State", 150, 100),
-                new City("Oklahoma City", 400, 350),
-                new City("Phoenix", 250, 300),
-                new City("Denver", 450, 200),
-                new City("Houston", 600, 400),
-                new City("San Antonio", 350, 500),
-                new City("Boston", 850, 100),
-                new City("Orlando", 700, 500),
+                new City("San Antonio", 150, 500),
+                new City("Golden State", 100, 50),
+                new City("Boston", 850, 50),
                 new City("Miami", 850, 600),
-                new City("Seattle", 600, 150),
-                new City("San Francisco", 400, 100)
+                new City("Los Angeles", 100, 200),
+                new City("Phoenix", 300, 300),
+                new City("Orlando", 700, 600),
+                new City("Denver", 450, 150),
+                new City("Oklahoma City", 450, 300),
+                new City("Houston", 600, 450),
         };
 
-        int[][] edges = {
-                // Los Angeles
-                {0, 1, 554}, {0, 2, 1901}, {0, 5, 577}, {0, 10, 1137}, {0, 11, 382},
-                // Golden State
-                {1, 4, 1507}, {1, 2, 2214}, {1, 10, 807}, {1, 11, 348},
-                // Oklahoma City
-                {2, 4, 942}, {2, 6, 678}, {2, 5, 778},
-                // Phoenix
-                {3, 6, 500}, {3, 0, 357},
-                // Denver
-                {4, 7, 2845}, {4, 10, 1326},
-                // Houston
-                {5, 7, 2584}, {5, 8, 458}, {5, 6, 983},
-                // San Antonio
-                {6, 8, 1137}, {6, 9, 1370},
-                // Boston
-                {7, 9, 3045}, {7, 8, 1254},
-                // Orlando
-                {8, 9, 268}, {8, 11, 2436},
-                // Miami
-                {9, 10, 2731},
-                // Seattle
-                {10, 11, 807}, {10, 4, 1326}, {10, 0, 1137},
-                // San Francisco
-                {11, 0, 382}, {11, 1, 348}, {11, 8, 2436}
-        };
+        int[][] edges =
+                {
+                        {0, 9, 983}, {0, 5, 500}, {0, 8, 678},
+                        {1, 4, 554},
+                        {2, 7, 2845}, {2, 9, 2584}, {2, 3, 3045},
+                        {3, 2, 3045}, {3, 6, 268},
+                        {4, 1, 554}, {4, 8, 1901}, {4, 5, 577},
+                        {5, 4, 577},
+                        {6, 9, 458}, {6, 0, 1137},
+                        {7, 1, 1507}, {7, 8, 942}, {7, 2, 2845},
+                        {8, 4, 1901}, {8, 1, 2214}, {8, 7, 942},
+                        {8, 9, 778},
+                        {9, 2, 2584}, {9, 6, 458}, {9, 0, 983}
+                };
+
 
         WeightedGraph<City> graph = new WeightedGraph<>(vertices, edges);
 
