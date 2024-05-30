@@ -70,14 +70,31 @@ public class contract {
             System.out.println(e);
         }
     }
+
+
+    public void AvailableStatus(int playerId){
+        String sql = "Update agentmarket SET Status = ? WHERE Player_ID=" + playerId;
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+                PreparedStatement st = conn.prepareStatement(sql)) {
+
+            st.setString(1, "Available");
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+    }
     
     public void remove(){
         TeamPlayer temp=queue.poll();
         int id=temp.getPlayer_id();
         String sql = "DELETE FROM teamplayer WHERE Player_ID= " + id+" AND User_ID='"+userId+"'";
+        
         try {
             Statement statement=connection.createStatement();
             statement.executeUpdate(sql);
+            AvailableStatus(id);
             
         } catch (SQLException e) {
             System.out.println(e);
