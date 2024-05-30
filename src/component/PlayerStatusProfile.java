@@ -25,6 +25,8 @@ public class PlayerStatusProfile extends javax.swing.JPanel {
         rankT.setText(String.valueOf(data.getRank()));
         expiredD.setText(data.getEnd().toString());
         statusT.setText(data.getStatus());
+        lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource(data.getImage()))); // NOI18N
+
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -48,7 +50,7 @@ public class PlayerStatusProfile extends javax.swing.JPanel {
 
         lbIcon.setBackground(new java.awt.Color(255, 255, 255));
         lbIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/player1.png"))); // NOI18N
+        //lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/player1.png"))); // NOI18N
 
         playerID.setForeground(new java.awt.Color(0, 0, 0));
         playerID.setText("23004979");

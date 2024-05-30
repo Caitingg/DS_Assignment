@@ -49,7 +49,7 @@ public class Form_2 extends javax.swing.JPanel {
         List<Model_MemberProfile>memberList=new ArrayList<>();
         for(TeamPlayer p:list){
             TeamPlayer tempPlayer=p;
-            memberList.add(new Model_MemberProfile(tempPlayer.getPlayer_id(),tempPlayer.getPlayer_Name(),tempPlayer.getPosition(),tempPlayer.getStatus(),tempPlayer.getCompositeScore(),tempPlayer.getStartDate(),tempPlayer.getEndDate()));
+            memberList.add(new Model_MemberProfile(tempPlayer.getPlayer_id(),tempPlayer.getPlayer_Name(),tempPlayer.getPosition(),tempPlayer.getStatus(),tempPlayer.getCompositeScore(),tempPlayer.getStartDate(),tempPlayer.getEndDate(),tempPlayer.getImage()));
         }
         
        

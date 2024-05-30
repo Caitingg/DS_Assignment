@@ -20,10 +20,10 @@ import database.PLayer;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import java.awt.*;
+
+import Team.profilePicture;
 import model.Model_PlayerProfile;
 
 public class dynamicTest {
@@ -35,15 +35,18 @@ public class dynamicTest {
     static final String DB_URL = "jdbc:mysql://localhost:3306/nba?useSSL=false";
     static final String USER = "root";
     static final String PASS = "";
-    static List<Model_PlayerProfile> profile = new ArrayList<>();
+    ArrayList<Model_PlayerProfile> profile = new ArrayList<>();
+    boolean searched=false;
+    profilePicture p=new profilePicture();
     
     public dynamicTest(int id){
         List<Player>name=new ArrayList<>();
         name=SearchName(id);
         if(!name.isEmpty()){
             for (Player player : name) {
+               
             profile.add(new Model_PlayerProfile(
-                    new ImageIcon(getClass().getResource("/icon/player1.png")), 
+                 
                     player.getName(), 
                     player.getWeight(), 
                     player.getHeight(), 
@@ -54,11 +57,15 @@ public class dynamicTest {
             }
             
             System.out.println("Found Players:");
+            searched=true;
             for (Player player : name) {
                 System.out.println(player);
             }
         }
         
+    }
+    public ArrayList<Model_PlayerProfile> getProfileList(){
+        return this.profile;
     }
 
     public dynamicTest(String attributes) {
@@ -72,8 +79,9 @@ public class dynamicTest {
         if (!playerrr.isEmpty()) {
 
             for (Player player : playerrr) {
+                
             profile.add(new Model_PlayerProfile(
-                    new ImageIcon(getClass().getResource("/icon/player1.png")), 
+                     
                     player.getName(), 
                     player.getWeight(), 
                     player.getHeight(), 
@@ -84,13 +92,18 @@ public class dynamicTest {
             }
             
             System.out.println("Found Players:");
+            searched=true;
             for (Player player : playerrr) {
                 System.out.println(player);
             }
         } else {
             System.out.println("No players found matching the criteria.");
+            searched=false;
         }
         
+    }
+    public boolean getSearched(){
+        return this.searched;
     }
     
     public List<Player> SearchName(int id){
@@ -163,6 +176,8 @@ public class dynamicTest {
                 double steals = rs.getDouble("Steals");
                 double blocks = rs.getDouble("Blocks");
                 String status=rs.getString("Status");
+                //String image=rs.getString("Image");
+
                 resultPlayers.add(new Player(name, playerId, height, weight, position, salary, points, rebounds, assists, steals, blocks,status));
             }
         } catch (SQLException e) {
@@ -280,6 +295,7 @@ class Player {
     private double steals;
     private double blocks;
     private String status;
+    private String image;
 
     public Player(String name, int player_id, double height, double weight, String position, double salary,
             double points, double rebounds, double assists, double steals, double blocks,String status) {
@@ -295,6 +311,7 @@ class Player {
         this.steals = steals;
         this.blocks = blocks;
         this.status=status;
+        //this.image=image;
     }
 
     public double getHeight() {
@@ -371,6 +388,9 @@ class Player {
 
     public String getPosition() {
         return position;
+    }
+    public String getImage(){
+        return this.image;
     }
 
     @Override

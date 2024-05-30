@@ -22,8 +22,9 @@ public class TeamPlayer implements Comparable<TeamPlayer>{
    String user_id;
    boolean injuryReserved;
    String reason;
+   String image;
 
-    public TeamPlayer(int Player_id, String Player_Name,LocalDate sd,LocalDate ed,long t,String status,double score,String position,boolean ir,String id) {
+    public TeamPlayer(String image,int Player_id, String Player_Name,LocalDate sd,LocalDate ed,long t,String status,double score,String position,boolean ir,String id) {
         this.Player_id = Player_id;
         this.Player_Name = Player_Name;
         this.startDate=sd;
@@ -34,7 +35,7 @@ public class TeamPlayer implements Comparable<TeamPlayer>{
         this.position=position;
         this.user_id=id;
         this.injuryReserved=ir;
-        
+        this.image=image;
         
     }
     public TeamPlayer(String Player_Name,int id,String r){
@@ -78,6 +79,9 @@ public class TeamPlayer implements Comparable<TeamPlayer>{
     }
     public String getReason(){
         return this.reason;
+    }
+    public String getImage(){
+        return this.image;
     }
     
 

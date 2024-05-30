@@ -39,7 +39,7 @@ Connection con = null;
         this.data = data;
         setOpaque(false);
         Id.setText("ID: "+Integer.toString(data.getId()));
-        lbIcon.setIcon(data.getIcon());
+        //lbIcon.setIcon(data.getIcon());
         lbName.setText("Name: "+data.getName());
         lbWeight.setText(Double.toString(data.getWeight()));
         lbHeight.setText(Double.toString(data.getHeight()));
@@ -72,7 +72,7 @@ Connection con = null;
 
         lbIcon.setBackground(new java.awt.Color(255, 255, 255));
         lbIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/player1.png"))); // NOI18N
+        lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/cutie.jpg"))); // NOI18N
 
         lbName.setFont(new java.awt.Font("Arial", 1, 15)); // NOI18N
         lbName.setForeground(new java.awt.Color(0, 0, 0));

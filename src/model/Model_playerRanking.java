@@ -6,7 +6,7 @@ package model;
 
 public class Model_playerRanking {
     int playerID,rank,games;
-    String name,position;
+    String name,position,image;
     double compositeScore,steals,blocks,rebounds,assits;
 
     public String getPosition() {
@@ -17,7 +17,7 @@ public class Model_playerRanking {
         this.position = position;
     }
 
-    public Model_playerRanking(int playerID, int rank, int games, String name, String position, double compositeScore, double steals, double blocks, double rebounds, double assits) {
+    public Model_playerRanking(String image,int playerID, int rank, int games, String name, String position, double compositeScore, double steals, double blocks, double rebounds, double assits) {
         this.playerID = playerID;
         this.rank = rank;
         this.games = games;
@@ -28,8 +28,12 @@ public class Model_playerRanking {
         this.blocks = blocks;
         this.rebounds = rebounds;
         this.assits = assits;
+        this.image=image;
     }
 
+    // public String getPosition(){
+    //     return this.position;
+    // }
 
     public int getPlayerID() {
         return playerID;
@@ -65,6 +69,9 @@ public class Model_playerRanking {
 
     public void setGames(int games) {
         this.games = games;
+    }
+    public String getImage(){
+        return this.image;
     }
 
     public double getSteals() {

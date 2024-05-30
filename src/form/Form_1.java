@@ -42,6 +42,7 @@ public class Form_1 extends javax.swing.JPanel {
     Team team = new Team();
     int playerId;
     String username;
+    ArrayList<Model_PlayerProfile> profile;
     
     static final String DB_URL = "jdbc:mysql://localhost:3306/nba?useSSL=false";
     static final String USER = "root";
@@ -50,31 +51,31 @@ public class Form_1 extends javax.swing.JPanel {
     public Form_1(String name) {
         this.username=name;
         initComponents();
-        init(dynamicTest.profile);
+        //init(dynamicTest.profile);
         //panelProfile.add(new JButton("haha"));
-        team.retrieveTeamPlayerFromDB("Ali");
+        team.retrieveTeamPlayerFromDB(username);
         PreviewList.setText(team.toString());
         salary.setText(Integer.toString(team.getSalary()));
         noPlayer.setText(Integer.toString(team.getSize()));
         
     }
     
-    private void init(List<Model_PlayerProfile> profile){
-        
+    private void init(ArrayList<Model_PlayerProfile> profile){
+        //panelBorder1.removeAll();
         jScrollPane2.setVerticalScrollBar(new ScrollBar());
          // Clear existing components
          
-
+        panelBorder1.setLayout(new WrapLayout(WrapLayout.CENTER));
         
         // Iterate over the list and add each profile to the panel
         for (Model_PlayerProfile modal : profile) {
             panelBorder1.add(new PlayerProfile(modal));
-            panelBorder1.setLayout(new WrapLayout(WrapLayout.CENTER));
+            //panelBorder1.setLayout(new WrapLayout(WrapLayout.CENTER));
         }
         
          // Refresh the panel to show the newly added components
-        panelBorder1.revalidate();
-        panelBorder1.repaint();
+        // panelBorder1.revalidate();
+        // panelBorder1.repaint();
         
         
     }
@@ -514,7 +515,7 @@ public class Form_1 extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void textIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textIDActionPerformed
-        String name = textID.getText();
+        //String name = textID.getText();
     }//GEN-LAST:event_textIDActionPerformed
 
     private void condHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_condHActionPerformed
@@ -534,11 +535,11 @@ public class Form_1 extends javax.swing.JPanel {
         if (!textID.getText().isBlank()) {
             int id = Integer.parseInt(textID.getText());
             dynamicTest test = new dynamicTest(id);
+            this.profile=test.getProfileList();
+            if(!test.getSearched())JOptionPane.showMessageDialog(null, "No players found matching the criteria.","Try Again!",JOptionPane.ERROR_MESSAGE);
             
-            init(dynamicTest.profile);
         } else {
             panelBorder1.removeAll();
-            
             condWeight = (String) condW.getSelectedItem();
             condHeight = (String) condH.getSelectedItem();
             height = textHeight.getText();
@@ -557,13 +558,15 @@ public class Form_1 extends javax.swing.JPanel {
             String attribute = a.toString();
 
             dynamicTest test = new dynamicTest(attribute);
-            //init(dynamicTest.profile);
+            this.profile=test.getProfileList();
+            if(!test.getSearched())JOptionPane.showMessageDialog(null, "No players found matching the criteria.","Try Again!",JOptionPane.ERROR_MESSAGE);
         }
          // Remove all components from panelBorder1
-    panelBorder1.removeAll();
+    //panelBorder1.removeAll();
     
     // Initialize new components based on dynamicTest.profile
-    init(dynamicTest.profile);
+    
+    init(profile);
     
     
 
@@ -571,8 +574,11 @@ public class Form_1 extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-       panelBorder1.removeAll();
+       //panelBorder1.removeAll();
+       //System.out.println("hahaha");
         reset();
+        this.profile=new ArrayList<>();
+        init(profile);
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void textWeightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textWeightActionPerformed
@@ -612,11 +618,11 @@ public class Form_1 extends javax.swing.JPanel {
         if (team.isValidTeam()) {
             team.saveTeam(team,"Ali");
             String message = "You successfully build the team. You can edit your team in Manage Team.";
-            JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(new JFrame(), message, "Congratulations!", JOptionPane.INFORMATION_MESSAGE);
             
         }else{
             String message = "Your Team is not valid. Please review your team.";
-            JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(new JFrame(), message, "Try Again!", JOptionPane.ERROR_MESSAGE);
      
         }
     }//GEN-LAST:event_btnAddTeam1ActionPerformed

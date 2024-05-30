@@ -21,11 +21,11 @@ public class Model_PlayerProfile {
         this.id = id;
     }
     
-    public Icon getIcon() {
+    public ImageIcon getIcon() {
         return icon;
     }
 
-    public void setIcon(Icon icon) {
+    public void setIcon(ImageIcon icon) {
         this.icon = icon;
     }
 
@@ -69,8 +69,8 @@ public class Model_PlayerProfile {
         this.salary = salary;
     }
 
-    public Model_PlayerProfile(ImageIcon icon, String name, double weight, double height, String position, double salary,int id) {
-        this.icon = icon;
+    public Model_PlayerProfile( String name, double weight, double height, String position, double salary,int id) {
+        
         this.name = name;
         this.weight = weight;
         this.height = height;
@@ -82,7 +82,7 @@ public class Model_PlayerProfile {
     public Model_PlayerProfile() {
     }
     
-    private Icon icon;
+    private ImageIcon icon;
     private String name;
     private double weight;
     private double height;

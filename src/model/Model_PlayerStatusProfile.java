@@ -11,8 +11,9 @@ public class Model_PlayerStatusProfile {
     double compositeScore;
     String status;
     LocalDate start,end;
+    String image;
 
-    public Model_PlayerStatusProfile(int playerID, String name, LocalDate start,LocalDate end, String status,int rank,double compositeScore) {
+    public Model_PlayerStatusProfile(String image,int playerID, String name, LocalDate start,LocalDate end, String status,int rank,double compositeScore) {
         this.playerID = playerID;
         this.name = name;
         this.status = status;
@@ -20,6 +21,7 @@ public class Model_PlayerStatusProfile {
         this.end = end;
         this.compositeScore = compositeScore;
         this.rank=rank;
+        this.image=image;
         
         // try {
         //     Connection connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false","root","");
@@ -51,6 +53,9 @@ public class Model_PlayerStatusProfile {
 
     public String getName() {
         return name;
+    }
+    public String getImage(){
+        return this.image;
     }
 
     public void setName(String name) {

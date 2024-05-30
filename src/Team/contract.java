@@ -28,7 +28,7 @@ public class contract {
         this.userId=id;
         
         try {
-            String sql="SELECT Player_ID,Player_Name,Start_Date,End_Date,Status,Composite_Score,Position,Injury_Reserved FROM teamplayer WHERE User_ID='"+userId+"'";
+            String sql="SELECT Player_ID,Player_Name,Start_Date,End_Date,Status,Composite_Score,Position,Injury_Reserved,Image FROM teamplayer WHERE User_ID='"+userId+"'";
             Statement statement=connection.createStatement();
             ResultSet rs=statement.executeQuery(sql);
             while(rs.next()){
@@ -41,7 +41,8 @@ public class contract {
                 Double score=rs.getDouble("Composite_Score");
                 String position=rs.getString("Position");
                 boolean injury=rs.getBoolean("Injury_Reserved");
-                team.add(new TeamPlayer(playerID,playerName,sd,ed,tl,status,score,position,injury,id));
+                String image=rs.getString("Image");
+                team.add(new TeamPlayer(image,playerID,playerName,sd,ed,tl,status,score,position,injury,id));
             }  
             for(TeamPlayer p:team){
                 

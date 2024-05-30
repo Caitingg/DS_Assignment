@@ -17,8 +17,9 @@ public class Model_MemberProfile {
     
     int playerID;
     String name;
+    String image;
 
-    public Model_MemberProfile(int playerID, String name,String position,String status,double score, LocalDate start,LocalDate end) {
+    public Model_MemberProfile(int playerID, String name,String position,String status,double score, LocalDate start,LocalDate end,String image) {
         this.playerID = playerID;
         this.name = name;
         this.position = position;
@@ -26,9 +27,10 @@ public class Model_MemberProfile {
         this.start = start;
         this.end = end;
         this.score=score;
+        this.image=image;
         
         try {
-            Connection connection=DriverManager.getConnection("jdbc:mysql://127.0.0.1:3308/nba","root","");
+            Connection connection=DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/nba","root","");
             String sql="SELECT Weight,Height,Salary,Points,TotalRebounts,Steals,Assists,Blocks,game FROM agentmarket WHERE Player_ID="+this.playerID;
             Statement statement=connection.createStatement();
             ResultSet rs=statement.executeQuery(sql);
@@ -67,7 +69,9 @@ public class Model_MemberProfile {
     public int getRebounds() {
         return rebounds;
     }
-
+    public String getImage(){
+        return this.image;
+    }
     public void setRebounds(int rebounds) {
         this.rebounds = rebounds;
     }

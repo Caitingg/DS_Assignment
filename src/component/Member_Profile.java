@@ -40,6 +40,7 @@ public class Member_Profile extends javax.swing.JPanel {
         expiredD.setText(String.valueOf(data.getEnd()));
         gameT.setText(Integer.toString(data.getGamePlayed()));
         cScore.setText(String.valueOf(data.getScore()));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource(data.getImage())));
     }
 
     
@@ -82,12 +83,14 @@ public class Member_Profile extends javax.swing.JPanel {
         gameT = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         cScore = new javax.swing.JLabel();
+        
+        
 
         setBackground(new java.awt.Color(255, 255, 255));
         setForeground(new java.awt.Color(0, 0, 0));
         setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/player1.png"))); // NOI18N
+        //jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/player1.png"))); // NOI18N
 
         playerID.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         playerID.setForeground(new java.awt.Color(0, 0, 0));

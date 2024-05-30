@@ -64,6 +64,12 @@ public class mainMethod extends javax.swing.JFrame {
                 } else if (index == 4) {
                     setForm(form4);
                 }
+                else if(index==7){
+                    System.out.println("hahahaha");
+                    dispose();
+                    Login l=new Login();
+                    
+                }
             }
         });
         //  set when system open start with home form

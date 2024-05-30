@@ -29,7 +29,7 @@ public class performRanking {
         try {
             // Fetch data from teamplayer table
             
-            String sql="SELECT Player_ID,Player_Name,Position,Composite_Score FROM teamplayer WHERE User_ID='"+id+"'";
+            String sql="SELECT Player_ID,Player_Name,Position,Composite_Score ,Image FROM teamplayer WHERE User_ID='"+id+"'";
             Statement st=connection.createStatement();
             ResultSet rs=st.executeQuery(sql);
             while(rs.next()){
@@ -37,7 +37,8 @@ public class performRanking {
                 String name=rs.getString("Player_Name");
                 String position=rs.getString("Position");
                 double score=rs.getDouble("Composite_Score");
-                players.add(new player(playerid, name, position,  score));
+                String image=rs.getString("Image");
+                players.add(new player(image,playerid, name, position,  score));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,12 +54,14 @@ public class performRanking {
         int playerID, points, rebounds, assists, steals, blocks, games;
         String position, name;
         double compositeScore;
+        String image;
 
-        public player(int playerID, String name, String position ,  double compositeScore) {
+        public player(String image,int playerID, String name, String position ,  double compositeScore) {
             this.playerID = playerID;
             this.name = name;
             this.position = position;
             this.compositeScore = compositeScore;
+            this.image=image;
 
             try {
                 Connection connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false","root","");
@@ -159,6 +162,9 @@ public class performRanking {
 
         public void setCompositeScore(double compositeScore) {
             this.compositeScore = compositeScore;
+        }
+        public String getImage(){
+            return this.image;
         }
 
         @Override

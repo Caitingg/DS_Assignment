@@ -19,7 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class Team {
-
+    profilePicture p=new profilePicture();
     public class Node<E> {
 
         Node<E> next;
@@ -282,8 +282,8 @@ public class Team {
     
     
     public void savePlayer(PLayer player,String userId){
-        String sql = "INSERT INTO teamplayer (Player_ID, Player_Name, Start_Date, End_Date, Status, Composite_Score,User_ID, Position,Injury_Reserved) "
-                + "VALUES (?, ?, ?, ?, ?,?, ?, ?, ?)";
+        String sql = "INSERT INTO teamplayer (Player_ID, Player_Name, Start_Date, End_Date, Status, Composite_Score,User_ID, Position,Injury_Reserved,Image) "
+                + "VALUES (?, ?, ?, ?, ?,?, ?, ?, ?,?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
                 PreparedStatement st = conn.prepareStatement(sql)) {
@@ -301,7 +301,7 @@ public class Team {
                 calendar.setTime(startDate);
                 calendar.add(Calendar.DAY_OF_MONTH, 10);
                 Date endDate = new Date(calendar.getTimeInMillis());
-
+                    String temp=p.getImage();
                 st.setInt(1, playerId);
                 st.setString(2, playerName);
                 st.setDate(3, startDate);
@@ -311,8 +311,9 @@ public class Team {
                 st.setString(7, userId); // User ID
                 st.setString(8, position);
                 st.setBoolean(9, false);
+                st.setString(10, temp);
                 statusBond(player.getPlayer_id());
-
+                    System.out.println(temp);
                 st.addBatch();
             
 

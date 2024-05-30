@@ -47,7 +47,7 @@ public class Form_4 extends javax.swing.JPanel implements ActionListener{
         int i=1;
         while(!temp.isEmpty()){
             TeamPlayer tempPlayer=temp.poll();
-            memberList.add(new Model_PlayerStatusProfile(tempPlayer.getPlayer_id(),tempPlayer.getPlayer_Name(),tempPlayer.getStartDate(),tempPlayer.getEndDate(),tempPlayer.getStatus(),i,tempPlayer.getCompositeScore()));
+            memberList.add(new Model_PlayerStatusProfile(tempPlayer.getImage(),tempPlayer.getPlayer_id(),tempPlayer.getPlayer_Name(),tempPlayer.getStartDate(),tempPlayer.getEndDate(),tempPlayer.getStatus(),i,tempPlayer.getCompositeScore()));
             i++;
         }
         

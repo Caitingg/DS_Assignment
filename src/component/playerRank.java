@@ -24,7 +24,7 @@ public class playerRank extends javax.swing.JPanel {
 //        lbIcon.setIcon(data.getIcon());
         idText.setText(Integer.toString(data.getPlayerID()));
         nameText.setText(data.getName());
-        positionText.setText(data.getName());
+        positionText.setText(data.getPosition());
         cScores.setText(Double.toString(data.getCompositeScore()));
         rankText.setText(String.valueOf(data.getRank()));
         reboundsT.setText(Double.toString(data.getRebounds()));
@@ -32,6 +32,7 @@ public class playerRank extends javax.swing.JPanel {
         assitsText.setText(Double.toString(data.getCompositeScore()));
         blocksText.setText(Double.toString(data.getAssits()));
         gamesText.setText(Integer.toString(data.getGames()));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource(data.getImage()))); 
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -64,7 +65,7 @@ public class playerRank extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
         setForeground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/player1.png"))); // NOI18N
+        // jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/player1.png"))); // NOI18N
 
         idText.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 16)); // NOI18N
         idText.setForeground(new java.awt.Color(0, 0, 0));
