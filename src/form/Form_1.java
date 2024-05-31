@@ -616,7 +616,7 @@ public class Form_1 extends javax.swing.JPanel {
     private void btnAddTeam1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTeam1ActionPerformed
         
         if (team.isValidTeam()) {
-            team.saveTeam(team,"Ali");
+            team.saveTeam(team,username);
             String message = "You successfully build the team. You can edit your team in Manage Team.";
             JOptionPane.showMessageDialog(new JFrame(), message, "Congratulations!", JOptionPane.INFORMATION_MESSAGE);
             

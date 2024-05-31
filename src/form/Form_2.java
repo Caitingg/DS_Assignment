@@ -67,8 +67,8 @@ public class Form_2 extends javax.swing.JPanel {
         
         
          // Refresh the panel to show the newly added components
-        // panelMemberP.revalidate();
-        // panelMemberP.repaint();
+        panelMemberP.revalidate();
+         panelMemberP.repaint();
         
     }
     /**

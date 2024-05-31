@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,31 @@ public class Form_4 extends javax.swing.JPanel implements ActionListener{
         this.userID=name;
         initComponents();
         init();
+    }
+
+    private void status(int playerId,String status){
+        String sql = "Update agentmarket SET Status = ? WHERE Player_ID=" + playerId;
+        String sql1="Update teamplayer SET Status = ? WHERE Player_ID=" + playerId;
+
+
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false", "root", "");
+                PreparedStatement st = conn.prepareStatement(sql1)) {
+
+            st.setString(1, status);
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false", "root", "");
+                PreparedStatement st = conn.prepareStatement(sql)) {
+
+            st.setString(1, status);
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void init(){
@@ -48,6 +74,7 @@ public class Form_4 extends javax.swing.JPanel implements ActionListener{
         while(!temp.isEmpty()){
             TeamPlayer tempPlayer=temp.poll();
             memberList.add(new Model_PlayerStatusProfile(tempPlayer.getImage(),tempPlayer.getPlayer_id(),tempPlayer.getPlayer_Name(),tempPlayer.getStartDate(),tempPlayer.getEndDate(),tempPlayer.getStatus(),i,tempPlayer.getCompositeScore()));
+            status(tempPlayer.getPlayer_id(),"Expired");
             i++;
         }
         
@@ -179,6 +206,7 @@ public class Form_4 extends javax.swing.JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
        if(e.getSource()==btnRenew){
+        
         contract c=new contract();
         c.initialise(connection, userID);
         c.extend();

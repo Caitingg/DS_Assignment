@@ -38,30 +38,36 @@ public class mainMethod extends javax.swing.JFrame {
         this.userName=username;
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
-        home = new Form_Home();
-        form1 = new Form_1(userName);
-        form2 = new Form_2(userName);
-        form5 = new Form_5();
-        form4 = new Form_4(userName);
-        form6 = new Form_6();
-        form7=new Form_7(userName);
+        
+        
+       
+        //form5 = new Form_5();
+
+
 
         menu.initMoving(mainMethod.this);
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
             public void selected(int index) {
                 if (index == 0) {
+                    home = new Form_Home();
                     setForm(home);
                 } else if (index == 1) {
+                    form1 = new Form_1(userName);
                     setForm(form1);
                 } else if (index == 2) {
+                    form2 = new Form_2(userName);
                     setForm(form2);
                 } else if (index == 3) {
+                    
+                    form6 = new Form_6();
                     setForm(form6);
                     // Form_3 f3=new Form_3();
                 } else if (index == 5) {
+                    form7=new Form_7(userName);
                     setForm(form7);
                 } else if (index == 4) {
+                    form4 = new Form_4(userName);
                     setForm(form4);
                 }
                 else if(index==7){

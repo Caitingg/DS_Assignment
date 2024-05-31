@@ -70,15 +70,47 @@ public class contract {
         } catch (SQLException e) {
             System.out.println(e);
         }
+        status(temp.getPlayer_id(),"Bond");
     }
+
+
+    private void status(int playerId,String status){
+        String sql = "Update agentmarket SET Status = ? WHERE Player_ID=" + playerId;
+        String sql1="Update teamplayer SET Status = ? WHERE Player_ID=" + playerId;
+
+
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false", "root", "");
+                PreparedStatement st = conn.prepareStatement(sql1)) {
+
+            st.setString(1, status);
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false", "root", "");
+                PreparedStatement st = conn.prepareStatement(sql)) {
+
+            st.setString(1, status);
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    
     
     public void remove(){
         TeamPlayer temp=queue.poll();
         int id=temp.getPlayer_id();
         String sql = "DELETE FROM teamplayer WHERE Player_ID= " + id+" AND User_ID='"+userId+"'";
+        
         try {
             Statement statement=connection.createStatement();
             statement.executeUpdate(sql);
+            status(temp.getPlayer_id(),"Bond");
             
         } catch (SQLException e) {
             System.out.println(e);
@@ -87,7 +119,7 @@ public class contract {
     
     public long timeLeft(LocalDate endDate){
         LocalDate current=LocalDate.now();
-        long daysLeft=ChronoUnit.DAYS.between(current,endDate);
+        long daysLeft=ChronoUnit.MONTHS.between(current,endDate);
         return daysLeft;
         
     }

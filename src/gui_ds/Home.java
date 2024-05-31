@@ -127,8 +127,8 @@ public class Home extends javax.swing.JFrame {
         getContentPane().add(jPanel1);
         jPanel1.setBounds(60, 60, 520, 240);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\user\\Downloads\\basketball-game-concept_23-2150910694.jpg")); // NOI18N
-        jLabel3.setText("jLabel3");
+        jLabel3.setIcon((new javax.swing.ImageIcon(getClass().getResource("/icon/basketball.jpg")))); // NOI18N
+        
         getContentPane().add(jLabel3);
         jLabel3.setBounds(0, 0, 627, 351);
 

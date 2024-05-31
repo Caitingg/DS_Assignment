@@ -7,8 +7,11 @@ package form;
 import java.sql.*;
 import Team.performRanking;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.BoxLayout;
+
+import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
 
 import model.Model_playerRanking;
 import Team.performRanking.player;
@@ -38,6 +41,8 @@ public class Form_7 extends javax.swing.JPanel {
     try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/nba?useSSL=false", "root", "")) {
         performRanking pr=new performRanking(conn,userName);
         ArrayList<performRanking.player> sortedPlayers = pr.getPlayerList();
+        Collections.sort(sortedPlayers);
+        Collections.reverse(sortedPlayers);
         int rank = 1;
         panelBorder1.setLayout(new BoxLayout(panelBorder1, BoxLayout.Y_AXIS));;
         

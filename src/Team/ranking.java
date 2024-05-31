@@ -74,7 +74,7 @@ public class ranking {
     }
     // Function to fetch player data from the database
     public static ArrayList<PLayer> fetchPlayersFromDatabase(ArrayList<Integer>ranking) {
-        final String DB_URL = "jdbc:mysql://localhost:3308/java_user_database";
+        final String DB_URL = "jdbc:mysql://localhost:3306/nba";
         final String USER = "root";
         final String PASS = "";
         ArrayList<PLayer>players=new ArrayList<>();

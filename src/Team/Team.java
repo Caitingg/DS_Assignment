@@ -88,7 +88,7 @@ public class Team {
     }
     
     public void statusAvailable(int playerId){
-        String sql = "Update agenttmarket SET Status = ? WHERE Player_ID=" + playerId;
+        String sql = "Update agentmarket SET Status = ? WHERE Player_ID=" + playerId;
         try (Connection conn = DriverManager.getConnection(url, user, password);
                 PreparedStatement st = conn.prepareStatement(sql)) {
 
@@ -165,12 +165,7 @@ public class Team {
 
     @Override
     public String toString() {
-        if (head == null) {
-            String message = "No players in the team.";
-            JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
-
-            return "No players in the team.";
-        }
+        
 
         StringBuilder result = new StringBuilder();
         Node<PLayer> temp = head;
@@ -230,7 +225,11 @@ public class Team {
         if (size > 15) {
             String message = "Exceed maximum number of player in a team";
             JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
-
+            return;
+        }
+        if(isBond(player)){
+            JOptionPane.showMessageDialog(null, "The player is bonded! ","Try again!",JOptionPane.ERROR_MESSAGE);
+            return;
         }
         addPlayer(player);
     }
@@ -337,18 +336,8 @@ public class Team {
             // Set the parameter for the prepared statement
             st.setInt(1, player.getPlayer_id());
 
-            // Execute the delete operation
-            int rowsAffected = st.executeUpdate();
 
-            // Show a confirmation message
-            String mss;
-            if (rowsAffected > 0) {
-                mss = "Player record deleted successfully";
-            } else {
-                mss = "Player record not found";
-            }
-            JOptionPane.showMessageDialog(new JFrame(), mss, "Dialog", JOptionPane.INFORMATION_MESSAGE);
-
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -473,6 +462,7 @@ public class Team {
                     player.setAssists(playerResultSet.getInt("Assists"));
                     player.setSteals(playerResultSet.getInt("Steals"));
                     player.setBlocks(playerResultSet.getInt("Blocks"));
+                    player.setStatus(playerResultSet.getString("Status"));
                     player.setGame(playerResultSet.getInt("Game"));
                     return player;
                 }
