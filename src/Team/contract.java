@@ -104,13 +104,20 @@ public class contract {
     
     public void remove(){
         TeamPlayer temp=queue.poll();
+
         int id=temp.getPlayer_id();
+        for(int i=0;i<team.size();i++){
+            if(team.get(i).Player_id==id){
+                team.remove(i);
+                break;
+            }
+        }
         String sql = "DELETE FROM teamplayer WHERE Player_ID= " + id+" AND User_ID='"+userId+"'";
         
         try {
             Statement statement=connection.createStatement();
             statement.executeUpdate(sql);
-            status(temp.getPlayer_id(),"Bond");
+            status(temp.getPlayer_id(),"available");
             
         } catch (SQLException e) {
             System.out.println(e);

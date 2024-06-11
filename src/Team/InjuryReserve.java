@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class InjuryReserve {
     private List<TeamPlayer> injuredPlayers = new ArrayList<>();
@@ -74,7 +73,7 @@ public class InjuryReserve {
         if (!injuredPlayers.isEmpty()) {
             try {
                 TeamPlayer p=injuredPlayers.get(0);
-                injuredPlayers.remove(0);
+                injuredPlayers.remove(injuredPlayers.size()-1);
                 
                 String sql="DELETE FROM injuryplayer WHERE Player_ID="+p.getPlayer_id()+" AND User_ID='"+userName+"'";
                 Statement st=connection.createStatement();

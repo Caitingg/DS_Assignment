@@ -14,6 +14,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
+
+import javax.swing.JOptionPane;
+
 import model.Model_PlayerStatusProfile;
 import swing.ScrollBar;
 import swing.WrapLayout;
@@ -217,6 +220,9 @@ public class Form_4 extends javax.swing.JPanel implements ActionListener{
         contract c=new contract();
         c.initialise(connection, userID);
         c.remove();
+        if(c.getTeamList().size()<10){
+            JOptionPane.showMessageDialog(null, "Invalid team, please form your team again","Invalid team",JOptionPane.ERROR_MESSAGE);
+        }
         panalPlayerS.removeAll();
         init();
        }

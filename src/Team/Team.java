@@ -298,7 +298,7 @@ public class Team {
                 Date startDate = new Date(System.currentTimeMillis());
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(startDate);
-                calendar.add(Calendar.DAY_OF_MONTH, 10);
+                calendar.add(Calendar.YEAR, 1);
                 Date endDate = new Date(calendar.getTimeInMillis());
                     String temp=p.getImage();
                 st.setInt(1, playerId);
@@ -380,7 +380,7 @@ public class Team {
 
     //Save new player into agentmarket
     public void savePlayerToInfo(int id, String name, double height, double weight, String position, int salary, int points, int rebound, int assists, int steal, int block, String status) {
-        String sql = "INSERT INTO agentmarket (Player_ID,Player_Name,Height,Weight,Position,Salary,Points,TotalRebounds,Assists,Steals,Blocks,status)" + "VALUES ((?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+        String sql = "INSERT INTO agentmarket (Player_ID,Player_Name,Height,Weight,Position,Salary,Points,TotalRebounts,Assists,Steals,Blocks,Status)" + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
                 PreparedStatement st = conn.prepareStatement(sql)) {
